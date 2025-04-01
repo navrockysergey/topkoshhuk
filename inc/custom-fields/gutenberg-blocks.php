@@ -1,0 +1,120 @@
+<?php
+use Carbon_Fields\Block;
+use Carbon_Fields\Field;
+
+add_action( 'carbon_fields_register_fields', 'custom_posts_gutenberg_blocks' );
+
+function custom_posts_gutenberg_blocks() {
+    $def_per_page = get_option( 'posts_per_page' );
+    $home_url     = home_url();
+
+    // ==== Main top Variative
+    Block::make( 'main_top_variative',  __( 'Main top Variative' ) )
+        ->add_fields( array (
+            Field::make( 'separator', 'main_top_variative_sep', __( 'Main top Variative' ) ),
+            Field::make( 'radio', 'main_top_heading_type', __( 'Heading type' ) )
+                ->set_options( array(
+                    'text'  => __('Text'),
+                    'media' => __('Media'),
+                ) ),
+            Field::make( 'text', 'main_top_heading_text', __( 'Hending text' ) )
+                ->set_conditional_logic( array(
+                    array(
+                        'field' => 'main_top_heading_type',
+                        'value' => 'text',
+                        'compare' => '=',
+                    )
+                ) ),
+            Field::make( 'file', 'main_top_heading_media', __( 'Hending media' ) )
+                ->set_type( 
+                    array( 'video', 'image' )
+                )
+                ->set_conditional_logic( array(
+                    array(
+                        'field' => 'main_top_heading_type',
+                        'value' => 'media',
+                        'compare' => '=',
+                    )
+                ) ),
+            Field::make( 'textarea', 'main_bottom_text', __( 'Bootom ( first ) text' ) ),
+            Field::make( 'textarea', 'main_bottom_second_text', __( 'Bootom ( second ) text' ) ),
+            Field::make( 'text', 'main_bottom_button_text', __( 'Button text' ) )
+                ->set_width( 50 ),
+            Field::make( 'text', 'main_bottom_button_link', __( 'Button link' ) )
+                ->set_default_value( $home_url )        
+                ->set_width( 50 ),
+        ) )
+        ->set_inner_blocks( true )
+        ->set_description( __( 'This a block for inner in Hero section page' ) )
+        ->set_icon( 'cover-image' )
+        ->set_category( 'top-koshik', __( 'Top Koshik' ), 'smiley' )
+        ->set_mode( 'both' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            extract( $fields );
+    
+            include_once __THEME_DIR__ . '/template-parts/sections/hero-section.php';
+        } );
+
+    // ==== Bestsellers carusel
+    Block::make( 'bestsellers_carusel', __( 'Bestsellers carusel' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'bestsellers_carusel_sep', __( 'Bestsellers carusel' ) ),
+            Field::make( 'text', 'bestsellers_section_title', __('Section title') )
+                ->set_default_value( 'НАЙКРАЩІ ПРОПОЗИЦІЇ' ),
+            Field::make( 'text', 'bestseller_per_page', __( 'Products count' ) )
+                ->set_default_value( $def_per_page )
+                ->set_attribute( 'type', 'number' ),
+         ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'slides' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            extract( $fields );
+
+            include_once __THEME_DIR__ . '/template-parts/sections/bestsellers-slider.php';
+        } );
+
+    // ==== Simple products previews
+    Block::make( 'simple_products_previews', __( 'Simple products previews' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'simple_previews_sep', __('Simple products previews') ),
+            Field::make( 'text', 'simple_previews_title', __( 'Title' ) ),
+            Field::make( 'text', 'simple_previews_products_count', __( 'Products count' ) )
+                ->set_default_value( $def_per_page )
+                ->set_attribute( 'type', 'number' ),
+            Field::make( 'set', 'simple_previews_tags', __( 'Tags' ) )
+                ->add_options( array(
+                    ''    => __( 'All' ),
+                    'hit' => __( 'HIT' ),
+                    'new' => __( 'NEW' ),
+                ) ),
+            Field::make( 'text', 'simple_previews_buttom_text', _( 'Buttom text' ) )
+                ->set_default_value( 'Перейти до каталогу' )
+                ->set_width( 50 ),
+            Field::make( 'text', 'simple_previews_button_lnk', _( 'Button URL' ) )
+                ->set_default_value( $home_url )  
+                ->set_width( 50 ),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'grid-view' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            extract( $fields );
+
+            include_once __THEME_DIR__ . '/template-parts/sections/simple-products-prewiev.php';
+        } );
+
+    // ==== Categories colection
+    Block::make( 'categories_colection', __( 'Categories colection' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'categories_colection_sep', __('Categories colection') ),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'images-alt2' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            extract( $fields );
+
+            include_once __THEME_DIR__ . '/template-parts/sections/categories-colection-block.php';
+        } );    
+}
