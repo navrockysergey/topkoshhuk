@@ -14,8 +14,8 @@ function custom_posts_gutenberg_blocks() {
             Field::make( 'separator', 'main_top_variative_sep', __( 'Main top Variative' ) ),
             Field::make( 'radio', 'main_top_heading_type', __( 'Heading type' ) )
                 ->set_options( array(
-                    'text'  => __('Text'),
-                    'media' => __('Media'),
+                    'text'  => __( 'Text' ),
+                    'media' => __( 'Media' ),
                 ) ),
             Field::make( 'text', 'main_top_heading_text', __( 'Hending text' ) )
                 ->set_conditional_logic( array(
@@ -59,7 +59,7 @@ function custom_posts_gutenberg_blocks() {
     Block::make( 'bestsellers_carusel', __( 'Bestsellers carusel' ) )
         ->add_fields( array(
             Field::make( 'separator', 'bestsellers_carusel_sep', __( 'Bestsellers carusel' ) ),
-            Field::make( 'text', 'bestsellers_section_title', __('Section title') )
+            Field::make( 'text', 'bestsellers_section_title', __( 'Section title' ) )
                 ->set_default_value( 'НАЙКРАЩІ ПРОПОЗИЦІЇ' ),
             Field::make( 'text', 'bestseller_per_page', __( 'Products count' ) )
                 ->set_default_value( $def_per_page )
@@ -107,14 +107,47 @@ function custom_posts_gutenberg_blocks() {
     // ==== Categories colection
     Block::make( 'categories_colection', __( 'Categories colection' ) )
         ->add_fields( array(
-            Field::make( 'separator', 'categories_colection_sep', __('Categories colection') ),
+            Field::make( 'separator', 'categories_colection_sep', __( 'Categories colection' ) ),
         ) )
         ->set_category( 'top-koshik' )
         ->set_mode( 'both' )
         ->set_icon( 'images-alt2' )
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
-            extract( $fields );
-
             include_once __THEME_DIR__ . '/template-parts/sections/categories-colection-block.php';
-        } );    
+        } );
+
+    // ==== Advantages
+    Block::make( 'advantages_colection', __( 'Advantages colection' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'advantages_colection_sep', __( 'Advantages colection' ) ),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'saved' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            include_once __THEME_DIR__ . '/template-parts/sections/advantages-section.php';
+        } );
+
+    // ==== Brands video + products block
+    Block::make( 'brands_products_preview', __( 'Brands video && products preview block' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'brans_video_products_sep', __( 'Brands video && products preview block' ) ),
+            Field::make( 'association', 'brans_video_products_terms', __( 'Brand' ) )
+            ->set_types( array(
+                array(
+                    'type'     => 'term',
+                    'taxonomy' => 'product_brand',
+                )
+            ) ),
+            Field::make( 'text', 'brans_video_products_per_page', __( 'Products count in sungle brand' ) )
+                ->set_default_value( '2' )
+                ->set_attribute( 'type', 'number' ),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'video-alt3' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            extract( $fields );
+            include_once __THEME_DIR__ . '/template-parts/sections/brans_video_products.php';
+        } );
 }

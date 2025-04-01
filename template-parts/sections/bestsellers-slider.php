@@ -10,6 +10,13 @@ $products_query_arguments = [
             'terms'    => 'hit',
         ],
     ],
+    'meta_query' => array(
+        array(
+            'key'     => '_product_banner',
+            'compare' => '!=',
+            'value'   => ''
+        )
+    )
 ];
 
 $products = get_posts( $products_query_arguments );
@@ -28,8 +35,8 @@ if ( empty( $products ) ) {
         <?php
         foreach( $products as $item ) :
             $product                            = wc_get_product( $item->ID );
-            $product_thumbnail_id               = get_post_meta( $item->ID, '_product_banner', true );
-            $product_thumbnail_sourse_full_size = wp_get_attachment_url( $product_thumbnail_id, $item->ID, 'full' );
+            $product_banner_id                  = get_post_meta( $item->ID, '_product_banner', true );
+            $product_banner_sourse_full_size    = wp_get_attachment_url( $product_banner_id, $item->ID, 'full' );
             $product_permalink                  = get_the_permalink( $item->ID );
             ?>
             <div class="best-product-slide">
@@ -38,7 +45,7 @@ if ( empty( $products ) ) {
                 </h3>
 
                 <div class="product-banner">
-                    <img src="<?php echo esc_url( $product_thumbnail_sourse_full_size )?>" alt="<?php echo esc_attr( $item->post_title )?>">
+                    <img src="<?php echo esc_url( $product_banner_sourse_full_size )?>" alt="<?php echo esc_attr( $item->post_title )?>">
                 </div>
 
                 <div class="slide-footer">

@@ -28,8 +28,11 @@ add_action( 'woocommerce_after_shop_loop_item'                  , 'add_sku_befor
 add_action( 'get_cart_product_count'                            , 'get_cart_product_count', 10, 1 );
 add_action( 'woocommerce_before_calculate_totals'               , 'dinamyc_set_price', 10, 1 );
 add_action( 'template_redirect'                                 , 'saved_resently_product', 20 );
+add_filter( 'woo_get_brands'                                    , 'woo_get_brands', 1 );
 
 // ===================================================================================================
+remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_template_loop_add_to_cart', 10 );
+add_action( 'woocommerce_after_shop_loop_item'                  , 'replace_loop_add_to_cart' );
 add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_count_ajax' );
 add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_action( 'wp_enqueue_scripts'                                , 'add_wc_ajax_params' );
@@ -66,6 +69,12 @@ function woocommerce_single_product_summary_changes() {
 
     add_action( 'woocommerce_after_single_product_summary', 'woocommerce_template_resently_products', 20 );
 
+}
+
+function replace_loop_add_to_cart() {
+    global $product;
+    $link = $product->get_permalink();
+    echo '<a href="' . esc_url( $link ) . '" class="button">' . __( 'Переглянути' ) . '</a>';
 }
 
 function woocommerce_template_single_main_data() {
@@ -355,6 +364,13 @@ function saved_resently_product() {
 
 function woocommerce_template_resently_products() {
     wc_get_template( 'single-product/resently_products.php' );
+}
+
+function woo_get_brands() {
+    return get_terms( array(
+        'taxonomy'   => 'product_brand',
+        'hide_empty' => false,
+    ) );
 }
 
 // ===============================================================
