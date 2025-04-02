@@ -37,11 +37,17 @@ add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_coun
 add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_action( 'wp_enqueue_scripts'                                , 'add_wc_ajax_params' );
 add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fragments', 10, 1 );
-//add_action( 'woocommerce_before_shop_loop'                      , 'add_content_woocommerce_before_shop_loop', 15 );
+// add_action( 'woocommerce_before_shop_loop'                      , 'add_content_woocommerce_before_shop_loop', 15 );
+add_action( 'woocommerce_before_cart'                           , 'order_steps', 1 );
+add_action( 'woocommerce_before_checkout_form'                  , 'order_steps', 1 );
+add_action( 'woocommerce_thankyou'                              , 'order_steps', 1 );
 add_action( 'woocommerce_account_content'                       , 'add_h1_to_my_account_page', 5 );
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
+
 add_filter( 'woocommerce_account_menu_items'                    , 'remove_downloads_from_my_account_menu' );
+add_filter( 'woocommerce_account_menu_items'                    , 'custom_account_menu_items' );
+
 add_action( 'woocommerce_proceed_to_checkout'                   , 'replace_proceed_to_checkout', 10 );
 add_action( 'woocommerce_before_cart_totals'                    , 'minimum_order_message' );
 add_action( 'main_after'                                        , 'load_crosssell_products_after_cart', 20 );
@@ -399,7 +405,7 @@ function cart_count_fragments($fragments) {
 function add_content_woocommerce_before_shop_loop() {
     echo '<div class="category-header">';
     
-    echo do_shortcode('[fe_widget]');
+    // echo do_shortcode('[fe_widget]');
     
     woocommerce_result_count();
     
@@ -484,6 +490,32 @@ function remove_downloads_from_my_account_menu($items) {
     if (isset($items['downloads'])) {
         unset($items['downloads']);
     }
+    return $items;
+}
+
+function custom_account_menu_items( $items ) {
+    if ( isset( $items['dashboard'] ) ) {
+        unset( $items['dashboard'] );
+    }
+
+    if ( isset( $items['edit-address'] ) ) {
+        unset( $items['edit-address'] );
+    }
+
+    if ( isset( $items['edit-account'] ) ) {
+        unset( $items['edit-account'] );
+    }
+
+    if ( isset( $items['customer-logout'] ) ) {
+        unset( $items['customer-logout'] );
+    }
+
+    $items['account-data'] = __('Платіжні дані');
+
+    $items['account-security'] = __('Безпека');
+
+    $items['customer-logout'] = __('Вийти');
+
     return $items;
 }
 
