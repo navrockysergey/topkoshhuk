@@ -168,3 +168,19 @@ function wrap_blocks_in_section($block_content, $block) {
 }
 
 add_filter('render_block', 'wrap_blocks_in_section', 10, 2);
+
+function get_custom_excerpt( $post_id, $excerpt_length = 200 ) {
+    $post = get_post( $post_id );
+
+    if ( ! empty( $post->post_excerpt ) ) {
+        return $post->post_excerpt;
+    }
+
+    $content = strip_tags( strip_shortcodes( $post->post_content ) );
+    $content = mb_substr( $content, 0, $excerpt_length );
+    $content = mb_substr( $content, 0, mb_strrpos( $content, ' ') );
+    $content .= '...';
+
+    return $content;
+}
+add_filter( 'get_custom_excerpt', 'get_custom_excerpt', 10 );

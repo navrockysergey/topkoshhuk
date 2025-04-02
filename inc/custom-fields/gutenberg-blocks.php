@@ -5,8 +5,10 @@ use Carbon_Fields\Field;
 add_action( 'carbon_fields_register_fields', 'custom_posts_gutenberg_blocks' );
 
 function custom_posts_gutenberg_blocks() {
-    $def_per_page = get_option( 'posts_per_page' );
-    $home_url     = home_url();
+    $def_per_page  = get_option( 'posts_per_page' );
+    $home_url      = home_url();
+    $blog_page     = get_option( 'page_for_posts' );
+    $blog_page_url = ! is_null( $blog_page ) && ! empty( $blog_page ) ? get_the_permalink( $blog_page ) : $home_url;
 
     // ==== Main top Variative
     Block::make( 'main_top_variative',  __( 'Main top Variative' ) )
@@ -150,4 +152,28 @@ function custom_posts_gutenberg_blocks() {
             extract( $fields );
             include_once __THEME_DIR__ . '/template-parts/sections/brans_video_products.php';
         } );
+
+        // Latest articles
+        Block::make( 'l_articles', __( 'Latest articles' ) )
+            ->add_fields( array(
+                Field::make( 'separator', 'l_articles_sep', __( 'Latest articles' ) ),
+                Field::make( 'text', 'latest_articles_per_page', __( 'Articles per page' ) )
+                    ->set_default_value( $def_per_page )
+                    ->set_attribute( 'type', 'number' ),
+                Field::make( 'text', 'latest_articles_section_title', __( 'Title' ) )
+                    ->set_default_value( 'НОВИНИ З БЛОГУ' ),
+                Field::make( 'text', 'latest_article_section_button_text', __( 'Button text' ) )
+                    ->set_default_value( 'Більше новин з блогу' )
+                    ->set_width( 50 ),
+                Field::make( 'text', 'latest_article_section_button_href', __( 'Button href' ) )
+                    ->set_default_value( $blog_page_url )
+                    ->set_width( 50 ),
+            ) )
+            ->set_category( 'top-koshik' )
+            ->set_mode( 'both' )
+            ->set_icon( 'admin-post' )
+            ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+                extract( $fields );
+                include_once __THEME_DIR__ . '/template-parts/sections/latest-articles-section.php';
+            } );
 }
