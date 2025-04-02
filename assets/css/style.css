@@ -137,12 +137,6 @@ h5 {
 
 main {
   flex: 1;
-  padding-top: 117px;
-}
-@media (max-width: 767px) {
-  main {
-    padding-top: 82px;
-  }
 }
 
 select {
@@ -260,6 +254,37 @@ figure {
     opacity: 1;
   }
 }
+a.button,
+.button,
+button[type=submit],
+input[type=submit] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12.5px 16px;
+  gap: 12px;
+  background: var(--color_primary);
+  border-radius: 8px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  border: 1px solid var(--color_primary);
+  color: var(--color_white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+a.button:focus, a.button:hover,
+.button:focus,
+.button:hover,
+button[type=submit]:focus,
+button[type=submit]:hover,
+input[type=submit]:focus,
+input[type=submit]:hover {
+  background-color: var(--color_secondary);
+  color: var(--color_white);
+}
+
 header.site-header {
   position: relative;
   line-height: 1;
@@ -398,6 +423,13 @@ header.site-header .menu > li a:hover {
     max-width: 100vw;
     transition: all 1s var(--cubic_bezier);
   }
+}
+@media (max-width: 767px) and (max-width: 767px) {
+  .admin-bar header.site-header .menu-wrapper {
+    top: 46px;
+  }
+}
+@media (max-width: 767px) {
   .nav-active header.site-header .menu-wrapper {
     opacity: 1;
     visibility: visible;
@@ -513,148 +545,14 @@ header.site-header .header-phone a:hover {
   }
 }
 
-a.button,
-.button,
-button[type=submit],
-input[type=submit] {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 12.5px 16px;
-  gap: 12px;
-  background: var(--color_primary);
-  border-radius: 8px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-  border: 1px solid var(--color_primary);
-  color: var(--color_white);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-a.button:focus, a.button:hover,
-.button:focus,
-.button:hover,
-button[type=submit]:focus,
-button[type=submit]:hover,
-input[type=submit]:focus,
-input[type=submit]:hover {
-  background-color: var(--color_secondary);
-  color: var(--color_white);
-}
-
 footer {
-  color: var(--color_white);
-  background-color: var(--color_tertiary);
-  overflow: hidden;
-  border: 0;
-  font-size: 14px;
-  font-weight: 400;
-  padding: 20px 0;
-  font-size: 18px;
-}
-.home footer {
-  margin-top: 0;
-}
-footer .menu {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  line-height: 1;
-}
-footer .menu a {
-  display: block;
-}
-footer .footer-logo img {
-  max-width: 65px;
-}
-footer .sub-menu {
-  display: none !important;
-}
-footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  background-color: var(--color_grey);
 }
 footer a {
   color: var(--color_white);
-  text-decoration: none;
-  font-size: 14px;
 }
 footer a:hover {
   color: var(--color_primary);
-}
-footer .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-@media (max-width: 1024px) {
-  footer .container {
-    flex-direction: column;
-  }
-}
-footer .container > * {
-  height: 100%;
-  min-height: 70px;
-  padding: 0 25px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-}
-@media (max-width: 767px) {
-  footer .container > * {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
-}
-footer .container > *:first-child {
-  padding-left: 0;
-}
-footer .container > *:last-child {
-  padding-right: 0;
-}
-@media (min-width: 1025px) {
-  footer .container > *:not(:last-child) {
-    border-right: 1px solid grey;
-  }
-}
-footer .footer-logo {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 20px;
-}
-footer .call-back {
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-footer .footer-phone {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-}
-footer a:hover i {
-  background-color: var(--color_white);
-}
-
-.fa {
-  font-size: 1em;
-  color: black;
-  background: var(--color_primary);
-  padding: 7px 9px;
-  border-radius: 6px;
-  margin-right: 10px;
-  transition: all 0.5s ease;
 }
 
 .social-icons {

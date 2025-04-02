@@ -1,3 +1,7 @@
+<?php
+	$home_url = home_url();
+	$is_home = is_front_page();
+?>
 <div class="site-branding">
     <a href="<?php echo $is_home ? '#' : $home_url; ?>" class="logo-link">
         <svg width="78" height="50" viewBox="0 0 78 50" fill="none" xmlns="http://www.w3.org/2000/svg">

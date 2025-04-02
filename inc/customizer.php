@@ -162,19 +162,6 @@ function baza_customize_register( $wp_customize ) {
         'type'    => 'url',
     ));
 
-    // Phone 2 setting and control
-    $wp_customize->add_setting('phone_2', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'refresh',
-    ));
-
-    $wp_customize->add_control('phone_2', array(
-        'label'   => __('Phone'),
-        'section' => 'site_info',
-        'type'    => 'text',
-    ));
-
 	// Add Copyright
 	$wp_customize->add_setting('copyright', array(
         'default'           => '',

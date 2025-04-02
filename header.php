@@ -51,30 +51,7 @@
 				 <div class="col col-3">
 
 					<div class="header-phone">
-						<?php if ( get_theme_mod( 'phone' ) ) : ?>
-							<a href="tel:<?php echo preg_replace('/\D/', '', get_theme_mod( 'phone' ) ); ?>">
-								<span>
-									<?php 
-										$phone = esc_html( get_theme_mod( 'phone' ) );
-										$phone = preg_replace('/\(/', '<span>(', $phone, 1);
-										$phone = preg_replace('/\)/', ')</span>', $phone, 1);
-										echo $phone;
-									?>
-								</span>
-							</a>
-						<?php endif; ?>
-						<?php if ( get_theme_mod( 'phone_2' ) ) : ?>
-							<a href="tel:<?php echo preg_replace('/\D/', '', get_theme_mod( 'phone_2' ) ); ?>">
-								<span>
-									<?php 
-										$phone = esc_html( get_theme_mod( 'phone' ) );
-										$phone = preg_replace('/\(/', '<span>(', $phone, 1);
-										$phone = preg_replace('/\)/', ')</span>', $phone, 1);
-										echo $phone;
-									?>
-								</span>
-							</a>
-						<?php endif; ?>
+						<?php get_template_part( 'template-parts/blocks/block', 'phone' ); ?>
 					</div>
 
 					<?php if (function_exists('WC') && !is_cart()) : 
