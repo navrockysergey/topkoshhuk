@@ -21,28 +21,9 @@ jQuery(document).ready(function ($) {
         removeNbsp();
     });
 
-	$('#product-gallery-carousel').owlCarousel({
-		items: 1,
-		navSpeed: sliderSpeed,
-		autoplaySpeed: sliderSpeed,
-		nav: false,
-		autoplay: true,
-		autoplayTimeout: 6000,
-		margin: 0,
-		dots: false,
-		loop: true,
-		navText: ['', ''],
-		mouseDrag: true,
-		touchDrag: true,
-		dragEndSpeed: sliderSpeed,
-		dotsSpeed: sliderSpeed,
-		autoHeight: true,
-		autoplayHoverPause: true
-	});
+	let carouselCategories = $('#menu-categories');
 
-	let carouselBestsellers = $('#carousel-bestsellers');
-
-	carouselBestsellers.owlCarousel({
+	carouselCategories.owlCarousel({
 		items: 4,
 		navSpeed: sliderSpeed,
 		autoplaySpeed: sliderSpeed,
@@ -52,8 +33,8 @@ jQuery(document).ready(function ($) {
 		margin: 30,
 		autoplayHoverPause: true,
 		dots: true,
-		loop: (carouselBestsellers.find('.product').length > 4),
-		navText: ['<i class="fa fa-arrow-left" aria-hidden="true"></i>', '<i class="fa fa-arrow-right" aria-hidden="true"></i>'],
+		loop: (carouselCategories.find('.product').length > 4),
+		navText: ['', ''],
 		mouseDrag: true,
 		touchDrag: true,
 		dragEndSpeed: sliderSpeed,
@@ -66,26 +47,26 @@ jQuery(document).ready(function ($) {
 				nav: false,
 				margin: 0,
 				autoplay: false,
-				loop: (carouselBestsellers.find('.product').length > 1),
+				loop: (carouselCategories.find('.product').length > 1),
 			},
 			768: {
 				items: 2,
 				autoplay: false,
 				nav: true,
 				dots: true,
-				loop: (carouselBestsellers.find('.product').length > 2),
+				loop: (carouselCategories.find('.product').length > 1),
 			},
 			1024: {
 				items: 2,
 				nav: true,
 				dots: true,
-				loop: (carouselBestsellers.find('.product').length > 2),
+				loop: (carouselCategories.find('.product').length > 3),
 			},
 			1200: {
 				items: 3,
 				nav: true,
 				dots: true,
-				loop: (carouselBestsellers.find('.product').length > 3),
+				loop: (carouselCategories.find('.product').length > 5),
 			}
 		}
 	});

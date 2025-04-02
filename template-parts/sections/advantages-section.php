@@ -5,9 +5,9 @@ if ( empty( $advantages ) ) {
     return;
 }
 ?>
-<section class="advantages">
+<section class="section section-advantages">
     <div class="container">
-        <div class="flex">
+        <div class="advantage-items">
         <?php
         foreach( $advantages as $advantage ) :
             $icon_type    = $advantage['adv_icon_type'];
@@ -18,19 +18,19 @@ if ( empty( $advantages ) ) {
 
             $icon = 'image' == $icon_type ? "<img class='icon-image' src='{$icon_img_src}' alt='{$title}'>" : $icon_code ;
             ?>
-            <div class="advantage-item center">
-                <div class="advantage-item-icon">
-                    <?php echo $icon?>
-                </div>
+                <div class="advantage-item">
+                    <div class="advantage-item-icon">
+                        <?php echo $icon?>
+                    </div>
 
-                <div class="advantage-item-title">
-                    <?php echo $title?>
-                </div>
+                    <div class="advantage-item-title">
+                        <?php echo $title?>
+                    </div>
 
-                <div class="advantage-item-desc">
-                    <?php echo $desc?>
+                    <div class="advantage-item-description">
+                        <?php echo $desc?>
+                    </div>
                 </div>
-            </div>
             <?php
         endforeach;
         ?>

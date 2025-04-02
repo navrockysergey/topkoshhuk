@@ -48,7 +48,10 @@ function baza_dev_dequeue_styles() {
     wp_dequeue_style( 'wpc-filter-everything' );
     wp_deregister_style('wpc-filter-everything');
     wp_dequeue_style( 'woocommerce-smallscreen' );
-    wp_deregister_style('wqpmb_internal');
+    wp_deregister_style( 'wqpmb_internal' );
+    wp_dequeue_style( 'woocommerce-layout' );
+    wp_deregister_style( 'woocommerce-layout' );
+    
 }
 add_action( 'wp_enqueue_scripts', 'baza_dev_dequeue_styles', 9999999 );
 

@@ -37,10 +37,7 @@ add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_coun
 add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_action( 'wp_enqueue_scripts'                                , 'add_wc_ajax_params' );
 add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fragments', 10, 1 );
-add_action( 'woocommerce_before_shop_loop'                      , 'add_content_woocommerce_before_shop_loop', 15 );
-add_action( 'woocommerce_before_cart'                           , 'order_steps', 1 );
-add_action( 'woocommerce_before_checkout_form'                  , 'order_steps', 1 );
-add_action( 'woocommerce_thankyou'                              , 'order_steps', 1 );
+//add_action( 'woocommerce_before_shop_loop'                      , 'add_content_woocommerce_before_shop_loop', 15 );
 add_action( 'woocommerce_account_content'                       , 'add_h1_to_my_account_page', 5 );
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
@@ -74,7 +71,12 @@ function woocommerce_single_product_summary_changes() {
 function replace_loop_add_to_cart() {
     global $product;
     $link = $product->get_permalink();
-    echo '<a href="' . esc_url( $link ) . '" class="button">' . __( 'Переглянути' ) . '</a>';
+    echo '
+    <a href="' . esc_url( $link ) . '" class="button button-product-view">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.8 11.6C17.0666 11.8 17.0666 12.2 16.8 12.4L9.8 17.8991C9.47038 18.1463 9 17.9111 9 17.4991L9 6.50091C9 6.08888 9.47038 5.85369 9.8 6.10091L16.8 11.6Z" fill="currentColor"/>
+        </svg>
+    </a>';
 }
 
 function woocommerce_template_single_main_data() {
@@ -348,7 +350,7 @@ function saved_resently_product() {
     if ( empty( $_COOKIE[ 'woo_recently_viewed' ] ) ) {
 		$viewed = array();
 	} else {
-		$viewed = (array) explode( '|||', $_COOKIE[ 'woo_recently_viewed' ] );
+		$viewed = (array) explode( '||', $_COOKIE[ 'woo_recently_viewed' ] );
 	}
  
 	if ( ! in_array( get_the_ID(), $viewed ) ) {
@@ -359,7 +361,7 @@ function saved_resently_product() {
 		array_shift( $viewed );
 	}
  
-	wc_setcookie( 'woo_recently_viewed', join( '|||', $viewed ) );
+	wc_setcookie( 'woo_recently_viewed', join( '||', $viewed ) );
 }
 
 function woocommerce_template_resently_products() {
@@ -374,92 +376,6 @@ function woo_get_brands() {
 }
 
 // ===============================================================
-
-// Image and title wrapper in loop category
-function custom_product_image_title_wrapper() {
-
-    $product_id = get_the_ID();
-    $product = wc_get_product($product_id);
-
-    $lang_code = 'en';
-    $original_post_id = function_exists( 'icl_object_id' ) ? icl_object_id($product_id, 'product', true, 'uk') : $product_id; 
-
-    $badges = array(
-        'sale' => array(
-            'en' => __('Sale', 'tk'),
-        ),
-        'new' => array(
-            'en' => __('New', 'tk'),
-        ),
-        'chef' => array(
-            'en' => __('From the Chef', 'tk'),
-        ),
-        'exclusive' => array(
-            'en' => __('Exclusive', 'tk'),
-        ),
-        'beneficial' => array(
-            'en' => __('Beneficial', 'tk'),
-        ),
-        'popular' => array(
-            'en' => __('Popular', 'tk'),
-        ),
-        'useful' => array(
-            'en' => __('Useful', 'tk'),
-        ),
-        'top_sales' => array(
-            'en' => __('Top Sales', 'tk'),
-        ),
-        'spicy' => array(
-            'en' => __('Spicy', 'tk'),
-        ),
-    );    
-
-    $sale_badge = $product->is_on_sale();
-    $new_badge = get_post_meta($original_post_id, '_product_badge_new', true);
-    $chef_badge = get_post_meta($original_post_id, '_product_badge_chef', true);
-    $exclusive_badge = get_post_meta($original_post_id, '_product_badge_exclusive', true);
-    $beneficial_badge = get_post_meta($original_post_id, '_product_badge_beneficial', true);
-    $popular_badge = get_post_meta($original_post_id, '_product_badge_popular', true);
-    $useful_badge = get_post_meta($original_post_id, '_product_badge_useful', true);
-    $top_sales_badge = get_post_meta($original_post_id, '_product_badge_top_sales', true);
-    $spicy_badge = get_post_meta($original_post_id, '_product_badge_spicy', true);
-
-    echo '<div class="product-image-wrapper">';
-    echo '<div class="product-badges">';
-
-    if ($sale_badge) {
-        echo '<span class="badge badge-sale">' . $badges['sale'][$lang_code] . '</span>';
-    }
-    if ($new_badge) {
-        echo '<span class="badge badge-new">' . $badges['new'][$lang_code] . '</span>';
-    }
-    if ($chef_badge) {
-        echo '<span class="badge badge-chef">' . $badges['chef'][$lang_code] . '</span>';
-    }
-    if ($exclusive_badge) {
-        echo '<span class="badge badge-exclusive">' . $badges['exclusive'][$lang_code] . '</span>';
-    }
-    if ($beneficial_badge) {
-        echo '<span class="badge badge-beneficial">' . $badges['beneficial'][$lang_code] . '</span>';
-    }
-    if ($popular_badge) {
-        echo '<span class="badge badge-popular">' . $badges['popular'][$lang_code] . '</span>';
-    }
-    if ($useful_badge) {
-        echo '<span class="badge badge-useful">' . $badges['useful'][$lang_code] . '</span>';
-    }
-    if ($top_sales_badge) {
-        echo '<span class="badge badge-top-sales">' . $badges['top_sales'][$lang_code] . '</span>';
-    }
-    if ($spicy_badge) {
-        echo '<span class="badge badge-spicy">' . $badges['spicy'][$lang_code] . '</span>';
-    }
-
-    echo '</div>';
-    echo woocommerce_get_product_thumbnail();
-    echo '<h2 class="woocommerce-loop-product__title">' . get_the_title() . '</h2>';
-    echo '</div>';
-}
 
 // Add AJAX handler for getting cart count
 function get_cart_count_ajax() {
@@ -495,38 +411,6 @@ function add_content_woocommerce_before_shop_loop() {
 // Remove tabs
 function remove_all_woocommerce_tabs($tabs) {
     return array();
-}
-
-// Order steps
-function order_steps() {
-    if (is_cart()) {
-        echo '
-        <div class="order-steps">
-            <ul>
-                <li class="step step-1 active">' . __('Мій кошик') . '<span><i></i></span></li>
-                <li class="step step-2">' . __('Оформлення') . '<span><i></i></span></li>
-                <li class="step step-3">' . __('Замовлення') . '<span><i></i></span></li>
-            </ul>
-        </div>';
-    } elseif (is_checkout() && !is_order_received_page()) {
-        echo '
-        <div class="order-steps">
-            <ul>
-                <li class="step step-1">' . __('Мій кошик') . '<span><i></i></span></li>
-                <li class="step step-2 active">' . __('Оформлення') . '<span><i></i></span></li>
-                <li class="step step-3">' . __('Замовлення') . '<span><i></i></span></li>
-            </ul>
-        </div>';
-    } elseif (is_order_received_page()) {
-        echo '
-        <div class="order-steps">
-            <ul>
-                <li class="step step-1">' . __('Мій кошик') . '<span><i></i></span></li>
-                <li class="step step-2">' . __('Оформлення') . '<span><i></i></span></li>
-                <li class="step step-3 active">' . __('Замовлення') . '<span><i></i></span></li>
-            </ul>
-        </div>';
-    }
 }
 
 // Remove link in cart

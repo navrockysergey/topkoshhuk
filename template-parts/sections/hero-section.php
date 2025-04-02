@@ -1,7 +1,7 @@
 <?php
     $main_top_heading_text  = ! empty( $main_top_heading_text ) ? esc_html( $main_top_heading_text ) : get_the_title();
 ?>
-<section id="main-top">
+<section class="section section-main" id="main-top">
     <div class="rows">
         <div class="row">
             <div class="container">

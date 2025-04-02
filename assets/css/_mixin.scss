@@ -139,7 +139,7 @@
 }
 
 @mixin desktop {
-    @media (min-width: 1025px) {
+    @media (min-width: 768px) {
         @content;
     }
 }
@@ -258,19 +258,35 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 12.5px 16px;
-    gap: 12px;
+    padding: 15px;
+    gap: var(--gap_s);
     background: var(--color_primary);
-    border-radius: 8px;
+    border-radius: var(--radius);
     user-select: none;
     border: 1px solid var(--color_primary);
     color: var(--color_white);
     cursor: pointer;
     transition: all .3s ease;
+    line-height: 1;
+
+    svg {
+        line-height: 0;
+    }
 
     &:focus,
     &:hover {
         background-color: var(--color_secondary);
         color: var(--color_white);
+    }
+
+    &.button-secondary {
+        background-color: transparent;
+        border-color: var(--color_grey);
+        color: var(--color_white);
+
+        &:focus,
+        &:hover {
+            background-color: var(--color_primary);
+        }
     }
 }

@@ -5,7 +5,7 @@ if ( empty( $brans_video_products_terms ) ) {
 }
 
 ?>
-<section class="brands-video-previews">
+<section class="section brands-video-previews">
     <div class="container">
         <?php
         foreach( $brans_video_products_terms as $brand ) :
@@ -34,17 +34,19 @@ if ( empty( $brans_video_products_terms ) ) {
                        >
                 </video>
 
-                <?php
-                while( $products->have_posts() ):
-                    $products->the_post();
+                <div class="products">
+                    <?php
+                    while( $products->have_posts() ):
+                        $products->the_post();
 
-                    $product = wc_get_product( get_the_ID() );
+                        $product = wc_get_product( get_the_ID() );
 
-                    if ( $product ) {
-                        wc_get_template_part( 'content', 'product' );
-                    }
-                endwhile;
-                ?>
+                        if ( $product ) {
+                            wc_get_template_part( 'content', 'product' );
+                        }
+                    endwhile;
+                    ?>
+                </div>
             </div>
         <?php
             wp_reset_postdata();

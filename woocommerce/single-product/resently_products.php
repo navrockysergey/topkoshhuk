@@ -19,34 +19,35 @@ $viewed_products = array_reverse( array_map( 'absint', $viewed ) );
 
 if ( $viewed_products ) : ?>
 
-	<section class="resently products">
-		<?php
-		$heading = apply_filters( 'woocommerce_product_upsells_products_heading', __( 'ВИ ПЕРЕГЛЯДАЛИ', 'woocommerce' ) );
+	<section class="section-resently">
+		<div class="container">
+			<?php
+			$heading = apply_filters( 'woocommerce_product_upsells_products_heading', __( 'Ви переглядали', 'woocommerce' ) );
 
-		if ( $heading ) :
-			?>
-			<h2><?php echo esc_html( $heading ); ?></h2>
-		<?php endif; ?>
-
-		<?php woocommerce_product_loop_start(); ?>
-
-			<?php foreach ( $viewed_products as $viewed_product ) : ?>
-
-				<?php
-				if ( 0 == $viewed_product || $current_post_id == $viewed_product ) {
-					continue;
-				}
-				$post_object = get_post( $viewed_product );
-
-				setup_postdata( $GLOBALS['post'] = $post_object ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
-
-				wc_get_template_part( 'content', 'product' );
+			if ( $heading ) :
 				?>
+				<h2><?php echo esc_html( $heading ); ?></h2>
+			<?php endif; ?>
 
-			<?php endforeach; ?>
+			<?php woocommerce_product_loop_start(); ?>
 
-		<?php woocommerce_product_loop_end(); ?>
+				<?php foreach ( $viewed_products as $viewed_product ) : ?>
 
+					<?php
+					if ( 0 == $viewed_product || $current_post_id == $viewed_product ) {
+						continue;
+					}
+					$post_object = get_post( $viewed_product );
+
+					setup_postdata( $GLOBALS['post'] = $post_object ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
+
+					wc_get_template_part( 'content', 'product' );
+					?>
+
+				<?php endforeach; ?>
+
+			<?php woocommerce_product_loop_end(); ?>
+		</div>
 	</section>
 
 	<?php

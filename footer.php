@@ -1,5 +1,6 @@
 	<?php
 	$opening_hours = get_theme_mod('opening_hours');
+	$copyright = get_theme_mod('copyright', '');
 	?>
 
 	<footer class="footer">
@@ -19,12 +20,19 @@
 					</div>
 
 					<div class="footer-social">
-						<?php get_template_part( 'template-parts/blocks/block', 'phone' ); ?>
+						<?php get_template_part( 'template-parts/blocks/block', 'social-links' ); ?>
 					</div>
+
+					<?php if ($opening_hours) : ?>
+						<div class="footer-copyright">
+							<?php echo do_shortcode(nl2br(esc_html($copyright))); ?>
+						</div>
+					<?php endif; ?>
 				</div>
 
 				<div class="col col-2 footer-menu-container">
 					<div class="footer-menu">
+						<div class="label"><?php _e('Продукція')?></div>
 						<?php
 							wp_nav_menu(
 								array(
@@ -34,6 +42,7 @@
 						?>
 					</div>
 					<div class="footer-menu">
+						<div class="label"><?php _e('Компанія')?></div>
 						<?php
 							wp_nav_menu(
 								array(
@@ -43,6 +52,7 @@
 						?>
 					</div>
 					<div class="footer-menu">
+						<div class="label"><?php _e('Інформація')?></div>
 						<?php
 							wp_nav_menu(
 								array(
