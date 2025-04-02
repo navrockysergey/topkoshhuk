@@ -129,46 +129,6 @@ function generate_photoswipe_lightbox_script($gallery_selector, $item_selector) 
     return ob_get_clean();
 }
 
-// Wrap blocks in section
-
-function wrap_blocks_in_section($block_content, $block) {
-
-    if (empty($block_content)) {
-        return $block_content;
-    }
-    
-    if (empty($block['blockName'])) {
-        return $block_content;
-    }
-    
-    $excluded_blocks = array(
-        'core/columns',
-        'core/column',
-        'core/block',
-        'core/widget-area',
-    );
-    
-    if (in_array($block['blockName'], $excluded_blocks)) {
-        return $block_content;
-    }
-    
-    $section_class = 'section-' . str_replace('/', '-', $block['blockName']);
-    
-    $wrapped_block = sprintf(
-        '<section class="section %s">
-            <div class="container">
-                %s
-            </div>
-        </section>',
-        esc_attr($section_class),
-        $block_content
-    );
-    
-    return $wrapped_block;
-}
-
-add_filter('render_block', 'wrap_blocks_in_section', 10, 2);
-
 function get_custom_excerpt( $post_id, $excerpt_length = 200 ) {
     $post = get_post( $post_id );
 

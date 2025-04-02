@@ -1,11 +1,5 @@
 	<?php
-	$current_language = apply_filters('wpml_current_language', NULL);
-
-	if ($current_language === 'uk') {
-		$opening_hours = get_theme_mod('opening_hours_uk', '');
-	} else {
-		$opening_hours = get_theme_mod('opening_hours_ru', '');
-	}
+	$opening_hours = get_theme_mod('opening_hours');
 	?>
 
 	<footer class="footer">
@@ -27,7 +21,6 @@
 			</div>
 
 			<div class="footer-phone">
-				<i class="fa fa-phone" aria-hidden="true"></i>
 				<div class="items">
 					<?php if ( get_theme_mod( 'phone' ) ) : ?>
 						<div class="footer-phone-link">
@@ -46,20 +39,6 @@
 					<?php if ( get_theme_mod( 'phone_2' ) ) : ?>
 						<div class="footer-phone-link">
 							<a href="tel:<?php echo preg_replace('/\D/', '', get_theme_mod( 'phone_2' ) ); ?>">
-								<span>
-									<?php 
-										$phone = esc_html( get_theme_mod( 'phone' ) );
-										$phone = preg_replace('/\(/', '<span>(', $phone, 1);
-										$phone = preg_replace('/\)/', ')</span>', $phone, 1);
-										echo $phone;
-									?>
-								</span>
-							</a>
-						</div>
-					<?php endif; ?>
-					<?php if ( get_theme_mod( 'phone_3' ) ) : ?>
-						<div class="footer-phone-link">
-							<a href="tel:<?php echo preg_replace('/\D/', '', get_theme_mod( 'phone_3' ) ); ?>">
 								<span>
 									<?php 
 										$phone = esc_html( get_theme_mod( 'phone' ) );
@@ -106,22 +85,6 @@
 	</footer>
 
 	<a class="to-top" href="#page"></a>
-
-	<a class="call-back mobile-call-back" href="#call-back">
-		<span><?php echo __('CallBack'); ?></span>
-	</a>
-
-	<?php if (function_exists('WC') && !is_cart()) : 
-		$cart_count = WC()->cart->get_cart_contents_count(); 
-		$cart_url = wc_get_cart_url(); 
-		?>
-		<a class="mobile-cart" href="<?php echo esc_url($cart_url); ?>">
-			<span>
-				<span class="cart-icon"><span class="cart-count"><?php echo esc_html($cart_count); ?></span></span>
-				<span class="cart-label"><?php echo __('Cart', 'woocommerce'); ?></span>
-			</span>
-		</a>
-	<?php endif; ?>
 
 </div>
 

@@ -1403,7 +1403,7 @@
   }
 }
 
-/* .single-product .product_meta, */
+.single-product .product_meta,
 .single-product table.variations {
   display: none !important;
 }

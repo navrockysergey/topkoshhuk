@@ -386,31 +386,31 @@ function custom_product_image_title_wrapper() {
 
     $badges = array(
         'sale' => array(
-            'en' => __('Sale', 'foodmiles'),
+            'en' => __('Sale', 'tk'),
         ),
         'new' => array(
-            'en' => __('New', 'foodmiles'),
+            'en' => __('New', 'tk'),
         ),
         'chef' => array(
-            'en' => __('From the Chef', 'foodmiles'),
+            'en' => __('From the Chef', 'tk'),
         ),
         'exclusive' => array(
-            'en' => __('Exclusive', 'foodmiles'),
+            'en' => __('Exclusive', 'tk'),
         ),
         'beneficial' => array(
-            'en' => __('Beneficial', 'foodmiles'),
+            'en' => __('Beneficial', 'tk'),
         ),
         'popular' => array(
-            'en' => __('Popular', 'foodmiles'),
+            'en' => __('Popular', 'tk'),
         ),
         'useful' => array(
-            'en' => __('Useful', 'foodmiles'),
+            'en' => __('Useful', 'tk'),
         ),
         'top_sales' => array(
-            'en' => __('Top Sales', 'foodmiles'),
+            'en' => __('Top Sales', 'tk'),
         ),
         'spicy' => array(
-            'en' => __('Spicy', 'foodmiles'),
+            'en' => __('Spicy', 'tk'),
         ),
     );    
 

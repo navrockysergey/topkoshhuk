@@ -59,26 +59,14 @@ function baza_customize_register( $wp_customize ) {
 
 	// Opening hours
 
-	$wp_customize->add_setting('opening_hours_uk', array(
+	$wp_customize->add_setting('opening_hours', array(
         'default'           => '',
         'sanitize_callback' => 'sanitize_textarea_field',
         'transport'         => 'refresh',
     ));
 
-    $wp_customize->add_control('opening_hours_uk', array(
-        'label'   => __('Opening hours UK'),
-        'section' => 'site_info',
-        'type'    => 'textarea',
-    ));
-
-    $wp_customize->add_setting('opening_hours_ru', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_textarea_field',
-        'transport'         => 'refresh',
-    ));
-
-    $wp_customize->add_control('opening_hours_ru', array(
-        'label'   => __('Opening hours RU'),
+    $wp_customize->add_control('opening_hours', array(
+        'label'   => __('Opening hours'),
         'section' => 'site_info',
         'type'    => 'textarea',
     ));
@@ -109,19 +97,6 @@ function baza_customize_register( $wp_customize ) {
         'type'    => 'text',
     ));
 
-    // Add Phone setting and control 3
-    $wp_customize->add_setting('phone_3', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'refresh',
-    ));
-
-    $wp_customize->add_control('phone_3', array(
-        'label'   => __('Phone'),
-        'section' => 'site_info',
-        'type'    => 'text',
-    ));
-
     // Add Email setting and control
     $wp_customize->add_setting('email', array(
         'default'           => '',
@@ -133,6 +108,71 @@ function baza_customize_register( $wp_customize ) {
         'label'   => __('Email'),
         'section' => 'site_info',
         'type'    => 'email',
+    ));
+
+    // Facebook setting and control
+    $wp_customize->add_setting('facebook', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('facebook', array(
+        'label'   => __('Facebook'),
+        'section' => 'site_info',
+        'type'    => 'url',
+    ));
+
+    // Instagram setting and control
+    $wp_customize->add_setting('instagram', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('instagram', array(
+        'label'   => __('Instagram'),
+        'section' => 'site_info',
+        'type'    => 'url',
+    ));
+
+    // TikTok setting and control
+    $wp_customize->add_setting('tiktok', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('tiktok', array(
+        'label'   => __('TikTok'),
+        'section' => 'site_info',
+        'type'    => 'url',
+    ));
+
+    // YouTube setting and control
+    $wp_customize->add_setting('youtube', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('youtube', array(
+        'label'   => __('YouTube'),
+        'section' => 'site_info',
+        'type'    => 'url',
+    ));
+
+    // Phone 2 setting and control
+    $wp_customize->add_setting('phone_2', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('phone_2', array(
+        'label'   => __('Phone'),
+        'section' => 'site_info',
+        'type'    => 'text',
     ));
 
 	// Add Copyright
@@ -147,48 +187,6 @@ function baza_customize_register( $wp_customize ) {
         'section' => 'site_info',
         'type'    => 'textarea',
     ));
-
-	// Add social links section
-	$wp_customize->add_section('social_links', array(
-		'title'    => __('Social Links'),
-		'priority' => 31,
-	));
-
-	$social_links_settings = array(
-		'instagram' => array(
-			'label'   => __('Instagram Link'),
-			'type'    => 'url',
-		),
-		'linkedin' => array(
-			'label'   => __('LinkedIn Link'),
-			'type'    => 'url',
-		),
-		'facebook' => array(
-			'label'   => __('Facebook Link'),
-			'type'    => 'url',
-		),
-		'youtube' => array(
-			'label'   => __('YouTube Link'),
-			'type'    => 'url',
-		),
-	);
-
-	foreach ($social_links_settings as $setting_key => $setting_args) {
-
-		// Add setting
-		$wp_customize->add_setting($setting_key . '_link', array(
-			'default'           => '',
-			'sanitize_callback' => 'esc_url_raw',
-			'transport'         => 'refresh',
-		));
-
-		// Add control
-		$wp_customize->add_control($setting_key . '_link', array(
-			'label'   => $setting_args['label'],
-			'section' => 'site_info',
-			'type'    => $setting_args['type'],
-		));
-	}
 
 }
 add_action( 'customize_register', 'baza_customize_register' );

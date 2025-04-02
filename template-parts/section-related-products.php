@@ -6,8 +6,8 @@ if (is_product()) {
     if (!empty($related_products)) { ?>
         <section class="section section-related-products">
             <div class="section-title">
-                <?php echo __('We recommend you try it', 'foodmiles'); ?>
-                <span><?php echo __('You may also like', 'foodmiles'); ?></span>
+                <?php echo __('We recommend you try it', 'tk'); ?>
+                <span><?php echo __('You may also like', 'tk'); ?></span>
             </div>
             <div class="owl-carousel" id="carousel-related-products">
                 <?php foreach ($related_products as $related_product_id) : 

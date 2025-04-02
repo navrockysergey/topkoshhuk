@@ -1,10 +1,1 @@
 /*# sourceMappingURL=admin.css.map */
-.options_group ._wholesale_prices_field .wholesale-prices-container label {
-    float: none;
-    padding: 0;
-    margin: 0 0.5rem 0 1rem;
-}
-.options_group ._wholesale_prices_field .wholesale-prices-container input[type=text] {
-    width: 25% !important;
-    float: none;
-}

@@ -17,8 +17,8 @@ if ($query->have_posts()) : ?>
 
     <section class="section section-popular">
         <div class="section-title">
-            <?php echo __('Popular foods', 'foodmiles'); ?>
-            <span><?php echo __('You may also like', 'foodmiles'); ?></span>
+            <?php echo __('Popular foods', 'tk'); ?>
+            <span><?php echo __('You may also like', 'tk'); ?></span>
         </div>
         <div class="owl-carousel" id="carousel-popular">
             <?php while ($query->have_posts()) :

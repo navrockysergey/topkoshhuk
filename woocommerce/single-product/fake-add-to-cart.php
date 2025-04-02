@@ -9,7 +9,7 @@ if ( $val > 0 && $in_box > 0 && $val >= $in_box ) {
 <div class="qty-inputs">
     <button class="set-quantity manus">-</button>
 
-    <input type="text" class="fake-qty" value="<?php echo $val?>">
+    <input type="text" class="fake-qty" min="1" value="<?php echo $val?>">
 
     <button class="set-quantity plus">+</button>
 </div>

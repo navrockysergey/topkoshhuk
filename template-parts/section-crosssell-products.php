@@ -21,8 +21,8 @@ if (is_cart()) {
         if ($query->have_posts()) { ?>
             <section class="section section-crosssells">
                 <div class="section-title">
-                    <?php echo __('Popular foods', 'foodmiles'); ?>
-                    <span><?php echo __('You may also like', 'foodmiles'); ?></span>
+                    <?php echo __('Popular foods', 'tk'); ?>
+                    <span><?php echo __('You may also like', 'tk'); ?></span>
                 </div>
                 <div class="owl-carousel" id="carousel-crosssell">
                     <?php while ($query->have_posts()) : $query->the_post(); 
