@@ -1,7 +1,21 @@
-	<?php
+<?php
 	$opening_hours = get_theme_mod('opening_hours');
 	$copyright = get_theme_mod('copyright', '');
-	?>
+?>
+
+	<section class="section section-subscribe">
+		<div class="container">
+			<div class="section-title">
+				<?php _e('Підпишіться на розсилку'); ?>
+			</div>
+
+			<?php echo do_shortcode( '[contact-form-7 id="6424b04"]' ); ?>
+
+			<div class="text">
+				<?php _e('Лише корисна інформація. Без нав’язливого спаму.'); ?>
+			</div>
+		</div>
+	</section>
 
 	<footer class="footer">
 		<div class="container">

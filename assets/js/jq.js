@@ -127,7 +127,34 @@ jQuery(document).ready(function ($) {
 			item.addClass('active');
 			text.slideToggle(300);
 		}
-	});	
+	});
+
+	$('.show-more').each(function() {
+		const $container = $(this);
+		const buttonText = $container.data('button-text');
+		const rowCount = parseInt($container.data('row'));
+		
+		$container.parent().addClass('has-show-more');
+		
+		const $allElements = $container.children();
+		
+		if ($allElements.length > rowCount) {
+			const $hiddenContainer = $('<div class="hidden-content" style="display:none;"></div>');
+			
+			$allElements.slice(rowCount).detach().appendTo($hiddenContainer);
+			$container.append($hiddenContainer);
+			const $showMoreBtn = $('<div class="show-more-button"><a href="javascript:void(0);">' + buttonText + '</a></div>');
+
+			$container.after($showMoreBtn);
+			
+			$showMoreBtn.on('click', function(e) {
+				e.preventDefault();
+				$hiddenContainer.show();
+				$container.parent().removeClass('has-show-more');
+				$(this).remove();
+			});
+		}
+	});
 
 });
 

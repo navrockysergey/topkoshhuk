@@ -105,7 +105,7 @@ function custom_posts_gutenberg_blocks() {
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
 
-            include_once __THEME_DIR__ . '/template-parts/sections/simple-products-prewiev.php';
+            include_once __THEME_DIR__ . '/template-parts/sections/simple-products-preview.php';
         } );
 
     // ==== Categories colection
@@ -152,7 +152,7 @@ function custom_posts_gutenberg_blocks() {
         ->set_icon( 'video-alt3' )
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
-            include_once __THEME_DIR__ . '/template-parts/sections/brans_media_products.php';
+            include_once __THEME_DIR__ . '/template-parts/sections/brans-media-products.php';
         } );
 
     // Latest articles
@@ -177,5 +177,19 @@ function custom_posts_gutenberg_blocks() {
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
             include_once __THEME_DIR__ . '/template-parts/sections/latest-articles-section.php';
+        } );
+
+    // Text
+    Block::make( 'seo_text', __( 'SEO Text' ) )
+        ->add_fields( array(
+            Field::make( 'text', 'text_row', __( 'Visible rows' ) )->set_width( 20 ),
+            Field::make( 'rich_text', 'seo_text', __( 'SEO Text' ) )->set_width( 100 ),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'admin-post' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            extract( $fields );
+            include_once __THEME_DIR__ . '/template-parts/sections/text-section.php';
         } );
 }

@@ -238,27 +238,45 @@
 }
 
 @mixin input() {
-    font-size: 20px;
-    font-weight: 200;
+    font-size: var(--font_size_p1);
+    font-weight: 400;
     color: var(--color_black);
-    background-color: transparent;
-    border: 0;
-    border-radius: 0;
-    border-bottom: 1px solid var(--color_black);
+    background-color: var(--color_white);
+    border-radius: var(--radius);
+    border: 1px solid var(--color_white);
     line-height: 1;
-    height: 50px;
+    height: var(--item_size);
     width: 100%;
     display: block;
     font-family: var(--font);
-    padding: 0;
+    padding: 16px;
+    transition: all .5s ease;
+
+    &::placeholder {
+        color: var(--color_black);
+        font-family: var(--font);
+        font-weight: 400;
+    }
+}
+
+@mixin button-secondary {
+    background-color: var(--color_secondary);
+    border-color: var(--color_grey);
+    color: var(--color_white);
+
+    &:focus,
+    &:hover {
+        border-color: var(--color_primary);
+        background-color: var(--color_primary);
+    }
 }
 
 @mixin button() {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 15px;
+    padding: var(--padding_s);
     gap: var(--gap_s);
     background: var(--color_primary);
     border-radius: var(--radius);
@@ -271,6 +289,8 @@
 
     svg {
         line-height: 0;
+        position: relative;
+        margin: -1px 0;
     }
 
     &:focus,
@@ -280,13 +300,6 @@
     }
 
     &.button-secondary {
-        background-color: transparent;
-        border-color: var(--color_grey);
-        color: var(--color_white);
-
-        &:focus,
-        &:hover {
-            background-color: var(--color_primary);
-        }
+        @include button-secondary;
     }
 }

@@ -22,7 +22,28 @@ jQuery(document).ready(function ($) {
         removeNbsp();
     });
 
-	let carouselCategories = $('#menu-categories');
+	let carouselBestsselers = $('#bestsellers');
+
+	carouselBestsselers.owlCarousel({
+		items: 1,
+		navSpeed: sliderSpeed,
+		autoplaySpeed: sliderSpeed,
+		nav: true,
+		autoplay: true,
+		autoplayTimeout: 6000,
+		margin: 0,
+		autoplayHoverPause: true,
+		dots: false,
+		loop: true,
+		navText: [nextPrevButton, nextPrevButton],
+		mouseDrag: true,
+		touchDrag: true,
+		dragEndSpeed: sliderSpeed,
+		dotsSpeed: sliderSpeed,
+		autoHeight: true
+	});
+
+	let carouselCategories = $('#main-category-slider');
 
 	carouselCategories.owlCarousel({
 		items: 4,
@@ -34,7 +55,7 @@ jQuery(document).ready(function ($) {
 		margin: 24,
 		autoplayHoverPause: true,
 		dots: false,
-		loop: (carouselCategories.find('.product').length > 4),
+		loop: (carouselCategories.find('.item').length > 5),
 		navText: [nextPrevButton, nextPrevButton],
 		mouseDrag: true,
 		touchDrag: true,
@@ -45,19 +66,19 @@ jQuery(document).ready(function ($) {
 		responsive: {
 			0: {
 				items: 1,
-				loop: (carouselCategories.find('.product').length > 1),
+				loop: (carouselCategories.find('.item').length > 1),
 			},
 			768: {
 				items: 1,
-				loop: (carouselCategories.find('.product').length > 1),
+				loop: (carouselCategories.find('.item').length > 1),
 			},
 			1024: {
 				items: 3,
-				loop: (carouselCategories.find('.product').length > 3),
+				loop: (carouselCategories.find('.item').length > 3),
 			},
 			1200: {
 				items: 5,
-				loop: (carouselCategories.find('.product').length > 5),
+				loop: (carouselCategories.find('.item').length > 5),
 			}
 		}
 	});

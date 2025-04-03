@@ -33,7 +33,7 @@ if ( ! $posts->have_posts() ) {
             </div>
         </div>
 
-        <div class="items-button">
+        <div class="section-footer">
             <a href="<?php echo esc_url( $latest_article_section_button_href )?>" class="button button-secondary">
                 <span><?php echo esc_html( $latest_article_section_button_text )?></span>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

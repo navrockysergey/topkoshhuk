@@ -1,3 +1,103 @@
-// .ud-whitespace-warning {
-//     display: none !important;
-// }
+
+:root {
+    --cubic_bezier: cubic-bezier(0.1, 0.6, 0, 1);
+    --color_primary: #EF3E33;
+    --color_secondary: #2F3138;
+    --color_grey: #3E3F43;
+    --radius: 8px;
+    --padding: 24px;
+    --gap: 24px;
+    --margin: 18px;
+}
+
+.block-editor {
+
+    [data-type*=carbon-fields] {
+        border: 1px solid rgba(0, 0, 0, .2);
+        padding: var(--padding);
+        border-radius: var(--radius);
+    
+        .cf-separator {
+            padding: 0;
+            color: var(--color_primary);
+        }
+
+        .cf-field__body {
+            h3 {
+                padding-left: 8px;
+            }
+        }
+    
+        .cf-radio__list,
+        .cf-set__list {
+            display: flex;
+            gap: var(--gap);
+            padding: 0;
+            margin-top: var(--margin);
+        }
+
+        .cf-set__list-item,
+        .cf-radio__list-item {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-left: 50px;
+            cursor: pointer;
+            line-height: 1.2;
+        
+            input[type="checkbox"] {
+                display: none;
+        
+                +span,
+                +label {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    user-select: none;
+                    line-height: 1.1;
+                    min-height: 25px;
+                    text-align: left;
+                    margin: 0;
+        
+                    &:before {
+                        content: '';
+                        width: 36px;
+                        min-width: 36px;
+                        border-radius: var(--radius);
+                        height: 20px;
+                        display: block;
+                        border: 1px solid var(--color_grey);
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                    }
+        
+                    &:after {
+                        content: '';
+                        width: 18px;
+                        min-width: 18px;
+                        border-radius: var(--radius);
+                        height: 20px;
+                        border: 1px solid var(--color_grey);
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        transition: all .3s var(--cubic_bezier);
+                    }
+                }
+        
+                &:checked {
+        
+                    +span,
+                    +label {
+
+                        &:after {
+                            background-color: var(--color_primary);
+                            left: 18px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

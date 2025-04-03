@@ -25,7 +25,7 @@ if ( ! $products->have_posts() ) {
     <div class="container">
         <div class="section-title">
             <?php
-            echo esc_html( $simple_previews_title )
+                echo esc_html( $simple_previews_title )
             ?>
         </div>
 

@@ -5,18 +5,16 @@ get_header();
 <main id="primary" class="site-main">
 
 	<?php 
-		get_template_part( 'template-parts/section', 'category' ); 
+		//get_template_part( 'template-parts/section', 'category' ); 
 	?>
 
-	<?php if ( ! is_home() ) : ?>
-		<div class="container breadcrumb-container">
-			<?php
-				if ( function_exists( 'yoast_breadcrumb' ) ) {
-					yoast_breadcrumb( '<div id="breadcrumbs">', '</div>' );
-				}
-			?>
-		</div>
-	<?php endif; ?>
+	<div class="container breadcrumb-container">
+		<?php
+			if ( function_exists( 'yoast_breadcrumb' ) ) {
+				yoast_breadcrumb( '<div id="breadcrumbs">', '</div>' );
+			}
+		?>
+	</div>
 
 	<section class="section section-search">
 		<div class="container">
