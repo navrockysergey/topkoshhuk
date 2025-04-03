@@ -27,8 +27,7 @@ if ( ! empty( $categories ) ) :
                         <?php if ( $image_url ) : ?>
                             <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $image_alt ); ?>">
                         <?php endif; ?>
-
-                        <span>
+                        <span class="menu-category-name">
                             <?php echo esc_html( $category->name ); ?>
                         </span>
                     </a>

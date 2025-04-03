@@ -1,6 +1,7 @@
 jQuery(document).ready(function ($) {
 
     let sliderSpeed = 1000;
+	let nextPrevButton = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.8 11.6C17.0666 11.8 17.0666 12.2 16.8 12.4L9.8 17.8991C9.47038 18.1463 9 17.9111 9 17.4991L9 6.50091C9 6.08888 9.47038 5.85369 9.8 6.10091L16.8 11.6Z" fill="currentColor"></path></svg>';
     
     if ($('.category-header select').length > 0 && $.fn.select2) {
         $('.category-header select').select2({
@@ -30,11 +31,11 @@ jQuery(document).ready(function ($) {
 		nav: true,
 		autoplay: false,
 		autoplayTimeout: 6000,
-		margin: 30,
+		margin: 24,
 		autoplayHoverPause: true,
-		dots: true,
+		dots: false,
 		loop: (carouselCategories.find('.product').length > 4),
-		navText: ['', ''],
+		navText: [nextPrevButton, nextPrevButton],
 		mouseDrag: true,
 		touchDrag: true,
 		dragEndSpeed: sliderSpeed,
@@ -44,28 +45,18 @@ jQuery(document).ready(function ($) {
 		responsive: {
 			0: {
 				items: 1,
-				nav: false,
-				margin: 0,
-				autoplay: false,
 				loop: (carouselCategories.find('.product').length > 1),
 			},
 			768: {
-				items: 2,
-				autoplay: false,
-				nav: true,
-				dots: true,
+				items: 1,
 				loop: (carouselCategories.find('.product').length > 1),
 			},
 			1024: {
-				items: 2,
-				nav: true,
-				dots: true,
+				items: 3,
 				loop: (carouselCategories.find('.product').length > 3),
 			},
 			1200: {
-				items: 3,
-				nav: true,
-				dots: true,
+				items: 5,
 				loop: (carouselCategories.find('.product').length > 5),
 			}
 		}
@@ -85,7 +76,7 @@ jQuery(document).ready(function ($) {
 			margin: 0,
 			dots: false,
 			loop: (productCount > 3),
-			navText: ['', ''],
+			navText: [nextPrevButton, nextPrevButton],
 			mouseDrag: true,
 			touchDrag: true,
 			dragEndSpeed: sliderSpeed,
