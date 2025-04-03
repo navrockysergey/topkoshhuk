@@ -1,6 +1,6 @@
 <?php
 
-if ( empty( $brans_video_products_terms ) ) {
+if ( empty( $brans_media_products_terms ) ) {
     return;
 }
 
@@ -8,11 +8,11 @@ if ( empty( $brans_video_products_terms ) ) {
 <section class="section brands-video-previews">
     <div class="container">
         <?php
-        foreach( $brans_video_products_terms as $brand ) :
+        foreach( $brans_media_products_terms as $brand ) :
             $brand_id = $brand['id'];
-            $brand_media_type_preview    = carbon_get_term_meta( $brand_id, 'brand_video_type' );
-            $brand_media_preview_file_id = carbon_get_term_meta( $brand_id, 'brand_video_file' );
-            $brand_media_preview_src     = 'file' == $brand_media_type_preview ? get_attachment_link( $brand_media_preview_file_id ) : carbon_get_term_meta( $brand_id, 'brand_video_link' ) ;
+            $brand_thumbnail_id         = get_term_meta( $brand_id, 'thumbnail_id', true );
+            $brand_media_preview_src    = get_attachment_link( $brand_thumbnail_id );
+            $term_link                  = get_term_link( $brand_id );
 
             if ( ! $brand_media_preview_src ) {
                 continue;
@@ -27,14 +27,12 @@ if ( empty( $brans_video_products_terms ) ) {
             $products = new WP_Query( $prod_args );
         ?>
             <div class="brand-products">
-                <video controls
-                       src="<?php echo $brand_media_preview_src?>"
-                       class="video-preview-item"
-                       width="300"
-                       >
-                </video>
-
                 <div class="products">
+                    <li class="product">
+                        <a href="<?php echo $term_link?>">
+                            <img src="<?php echo $brand_media_preview_src?>" alt="Brand">
+                        </a>
+                    </li>
                     <?php
                     while( $products->have_posts() ):
                         $products->the_post();
