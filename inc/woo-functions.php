@@ -45,7 +45,7 @@ add_action( 'woocommerce_account_content'                       , 'add_h1_to_my_
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
 
-add_filter( 'woocommerce_account_menu_items'                    , 'remove_downloads_from_my_account_menu' );
+// add_filter( 'woocommerce_account_menu_items'                    , 'remove_downloads_from_my_account_menu' );
 add_filter( 'woocommerce_account_menu_items'                    , 'custom_account_menu_items' );
 
 add_action( 'woocommerce_proceed_to_checkout'                   , 'replace_proceed_to_checkout', 10 );
@@ -486,14 +486,18 @@ function remove_order_details_on_order_received() {
 }
 
 // Remove download section from woocommerce my account
-function remove_downloads_from_my_account_menu($items) {
+// function remove_downloads_from_my_account_menu($items) {
+//     if (isset($items['downloads'])) {
+//         unset($items['downloads']);
+//     }
+//     return $items;
+// }
+
+function custom_account_menu_items( $items ) {
     if (isset($items['downloads'])) {
         unset($items['downloads']);
     }
-    return $items;
-}
 
-function custom_account_menu_items( $items ) {
     if ( isset( $items['dashboard'] ) ) {
         unset( $items['dashboard'] );
     }
@@ -517,6 +521,11 @@ function custom_account_menu_items( $items ) {
     $items['customer-logout'] = __('Вийти');
 
     return $items;
+}
+
+add_action( 'init', 'custom_account_endpoints', 25 );
+function custom_account_endpoints() {
+    add_rewrite_endpoint( 'account-data', EP_PAGES );
 }
 
 // Check minimum order amount on checkout page

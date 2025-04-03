@@ -133,17 +133,17 @@ function custom_posts_gutenberg_blocks() {
         } );
 
     // ==== Brands video + products block
-    Block::make( 'brands_products_preview', __( 'Brands video && products preview block' ) )
+    Block::make( 'brands_products_preview', __( 'Brands && products preview block' ) )
         ->add_fields( array(
-            Field::make( 'separator', 'brans_video_products_sep', __( 'Brands video && products preview block' ) ),
-            Field::make( 'association', 'brans_video_products_terms', __( 'Brand' ) )
+            Field::make( 'separator', 'brans_media_products_sep', __( 'Brands && products preview block' ) ),
+            Field::make( 'association', 'brans_media_products_terms', __( 'Brands' ) )
             ->set_types( array(
                 array(
                     'type'     => 'term',
                     'taxonomy' => 'product_brand',
                 )
             ) ),
-            Field::make( 'text', 'brans_video_products_per_page', __( 'Products count in sungle brand' ) )
+            Field::make( 'text', 'brans_media_products_per_page', __( 'Products count in sungle brand' ) )
                 ->set_default_value( '2' )
                 ->set_attribute( 'type', 'number' ),
         ) )
@@ -152,7 +152,7 @@ function custom_posts_gutenberg_blocks() {
         ->set_icon( 'video-alt3' )
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
-            include_once __THEME_DIR__ . '/template-parts/sections/brans_video_products.php';
+            include_once __THEME_DIR__ . '/template-parts/sections/brans_media_products.php';
         } );
 
     // Latest articles
