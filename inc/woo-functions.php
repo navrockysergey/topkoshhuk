@@ -18,6 +18,10 @@ add_action( 'wp_loaded'                                         , 'woocommerce_s
 add_filter( 'get_wholesale_prices'                              , 'get_wholesale_prices' );
 
 // add_action( 'init'                                              , 'create_ingredients_taxonomy' );
+// add_filter( 'woocommerce_cart_needs_payment', 'woocommerce_disabled_payment' );
+// function woocommerce_disabled_payment() {
+// 	return false;
+// }
 add_action( 'admin_head'                                        , 'add_woocommerce_category_description_editor' );
 add_action( 'woocommerce_product_options_shipping'              , 'add_custom_shipping_fields' );
 add_action( 'woocommerce_product_options_general_product_data'  , 'add_wholesale_price_fields');
@@ -29,6 +33,10 @@ add_action( 'get_cart_product_count'                            , 'get_cart_prod
 add_action( 'woocommerce_before_calculate_totals'               , 'dinamyc_set_price', 10, 1 );
 add_action( 'template_redirect'                                 , 'saved_resently_product', 20 );
 add_filter( 'woo_get_brands'                                    , 'woo_get_brands', 1 );
+add_action( 'woocommerce_shipping_init'                         , 'init_ukrposhta_shipping_method' );
+add_filter( 'woocommerce_shipping_methods'                      , 'add_ukrposhta_shipping_method' );
+add_action( 'init'                                              , 'custom_account_endpoints', 25 );
+add_action( 'woocommerce_account_account-data_endpoint'         , 'account_person_data', 25 );
 
 // ===================================================================================================
 remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_template_loop_add_to_cart', 10 );
@@ -381,6 +389,62 @@ function woo_get_brands() {
     ) );
 }
 
+function init_ukrposhta_shipping_method() {
+    if ( ! class_exists( 'WC_Shipping_Ukrposhta' ) ) {
+        class WC_Shipping_Ukrposhta extends WC_Shipping_Method {
+            public function __construct( $instance_id = 0 ) {
+                $this->id                 = 'ukrposhta';
+                $this->instance_id        = absint( $instance_id );
+                $this->method_title       = __( 'Укрпошта', 'woocommerce' );
+                $this->method_description = __( 'Доставка Укрпоштою', 'woocommerce' );
+                $this->supports           = array(
+                    'shipping-zones',
+                    'instance-settings',
+                    'instance-settings-modal',
+                );
+                $this->init_form_fields();
+                $this->init_settings();
+
+                add_action( 'woocommerce_update_options_shipping_' . $this->id, array( $this, 'process_admin_options' ) );
+            }
+
+            public function init_form_fields() {
+                $this->instance_form_fields = array(
+                    'title' => array(
+                        'title'       => __( 'Название', 'woocommerce' ),
+                        'type'        => 'text',
+                        'description' => __( 'Название метода доставки, отображаемое на странице оформления заказа.', 'woocommerce' ),
+                        'default'     => __( 'Укрпошта', 'woocommerce' ),
+                    ),
+                    'cost' => array(
+                        'title'       => __( 'Стоимость', 'woocommerce' ),
+                        'type'        => 'price',
+                        'description' => __( 'Стоимость доставки.', 'woocommerce' ),
+                        'default'     => '0',
+                    ),
+                );
+            }
+
+            public function calculate_shipping( $package = array() ) {
+                $cost = $this->get_option( 'cost' );
+                $this->add_rate(
+                    array(
+                        'id'       => $this->id,
+                        'label'    => $this->get_option( 'title' ),
+                        'cost'     => $cost,
+                        'calc_tax' => 'per_item',
+                    )
+                );
+            }
+        }
+    }
+}
+
+function add_ukrposhta_shipping_method( $methods ) {
+    $methods['ukrposhta'] = 'WC_Shipping_Ukrposhta';
+    return $methods;
+}
+
 // ===============================================================
 
 // Add AJAX handler for getting cart count
@@ -523,9 +587,14 @@ function custom_account_menu_items( $items ) {
     return $items;
 }
 
-add_action( 'init', 'custom_account_endpoints', 25 );
 function custom_account_endpoints() {
     add_rewrite_endpoint( 'account-data', EP_PAGES );
+}
+
+function account_person_data() {
+ 
+	echo 'Accout Data';
+ 
 }
 
 // Check minimum order amount on checkout page
