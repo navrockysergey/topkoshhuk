@@ -37,6 +37,7 @@ add_action( 'woocommerce_shipping_init'                         , 'init_ukrposht
 add_filter( 'woocommerce_shipping_methods'                      , 'add_ukrposhta_shipping_method' );
 add_action( 'init'                                              , 'custom_account_endpoints', 25 );
 add_action( 'woocommerce_account_account-data_endpoint'         , 'account_person_data', 25 );
+add_action( 'woocommerce_account_account-security_endpoint'     , 'account_security_data', 25 );
 
 // ===================================================================================================
 remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_template_loop_add_to_cart', 10 );
@@ -49,7 +50,7 @@ add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fr
 add_action( 'woocommerce_before_cart'                           , 'order_steps', 1 );
 add_action( 'woocommerce_before_checkout_form'                  , 'order_steps', 1 );
 add_action( 'woocommerce_thankyou'                              , 'order_steps', 1 );
-add_action( 'woocommerce_account_content'                       , 'add_h1_to_my_account_page', 5 );
+// add_action( 'woocommerce_account_content'                       , 'add_h1_to_my_account_page', 5 );
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
 
@@ -126,33 +127,33 @@ function add_to_cart_box_variations_buttons_template(){
 }
 
 // Register the "Ingredients" taxonomy for WooCommerce products
-function create_ingredients_taxonomy() {
+// function create_ingredients_taxonomy() {
 
-    $labels = array(
-        'name'              => 'Ingredients',
-        'singular_name'     => 'Ingredient',
-        'search_items'      => 'Search Ingredients',
-        'all_items'         => 'All Ingredients',
-        'parent_item'       => 'Parent Ingredient',
-        'parent_item_colon' => 'Parent Ingredient:',
-        'edit_item'         => 'Edit Ingredient',
-        'update_item'       => 'Update Ingredient',
-        'add_new_item'      => 'Add New Ingredient',
-        'new_item_name'     => 'New Ingredient Name',
-        'menu_name'         => 'Ingredients',
-    );
+//     $labels = array(
+//         'name'              => 'Ingredients',
+//         'singular_name'     => 'Ingredient',
+//         'search_items'      => 'Search Ingredients',
+//         'all_items'         => 'All Ingredients',
+//         'parent_item'       => 'Parent Ingredient',
+//         'parent_item_colon' => 'Parent Ingredient:',
+//         'edit_item'         => 'Edit Ingredient',
+//         'update_item'       => 'Update Ingredient',
+//         'add_new_item'      => 'Add New Ingredient',
+//         'new_item_name'     => 'New Ingredient Name',
+//         'menu_name'         => 'Ingredients',
+//     );
 
-    $args = array(
-        'hierarchical'      => true,
-        'labels'            => $labels,
-        'show_ui'           => true,
-        'show_admin_column' => false,
-        'query_var'         => true,
-        'rewrite'           => false,
-    );
+//     $args = array(
+//         'hierarchical'      => true,
+//         'labels'            => $labels,
+//         'show_ui'           => true,
+//         'show_admin_column' => false,
+//         'query_var'         => true,
+//         'rewrite'           => false,
+//     );
 
-    register_taxonomy('ingredient', 'product', $args);
-}
+//     register_taxonomy('ingredient', 'product', $args);
+// }
 
 // Add description editor
 function add_woocommerce_category_description_editor() {
@@ -500,13 +501,6 @@ function disable_shipping_calc_on_cart( $show_shipping ) {
     return $show_shipping;
 }
 
-// Add title in account 
-function add_h1_to_my_account_page() {
-    if (is_account_page()) {
-        echo '<h1>' . __('Мій акаунт') . '</h1>';
-    }
-}
-
 // Checkoout item display
 function checkoout_item_display($name, $cart_item, $cart_item_key) {
     if (!is_checkout()) {
@@ -543,19 +537,11 @@ function checkoout_item_display($name, $cart_item, $cart_item_key) {
 
 // Remove sections from woocommerce thankyou
 function remove_order_details_on_order_received() {
-    if (is_order_received_page()) {
-        remove_action('woocommerce_thankyou', 'woocommerce_order_details_table', 10);
-        remove_action('woocommerce_thankyou', 'woocommerce_customer_details', 20);
+    if ( is_order_received_page() ) {
+        remove_action( 'woocommerce_thankyou', 'woocommerce_order_details_table', 10 );
+        remove_action( 'woocommerce_thankyou', 'woocommerce_customer_details', 20 );
     }
 }
-
-// Remove download section from woocommerce my account
-// function remove_downloads_from_my_account_menu($items) {
-//     if (isset($items['downloads'])) {
-//         unset($items['downloads']);
-//     }
-//     return $items;
-// }
 
 function custom_account_menu_items( $items ) {
     if (isset($items['downloads'])) {
@@ -589,12 +575,35 @@ function custom_account_menu_items( $items ) {
 
 function custom_account_endpoints() {
     add_rewrite_endpoint( 'account-data', EP_PAGES );
+    add_rewrite_endpoint( 'account-security', EP_PAGES );
 }
 
-function account_person_data() {
- 
-	echo 'Accout Data';
- 
+function account_person_data() {    
+    wc_get_template( 'myaccount/form-edit-account.php', array( 'user' => get_user_by( 'id', get_current_user_id() ) ) );
+}
+
+function account_security_data() {
+    wc_get_template( 'myaccount/form-edit-login-account.php', array( 'user' => get_user_by( 'id', get_current_user_id() ) ) );
+}
+
+function add_custom_account_fields() {
+    woocommerce_form_field( 'shipping_phone', array(
+        'type'     => 'text',
+        'label'    => __( 'Номер телефону' ),
+        'required' => false,
+    ), get_user_meta( get_current_user_id(), 'shipping_phone', true ) );
+
+    woocommerce_form_field( 'shipping_city', array(
+        'type'     => 'text',
+        'label'    => __( 'Місто або населений пункт' ),
+        'required' => false,
+    ), get_user_meta( get_current_user_id(), 'shipping_city', true ) );
+
+    woocommerce_form_field( 'shipping_address_1', array(
+        'type'     => 'text',
+        'label'    => __( 'Адреса' ),
+        'required' => false,
+    ), get_user_meta( get_current_user_id(), 'shipping_address_1', true ) );
 }
 
 // Check minimum order amount on checkout page
