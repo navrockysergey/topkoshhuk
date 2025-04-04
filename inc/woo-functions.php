@@ -37,10 +37,11 @@ add_action( 'woocommerce_shipping_init'                         , 'init_ukrposht
 add_filter( 'woocommerce_shipping_methods'                      , 'add_ukrposhta_shipping_method' );
 add_action( 'init'                                              , 'custom_account_endpoints', 25 );
 add_action( 'woocommerce_account_account-data_endpoint'         , 'account_person_data', 25 );
+add_action( 'template_redirect'                                 , 'redirect_my_account_to_orders' );
 
 // ===================================================================================================
 remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_template_loop_add_to_cart', 10 );
-add_action( 'woocommerce_after_shop_loop_item'                  , 'replace_loop_add_to_cart' );
+
 add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_count_ajax' );
 add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_action( 'wp_enqueue_scripts'                                , 'add_wc_ajax_params' );
@@ -79,18 +80,44 @@ function woocommerce_single_product_summary_changes() {
     add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 50 );
 
     add_action( 'woocommerce_after_single_product_summary', 'woocommerce_template_resently_products', 20 );
-
 }
 
-function replace_loop_add_to_cart() {
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+remove_action( 'woocommerce_after_shop_loop_item'      , 'woocommerce_template_loop_add_to_cart', 10) ;
+add_action( 'woocommerce_after_shop_loop_item'         , 'custom_price_button_wrapper', 10 );
+add_filter( 'woocommerce_get_price_html'               , 'custom_price_html', 100, 2 );
+add_filter( 'wpc_auto_scroll_offset'                    , 'wpc_change_auto_scroll_offset' );
+
+function wpc_change_auto_scroll_offset( $offset ){
+    return 200;
+}
+
+function custom_price_html( $price, $product ) {
+    $price = str_replace( '&nbsp;', ' ', $price );
+
+    $price_prefix = '<span class="price-prefix">' . __('від', 'your-text-domain') . '</span>';
+    $price_suffix = '<span class="price-suffix">' . __('за шт.', 'your-text-domain') . '</span>';
+    $price_wrapper = '<span class="price-wrapper">' . $price . '</span>';
+
+    return $price_prefix . $price_wrapper . $price_suffix;
+}
+
+function custom_price_button_wrapper() {
     global $product;
     $link = $product->get_permalink();
+    
+    echo '<div class="price-cart-wrapper">';
+    
+    echo '<span class="price">' . $product->get_price_html() . '</span>';
+    
     echo '
     <a href="' . esc_url( $link ) . '" class="button button-product-view">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M16.8 11.6C17.0666 11.8 17.0666 12.2 16.8 12.4L9.8 17.8991C9.47038 18.1463 9 17.9111 9 17.4991L9 6.50091C9 6.08888 9.47038 5.85369 9.8 6.10091L16.8 11.6Z" fill="currentColor"/>
         </svg>
     </a>';
+    
+    echo '</div>';
 }
 
 function woocommerce_template_single_main_data() {
@@ -556,6 +583,13 @@ function remove_order_details_on_order_received() {
 //     }
 //     return $items;
 // }
+
+function redirect_my_account_to_orders() {
+    // if ( is_account_page() && !is_wc_endpoint_url('orders') ) {
+    //     wp_redirect( wc_get_account_endpoint_url( 'orders' ) );
+    //     exit;
+    // }
+}
 
 function custom_account_menu_items( $items ) {
     if (isset($items['downloads'])) {

@@ -239,6 +239,6 @@ jQuery(document).ready(function ($) {
 
 		input.val( new_val );
 		fake_input.val( fake_val );
-	})
+	});
 });
 

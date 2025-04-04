@@ -177,43 +177,6 @@
     display: flex;
     flex-direction: column;
 
-    .product-price,
-    .price {
-        font-size: 30px;
-        font-weight: bold;
-        text-align: center;
-        line-height: 1;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-
-        * {
-            color: var(--color_secondary);
-        }
-
-        del {
-            color: var(--color_grey_3);
-            font-size: 18px;
-            font-weight: normal;
-            position: relative;
-            top: 2px;
-
-            * {
-                color: var(--color_grey_3);
-            }
-        }
-
-        ins {
-            text-decoration: none;
-        }
-
-        bdi {
-            background-color: transparent;
-        }
-    }
-
     .single_add_to_cart_button,
     .add_to_cart_button,
     .product_type_variable,
@@ -500,17 +463,125 @@
     }
 }
 
-.woocommerce .products,
-.woocommerce ul.products,
+.product-price,
+.price {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: var(--font_size_h4);
+    font-weight: bold;
+    text-align: center;
+    line-height: 1;
+    margin: 0;
+    gap: var(--gap_xs);
+    color: var(--color_black);
+
+    * {
+        color: var(--color_black);
+    }
+
+    .price-wrapper {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: var(--gap_xs);
+    }
+
+    del {
+        color: var(--color_grey);
+        font-size: var(--font_size_h5);
+        font-weight: normal;
+        position: relative;
+        line-height: 1;
+
+        * {
+            color: var(--color_grey);
+        }
+    }
+
+    ins,
+    bdi {
+        display: flex;
+        align-items: flex-end;
+        gap: var(--gap_xs);
+        line-height: 1;
+        position: relative;
+        top: 2px;
+    }
+
+    ins {
+        text-decoration: none;
+
+        .sale & {
+            * {
+                color: var(--color_primary);
+            }
+        }
+    }
+
+    bdi {
+        background-color: transparent;
+    }
+
+    .price-prefix,
+    .price-suffix,
+    .woocommerce-Price-currencySymbol {
+        font-size: var(--font_size_p1);
+        font-weight: 400;
+        line-height: 1;
+    }
+
+    .woocommerce-Price-currencySymbol {
+        position: relative;
+        top: -2px;
+    }
+}
+
+.search-result-info,
+.woocommerce-result-count {
+    display: none !important;
+}
+
+.woocommerce-ordering {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--gap_s);
+
+    select {
+        align-self: flex-end;
+        width: auto !important;
+    }
+}
+
+.category-side {
+    > * + * {
+        margin-top: var(--padding_s);
+    }
+}
+
+.category-container {
+    display: grid;
+    grid-template-columns: 344px 1fr;
+    gap: var(--gap_s);
+
+    @include max1024 {
+        grid-template-columns: 1fr;
+    }
+}
+
 .products,
 ul.products {
-
     margin: 0;
     padding: 0;
     list-style: none;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--gap_m);
+
+    .category-main & {
+        margin: 0 0 var(--padding_m);
+    }
 
     @include tablet-p {
         grid-template-columns: repeat(2, 1fr);
@@ -532,10 +603,10 @@ ul.products {
         border-radius: var(--radius);
         position: relative;
         overflow: hidden;
-        padding: var(--padding_m);
+        padding: var(--padding_s);
         display: flex;
         flex-direction: column;
-        gap: var(--gap_m);
+        gap: var(--gap_s);
         border: 1px solid var(--color_white);
         transition: all .5s ease;
 
@@ -624,12 +695,20 @@ ul.products {
             font-size: var(--font_size_p2);
         }
 
+        .price-cart-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--gap_s);
+        }
+
         .woocommerce-loop-product {
 
             &__link {
                 display: flex;
                 flex-direction: column;
-                gap: var(--gap_m);
+                gap: var(--gap_s);
+                flex: 1;
             }
 
             &__title {

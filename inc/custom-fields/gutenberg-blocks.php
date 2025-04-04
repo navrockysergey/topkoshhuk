@@ -117,7 +117,7 @@ function custom_posts_gutenberg_blocks() {
         ->set_mode( 'both' )
         ->set_icon( 'images-alt2' )
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
-            include_once __THEME_DIR__ . '/template-parts/sections/categories-colection-block.php';
+            include_once __THEME_DIR__ . '/template-parts/blocks/block-category.php';
         } );
 
     // ==== Advantages

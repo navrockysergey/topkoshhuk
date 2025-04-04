@@ -4,27 +4,34 @@ get_header();
 
 <main id="primary" class="site-main">
 
-	<?php 
-		//get_template_part( 'template-parts/section', 'category' ); 
-	?>
-
-	<div class="container breadcrumb-container">
-		<?php
-			if ( function_exists( 'yoast_breadcrumb' ) ) {
-				yoast_breadcrumb( '<div id="breadcrumbs">', '</div>' );
-			}
-		?>
+	<div class="breadcrumb-container">
+		<div class="container">
+			<?php
+				if ( function_exists('yoast_breadcrumb') ) {
+					yoast_breadcrumb( '<div id="breadcrumbs">','</div>' );
+				}
+			?>
+		</div>
 	</div>
 
-	<section class="section section-search">
+	<section class="section section-category-hero">
 		<div class="container">
-
+			<?php get_template_part('template-parts/blocks/block', 'search'); ?>
+			<?php get_template_part('template-parts/blocks/block', 'category'); ?>
+		</div>
+	</section>
+	
+	<div class="container category-container search-container">
+		<div class="category-side">
+			<?php get_template_part('template-parts/blocks/block', 'filter'); ?>
+		</div>
+		<div class="category-main">
 			<?php if ( have_posts() ) : ?>
-				<h1 class="page-title">
+				<div class="search-result-info">
 					<?php
-						printf( esc_html__( 'Результати пошуку: %s', 'kelner' ), '<span>' . get_search_query() . '</span>' );
+						printf( esc_html__( 'Результати пошуку: %s' ), '<span>' . get_search_query() . '</span>' );
 					?>
-				</h1>
+				</div>
 
 				<div class="woocommerce">
 					<ul class="products">
@@ -46,10 +53,9 @@ get_header();
 				</div>
 			<?php endif; ?>
 		</div>
-	</section>
+	</div>
 
 </main>
 
 <?php
 get_footer();
-?>

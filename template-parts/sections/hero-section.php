@@ -4,7 +4,7 @@
 <section class="section section-main">
     <div class="container">
 
-        <?php get_product_search_form(); ?>
+        <?php get_template_part('template-parts/blocks/block', 'search'); ?>
 
         <?php if ( 'text' == $main_top_heading_type ) : ?>
             <h1 class="section-title">

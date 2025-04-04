@@ -50,15 +50,17 @@ function baza_dev_dequeue_styles() {
     wp_deregister_style( 'wqpmb_internal' );
     wp_dequeue_style( 'woocommerce-layout' );
     wp_deregister_style( 'woocommerce-layout' );
-    
+    wp_dequeue_style( 'filter-everything-inline' );
+    wp_deregister_style( 'filter-everything-inline' );
 }
+
 add_action( 'wp_enqueue_scripts', 'baza_dev_dequeue_styles', 9999999 );
 
 // Remove styles by site URL
 
 function remove_style_by_site_url( $src ) {
-
     $select2_css = get_site_url() . '/wp-content/plugins/woocommerce/assets/css/select2.css';
+
     if ( strpos( $src, $select2_css ) !== false ) {
         return '';
     }
@@ -76,13 +78,28 @@ function allow_svg_uploads($mimes) {
 }
 add_filter('upload_mimes', 'allow_svg_uploads');
 
-// favicon
-
-function add_svg_favicon() {
-    $favicon_url = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/images/favicon.png';
-    echo '<link rel="icon" href="' . $favicon_url . '" type="image/svg+xml" />';
+/**
+ * Add all favicon and app icon related tags to the site header
+ */
+function add_complete_favicons() {
+    $img_path = trailingslashit(get_stylesheet_directory_uri()) . 'assets/images/';
+    
+    // SVG favicon (modern browsers)
+    echo '<link rel="icon" href="' . $img_path . 'favicon.svg" type="image/svg+xml" />' . "\n";
+    
+    // Traditional favicon
+    echo '<link rel="shortcut icon" href="' . $img_path . 'favicon.ico" />' . "\n";
+    
+    // Various sizes for different devices
+    echo '<link rel="icon" type="image/png" sizes="96x96" href="' . $img_path . 'favicon-96x96.png" />' . "\n";
+    
+    // Apple Touch Icons
+    echo '<link rel="apple-touch-icon" href="' . $img_path . 'apple-touch-icon.png" />' . "\n";
+    
+    // Web App Manifest for PWA
+    echo '<link rel="manifest" href="' . $img_path . 'site.webmanifest" />' . "\n";
 }
-add_action('wp_head', 'add_svg_favicon');
+add_action('wp_head', 'add_complete_favicons');
 
 // Sanitize SVG content
 

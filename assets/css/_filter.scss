@@ -1,0 +1,116 @@
+
+body main .wpc-filters-open-button-container a.wpc-filters-open-widget, 
+body main .wpc-filters-open-button-container a.wpc-open-close-filters-button {
+    all: unset;
+
+    .wpc-icon-html-wrapper {
+        display: none !important;
+    }
+}
+
+body main .wpc-filters-open-button-container a.wpc-open-close-filters-button {
+    background-color: var(--color_secondary);
+    display: flex;
+    align-items: center;
+    gap: var(--gap_s);
+    border-radius: var(--radius);
+    color: var(--color_white);
+    line-height: 1;
+    cursor: pointer;
+    font-size: var(--font_size_p1);
+    padding: var(--padding_xs);
+
+    &.wpc-opened {
+        margin-bottom: var(--padding_s);
+    }
+}
+
+body main .wpc-custom-selected-terms {
+    ul.wpc-filter-chips-list {
+        all: unset;
+
+        li.wpc-filter-chip {
+            margin: 0;
+
+            &.wpc-chip-reset-all {
+                a {
+                    all: unset;
+                    color: var(--color_black);
+                    font-size: var(--font_size_p2);
+        
+                    &:hover {
+                        color: var(--color_primary);
+                    }
+                }
+            }
+        }
+    }
+
+    .wpc-filter-chip:not(.wpc-chip-reset-all) {
+        display: none !important;
+    }
+}
+
+body main .widget_wpc_filters_widget {
+
+    margin: 0;
+
+    .wpc-filters-main-wrap .wpc-filter-title,
+    .wpc-filters-main-wrap ul.wpc-filters-ul-list,
+    .wpc-filters-main-wrap li.wpc-term-item label,
+    .wpc-filters-main-wrap li.wpc-term-item,
+    .wpc-filters-main-wrap .wpc-filters-section,
+    .wpc-filters-main-wrap .wpc-filters-widget-wrapper {
+        all: unset;
+    }
+
+    .wpc-filters-main-wrap {
+
+        .wpc-filters-widget-wrapper,
+        .wpc-filters-section,
+        ul.wpc-filters-ul-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap_s);
+        }
+
+        .wpc-filters-widget-wrapper {
+            border: 1px solid var(--color_white);
+            border-radius: var(--radius);
+            gap: 0;
+        }
+
+        li.wpc-term-item {
+            label {
+                display: flex;
+                gap: var(--gap_s);
+            }
+        }
+
+        .wpc-filters-section {
+            padding: var(--padding_s);
+            
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--color_white);
+            }
+        }
+
+        .wpc-filter-header {
+            font-size: var(--font_size_h5);
+            font-weight: bold;
+        }
+
+        .wpc-edit-filter-set {
+            padding: var(--padding_s);
+            border: 1px solid var(--color_white);
+            border-radius: var(--radius);
+            margin-top: var(--padding_s);
+        }
+
+        .wpc-instead-of-posts-found {
+            &:empty {
+                display: none !important;
+            }
+        }
+    }
+}

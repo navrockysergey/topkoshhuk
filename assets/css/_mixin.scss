@@ -249,7 +249,7 @@
     width: 100%;
     display: block;
     font-family: var(--font);
-    padding: 16px;
+    padding: var(--padding_s);
     transition: all .5s ease;
 
     &::placeholder {
@@ -272,7 +272,7 @@
 }
 
 @mixin button() {
-    display: inline-flex !important;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     text-align: center;
