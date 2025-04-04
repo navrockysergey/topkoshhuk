@@ -21,6 +21,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header( 'shop' ); ?>
 
+	<div class="breadcrumb-container">
+		<div class="container">
+			<?php
+				if ( function_exists('yoast_breadcrumb') ) {
+					yoast_breadcrumb( '<div id="breadcrumbs">','</div>' );
+				}
+			?>
+		</div>
+	</div>
+
 	<?php
 		/**
 		 * woocommerce_before_main_content hook.

@@ -53,7 +53,6 @@ add_action( 'woocommerce_thankyou'                              , 'order_steps',
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
 
-// add_filter( 'woocommerce_account_menu_items'                    , 'remove_downloads_from_my_account_menu' );
 add_filter( 'woocommerce_account_menu_items'                    , 'custom_account_menu_items' );
 
 add_action( 'woocommerce_proceed_to_checkout'                   , 'replace_proceed_to_checkout', 10 );
@@ -68,6 +67,7 @@ function woocommerce_single_product_summary_changes() {
     remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
     remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
     remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_sharing', 50 );
+    remove_action( 'woocommerce_before_main_content'   , 'woocommerce_breadcrumb', 20 );
     // remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10 );
 
     add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_main_data', 5 );
@@ -81,21 +81,26 @@ function woocommerce_single_product_summary_changes() {
     add_action( 'woocommerce_after_single_product_summary', 'woocommerce_template_resently_products', 20 );
 }
 
-remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
-remove_action( 'woocommerce_after_shop_loop_item'      , 'woocommerce_template_loop_add_to_cart', 10) ;
-add_action( 'woocommerce_after_shop_loop_item'         , 'custom_price_button_wrapper', 10 );
-add_filter( 'woocommerce_get_price_html'               , 'custom_price_html', 100, 2 );
-add_filter( 'wpc_auto_scroll_offset'                    , 'wpc_change_auto_scroll_offset' );
+remove_action( 'woocommerce_after_shop_loop_item_title' , 'woocommerce_template_loop_price', 10 );
+remove_action( 'woocommerce_after_shop_loop_item'       , 'woocommerce_template_loop_add_to_cart', 10) ;
+add_action( 'woocommerce_after_shop_loop_item'          , 'custom_price_button_wrapper', 10 );
+add_filter( 'woocommerce_get_price_html'                , 'custom_price_html', 100, 2 );
+add_action( 'woocommerce_before_single_product_summary' , 'start_single_product_container', 5 );
+add_action( 'woocommerce_after_single_product_summary'  , 'end_single_product_container', 5 );
 
-function wpc_change_auto_scroll_offset( $offset ){
-    return 200;
+function start_single_product_container() {
+    echo '<div class="container product-container">';
+}
+
+function end_single_product_container() {
+    echo '</div>';
 }
 
 function custom_price_html( $price, $product ) {
     $price = str_replace( '&nbsp;', ' ', $price );
 
-    $price_prefix = '<span class="price-prefix">' . __('від', 'your-text-domain') . '</span>';
-    $price_suffix = '<span class="price-suffix">' . __('за шт.', 'your-text-domain') . '</span>';
+    $price_prefix = '<span class="price-prefix">' . __('від') . '</span>';
+    $price_suffix = '<span class="price-suffix">' . __('за шт.') . '</span>';
     $price_wrapper = '<span class="price-wrapper">' . $price . '</span>';
 
     return $price_prefix . $price_wrapper . $price_suffix;
@@ -150,35 +155,6 @@ function get_wholesale_prices() {
 function add_to_cart_box_variations_buttons_template(){
     wc_get_template( 'single-product/box-variations-buttons-template.php' );
 }
-
-// Register the "Ingredients" taxonomy for WooCommerce products
-// function create_ingredients_taxonomy() {
-
-//     $labels = array(
-//         'name'              => 'Ingredients',
-//         'singular_name'     => 'Ingredient',
-//         'search_items'      => 'Search Ingredients',
-//         'all_items'         => 'All Ingredients',
-//         'parent_item'       => 'Parent Ingredient',
-//         'parent_item_colon' => 'Parent Ingredient:',
-//         'edit_item'         => 'Edit Ingredient',
-//         'update_item'       => 'Update Ingredient',
-//         'add_new_item'      => 'Add New Ingredient',
-//         'new_item_name'     => 'New Ingredient Name',
-//         'menu_name'         => 'Ingredients',
-//     );
-
-//     $args = array(
-//         'hierarchical'      => true,
-//         'labels'            => $labels,
-//         'show_ui'           => true,
-//         'show_admin_column' => false,
-//         'query_var'         => true,
-//         'rewrite'           => false,
-//     );
-
-//     register_taxonomy('ingredient', 'product', $args);
-// }
 
 // Add description editor
 function add_woocommerce_category_description_editor() {
@@ -304,14 +280,6 @@ function save_custom_options_fields( $post_id ) {
         $wholesale_prices = $_POST['_wholesale_prices'];
         update_post_meta($post_id, '_wholesale_prices', sanitize_text_field( $wholesale_prices ));
     }
-}
-
-// Remove the version number from the scripts and styles
-function remove_version_query_string($src) {
-    if ( strpos( $src, 'ver=' ) ) {
-        $src = remove_query_arg('ver', $src);
-    }
-    return $src;
 }
 
 // Add SKU before the price
@@ -473,37 +441,6 @@ function add_ukrposhta_shipping_method( $methods ) {
 
 // ===============================================================
 
-// Add AJAX handler for getting cart count
-function get_cart_count_ajax() {
-    echo WC()->cart->get_cart_contents_count();
-    wp_die();
-}
-
-// Make sure WC AJAX parameters are available
-function add_wc_ajax_params() {
-    if (function_exists('is_woocommerce') && !is_admin()) {
-        wp_enqueue_script('wc-cart-fragments');
-    }
-}
-
-function cart_count_fragments($fragments) {
-    $fragments['.cart-count'] = '<span class="cart-count">' . WC()->cart->get_cart_contents_count() . '</span>';
-    return $fragments;
-}
-
-// Category header
-function add_content_woocommerce_before_shop_loop() {
-    echo '<div class="category-header">';
-    
-    // echo do_shortcode('[fe_widget]');
-    
-    woocommerce_result_count();
-    
-    woocommerce_catalog_ordering();
-    
-    echo '</div>';
-}
-
 // Remove tabs
 function remove_all_woocommerce_tabs($tabs) {
     return array();
@@ -512,11 +449,12 @@ function remove_all_woocommerce_tabs($tabs) {
 // Remove link in cart
 function custom_remove_cart_item_button( $remove_link, $cart_item_key ) {
     $remove_link = '<a href="' . esc_url( wc_get_cart_remove_url( $cart_item_key ) ) . '" class="remove">
-                      <i class="fa fa-times"></i>
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.8553 1.55871C12.0506 1.36345 12.0506 1.04686 11.8553 0.8516L11.1482 0.144494C10.953 -0.0507686 10.6364 -0.0507682 10.4411 0.144494L5.99992 4.58569L1.55872 0.144494C1.36346 -0.0507686 1.04688 -0.0507687 0.851617 0.144493L0.14451 0.8516C-0.0507518 1.04686 -0.0507515 1.36345 0.144511 1.55871L4.58571 5.9999L0.144494 10.4411C-0.0507686 10.6364 -0.0507687 10.953 0.144493 11.1482L0.8516 11.8553C1.04686 12.0506 1.36344 12.0506 1.55871 11.8553L5.99992 7.41412L10.4411 11.8553C10.6364 12.0506 10.953 12.0506 11.1482 11.8553L11.8553 11.1482C12.0506 10.953 12.0506 10.6364 11.8553 10.4411L7.41413 5.9999L11.8553 1.55871Z" fill="white"/>
+                        </svg>
                     </a>';
     return $remove_link;
 }
-
 
 // Remove shipping in cart
 function disable_shipping_calc_on_cart( $show_shipping ) {
@@ -567,14 +505,6 @@ function remove_order_details_on_order_received() {
         remove_action('woocommerce_thankyou', 'woocommerce_customer_details', 20);
     }
 }
-
-// Remove download section from woocommerce my account
-// function remove_downloads_from_my_account_menu($items) {
-//     if (isset($items['downloads'])) {
-//         unset($items['downloads']);
-//     }
-//     return $items;
-// }
 
 function custom_account_menu_items( $items ) {
     if (isset($items['downloads'])) {
