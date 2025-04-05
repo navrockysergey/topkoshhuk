@@ -46,9 +46,9 @@ add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_coun
 add_action( 'wp_enqueue_scripts'                                , 'add_wc_ajax_params' );
 add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fragments', 10, 1 );
 // add_action( 'woocommerce_before_shop_loop'                      , 'add_content_woocommerce_before_shop_loop', 15 );
-add_action( 'woocommerce_before_cart'                           , 'order_steps', 1 );
-add_action( 'woocommerce_before_checkout_form'                  , 'order_steps', 1 );
-add_action( 'woocommerce_thankyou'                              , 'order_steps', 1 );
+// add_action( 'woocommerce_before_cart'                           , 'order_steps', 1 );
+// add_action( 'woocommerce_before_checkout_form'                  , 'order_steps', 1 );
+// add_action( 'woocommerce_thankyou'                              , 'order_steps', 1 );
 // add_action( 'woocommerce_account_content'                       , 'add_h1_to_my_account_page', 5 );
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
