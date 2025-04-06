@@ -32,7 +32,7 @@ if ( empty( $brans_media_products_terms ) ) {
                 <div class="products">
                     <li class="product product-brand">
                         <a class="product-brand-link" href="<?php echo $term_link?>" style="background-image: url(<?php echo esc_url($brand_bg_image)?>)">
-                            <img src="<?php echo esc_url($brand_media_preview_src)?>" alt="<?php _e('Бренд')?>">
+                            <img src="<?php echo esc_url($brand_media_preview_src)?>" alt="<?php _e('Виробник')?>">
                         </a>
                         <a class="button button-secondary button-product-brand" href="<?php echo $term_link?>">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

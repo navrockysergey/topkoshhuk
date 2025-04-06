@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
     }
 
     function removeNbsp() {
-        $('.woocommerce-checkout-review-order td').each(function() {
+        $('.woocommerce-checkout-review-order td, .amount').each(function() {
             $(this).html($(this).html().replace(/&nbsp;/g, ''));
         });
     }
@@ -27,12 +27,8 @@ jQuery(document).ready(function ($) {
 	carouselBestsselers.owlCarousel({
 		items: 1,
 		navSpeed: sliderSpeed,
-		autoplaySpeed: sliderSpeed,
 		nav: true,
-		autoplay: true,
-		autoplayTimeout: 6000,
 		margin: 0,
-		autoplayHoverPause: true,
 		dots: false,
 		loop: true,
 		navText: [nextPrevButton, nextPrevButton],
@@ -40,7 +36,11 @@ jQuery(document).ready(function ($) {
 		touchDrag: true,
 		dragEndSpeed: sliderSpeed,
 		dotsSpeed: sliderSpeed,
-		autoHeight: true
+		autoHeight: true,
+		autoplay: true,
+		autoplaySpeed: sliderSpeed,
+		autoplayTimeout: 6000,
+		autoplayHoverPause: true,
 	});
 
 	let carouselCategories = $('#main-category-slider');
@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
 		margin: 24,
 		autoplayHoverPause: true,
 		dots: false,
-		loop: (carouselCategories.find('.item').length > 5),
+		loop: true,
 		navText: [nextPrevButton, nextPrevButton],
 		mouseDrag: true,
 		touchDrag: true,
@@ -65,82 +65,77 @@ jQuery(document).ready(function ($) {
 		autoplayHoverPause: true,
 		responsive: {
 			0: {
-				items: 1,
-				loop: (carouselCategories.find('.item').length > 1),
+				items: 1
 			},
 			768: {
-				items: 1,
-				loop: (carouselCategories.find('.item').length > 1),
+				items: 1
 			},
 			1024: {
-				items: 3,
-				loop: (carouselCategories.find('.item').length > 3),
+				items: 3
 			},
 			1200: {
-				items: 5,
-				loop: (carouselCategories.find('.item').length > 5),
+				items: 5
 			}
 		}
 	});
 
-	$('#carousel-popular, #carousel-crosssell, #carousel-related-products, #carousel-upsell-products').each(function() {
+	$('.products.owl-carousel').each(function() {
 		let $carousel = $(this);
-		let productCount = $carousel.find('.product').length;
 	
 		$carousel.owlCarousel({
+			stagePadding: 23,
 			items: 3,
 			navSpeed: sliderSpeed,
-			autoplaySpeed: sliderSpeed,
+			dragEndSpeed: sliderSpeed,
+			dotsSpeed: sliderSpeed,
 			nav: true,
-			autoplay: true,
-			autoplayTimeout: 6000,
-			margin: 0,
+			margin: 24,
 			dots: false,
-			loop: (productCount > 3),
+			loop: true,
 			navText: [nextPrevButton, nextPrevButton],
 			mouseDrag: true,
 			touchDrag: true,
-			dragEndSpeed: sliderSpeed,
-			dotsSpeed: sliderSpeed,
 			autoHeight: true,
+			autoplay: false,
 			autoplayHoverPause: true,
+			autoplaySpeed: sliderSpeed,
+			autoplayTimeout: 6000,
 			responsive: {
 				0: {
 					items: 1,
-					margin: 0,
-					autoplay: false,
-					nav: true,
+					nav: false,
 					dots: false,
-					loop: (productCount > 1),
+					margin: 12,
+					stagePadding: 34,
+					loop: true,
 				},
 				768: {
 					items: 2,
-					autoplay: false,
 					nav: true,
 					dots: false,
-					loop: (productCount > 2),
+					margin: 12,
+					stagePadding: 34,
+					loop: true,
 				},
 				1024: {
 					items: 2,
 					nav: true,
 					dots: false,
-					loop: (productCount > 2),
+					margin: 24,
+					stagePadding: 0,
+					loop: false,
 				},
 				1200: {
 					items: 3,
 					nav: true,
 					dots: false,
-					loop: (productCount > 3),
+					margin: 24,
+					loop: false,
+					stagePadding: 0,
 				}
 			}
 		});
-	});	
-
-    // $(document.body).on('change input', '.woocommerce-cart input.qty', function() {
-    //     setTimeout(function() {
-    //         $('.woocommerce-cart [name=update_cart]').trigger('click');
-    //     }, 200);
-    // });
+	});
 
 	$(document.body).on('click', '.woocommerce-cart .checkout-button.disabled', function(e) {
 		e.preventDefault();

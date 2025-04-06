@@ -152,7 +152,7 @@ function custom_posts_gutenberg_blocks() {
         ->set_icon( 'video-alt3' )
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
-            include_once __THEME_DIR__ . '/template-parts/sections/brans-media-products.php';
+            include_once __THEME_DIR__ . '/template-parts/sections/brands-media-products.php';
         } );
 
     // Latest articles

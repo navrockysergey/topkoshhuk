@@ -2,6 +2,7 @@
 get_header();
 $is_home = is_front_page();
 $is_category = is_product_category();
+$is_shop = is_shop();
 ?>
 
 <main id="primary" class="site-main<?php if(!$is_home): ?> site-page<?php endif; ?>">
@@ -18,7 +19,7 @@ $is_category = is_product_category();
         </div>
     <?php endif; ?>
 
-    <?php if ($is_category) : ?>
+    <?php if ($is_category || $is_shop) : ?>
         <section class="section section-category-hero">
             <div class="container">
                 <?php get_template_part('template-parts/blocks/block', 'search'); ?>

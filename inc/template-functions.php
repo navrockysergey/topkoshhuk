@@ -14,12 +14,19 @@ function baza_dev_scripts_and_styles() {
 	wp_enqueue_script( 'baza-owl-carousel-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/owl.carousel.min.js', array('jquery'), false);
 	wp_enqueue_script( 'baza-inputmask-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/jquery.inputmask.min.js', array('jquery'), false);
     wp_enqueue_script( 'baza-woo-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/woo.js', array('jquery'), false);
+    //wp_enqueue_script( 'baza-notiny-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/notiny.min.js', array('jquery'), false);
 	wp_enqueue_script( 'baza-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/jq.js', array('jquery'), false);
-	wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
+
+    if (is_product() || is_cart()) {
+	    wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
+    }
+
+    if (is_product()) {
+        wp_enqueue_script( 'baza-product-gallery-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/product-gallery.js', array('jquery'), false);
+    }
 
     // CSS
 
-    //wp_enqueue_style( 'baza-aos', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/css/aos.css', array(), false );
 	wp_enqueue_style( 'baza-owl-carousel', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/css/owl.carousel.min.css', array(), false );
 	wp_enqueue_style( 'baza-photoswipe', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/css/photoswipe.css', array(), false );
     wp_enqueue_style( 'baza-woo-styles', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/css/woo.css', array(), false );

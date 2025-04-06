@@ -14,7 +14,7 @@ if ( ! empty( $brands ) ):
     $brand_id   = $brands[0]->term_id;
     $brand_lnk  = get_term_link( $brand_id, 'product_brand' );
     ?>
-    <p>
+    <div class="product-summary-item">
         <span class="item-name">
             <strong><?php echo __( 'Brand', 'woocommerce' )?>:</strong>
         </span>
@@ -24,34 +24,34 @@ if ( ! empty( $brands ) ):
                 <?php echo $brand_name?>
             </a>
         </span>
-    </p>
+    </div>
     <?php
 endif;
 
 if ( $product_sku && '' !== $product_sku ):
 ?>
-    <p>
+    <div class="product-summary-item">
         <span class="item-name">
-            <strong><?php echo __( 'Код товару', 'woocommerce' )?>:</strong>
+            <strong><?php echo __( 'Код товару')?>:</strong>
         </span>
 
         <span class="item-value">
             <?php echo $product_sku?>
         </span>
-    </p>
+    </div>
 <?php
 endif;
 
 if ( $barcode && '' !== $barcode ) :
     ?>
-    <p>
+    <div class="product-summary-item">
         <span class="item-name">
-            <strong><?php echo __( 'Штрихкод', 'woocommerce' )?>:</strong>
+            <strong><?php echo __( 'Штрихкод')?>:</strong>
         </span>
 
         <span class="item-value">
             <?php echo $barcode?>
         </span>
-    </p>
+    </div>
 <?php
 endif;

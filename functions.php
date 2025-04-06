@@ -189,5 +189,3 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 require get_template_directory() . '/inc/custom-fields/index.php';
 
 require get_template_directory() . '/inc/woo-functions.php';
-
-// require get_template_directory() . '/inc/woo-variations-swatches.php';

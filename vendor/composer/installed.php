@@ -3,7 +3,7 @@
         'name' => 'automattic/underscores',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '0350f48c1cdf8ff6799f8a774558b30c735a947e',
+        'reference' => 'bd81f3c4edf8dc6b0e2eeb5f67537cd94cebbbba',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'automattic/underscores' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '0350f48c1cdf8ff6799f8a774558b30c735a947e',
+            'reference' => 'bd81f3c4edf8dc6b0e2eeb5f67537cd94cebbbba',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -129,6 +129,15 @@
             'install_path' => __DIR__ . '/../phpcompatibility/phpcompatibility-wp',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'picqer/php-barcode-generator' => array(
+            'pretty_version' => 'v3.2.0',
+            'version' => '3.2.0.0',
+            'reference' => '3ef0b26ebd3996e8bb9e90fa2059a67d2e482b3e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../picqer/php-barcode-generator',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'squizlabs/php_codesniffer' => array(
             'pretty_version' => '3.12.0',

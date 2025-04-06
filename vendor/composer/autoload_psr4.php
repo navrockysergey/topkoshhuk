@@ -9,6 +9,7 @@ return array(
     'eftec\\bladeone\\' => array($vendorDir . '/eftec/bladeone/lib'),
     'WP_CLI\\I18n\\' => array($vendorDir . '/wp-cli/i18n-command/src'),
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
+    'Picqer\\Barcode\\' => array($vendorDir . '/picqer/php-barcode-generator/src'),
     'Peast\\' => array($vendorDir . '/mck89/peast/lib/Peast'),
     'Mustangostang\\' => array($vendorDir . '/wp-cli/mustangostang-spyc/src'),
     'Gettext\\Languages\\' => array($vendorDir . '/gettext/languages/src'),

@@ -9,28 +9,6 @@ function custom_terms_meta_data() {
         ->add_fields( array(
             Field::make( 'image', 'brand_bg_image', __( 'Background Image' ) )
             ->set_value_type('url') 
-            ->set_help_text( __( 'Upload an image to be used as the background for this brand.' ) ),
-            // Field::make( 'radio', 'brand_video_type', __( 'Choice type' ) )
-            //     ->add_options( array(
-            //         'file'      => __( 'File' ),
-            //         'link_href' => __( 'Link href' ),
-            //     ) ),
-            // Field::make( 'file', 'brand_video_file', __( 'Load video' ) )
-            //     ->set_type( array( 'video' ) )
-            //     ->set_conditional_logic( array(
-            //         array(
-            //             'field'   => 'brand_video_type',
-            //             'value'   => 'file',
-            //             'compare' => '=',
-            //         )
-            //     ) ),
-            // Field::make( 'text', 'brand_video_link', __( 'Link href' ) )
-            //     ->set_conditional_logic( array(
-            //         array(
-            //             'field'   => 'brand_video_type',
-            //             'value'   => 'link_href',
-            //             'compare' => '=',
-            //         )
-            //     ) ),    
+            ->set_help_text( __( 'Upload an image to be used as the background for this brand.' ) ),   
         ) );
 }

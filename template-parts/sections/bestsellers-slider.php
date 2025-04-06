@@ -42,7 +42,9 @@ if ( empty( $products ) ) {
                 $product_permalink                  = get_the_permalink( $item->ID );
                 ?>
                 <div class="item">
-                    <span class="badge badge-hit"><?php _e('Хіт'); ?></span>
+                    <div class="product-badges">
+                        <span class="product-badge hit"><?php _e('Хіт'); ?></span>
+                    </div>
                     <div class="item-image">
                         <img src="<?php echo esc_url( $product_banner_sourse_full_size )?>" alt="<?php echo esc_attr( $item->post_title )?>">
                     </div>

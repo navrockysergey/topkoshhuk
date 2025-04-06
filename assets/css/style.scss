@@ -288,6 +288,18 @@ input[type="search"]::-webkit-search-results-decoration {
     display: none;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  text-align: center;
+}
+
+
 fieldset {
     border: 0;
     padding: 0;
@@ -344,6 +356,10 @@ a.button,
 button[type="submit"],
 input[type="submit"] {
     @include button;
+}
+
+button[type="submit"] {
+    min-height: 56px;
 }
 
 header.site-header {
@@ -1023,6 +1039,12 @@ footer {
             font-size: var(--font_size_h5);
             text-transform: none;
         }
+
+        .text {
+            @include mobile {
+                font-size: var(--font_size_p2);
+            }
+        }
     }
 
     &.section-text {
@@ -1304,7 +1326,7 @@ footer {
 
 .owl-carousel {
 
-    &:not(.bestsellers) {
+    &:not(.bestsellers):not(.products) {
         padding-left: calc(var(--item_size) + var(--padding_m));
         padding-right: calc(var(--item_size) + var(--padding_m));
 
@@ -1326,13 +1348,24 @@ footer {
         }
     }
 
+    .owl-item {
+        transition: all .5s ease;
+        opacity: 1;
+
+        &:not(.active) {
+            @include desktop {
+                visibility: hidden;
+                opacity: 0;
+            }
+        }
+    }
+
     .owl-stage {
         display: flex;
         flex-wrap: wrap;
     }
 
     .owl-nav {
-
         display: flex;
         justify-content: space-between;
         margin: 0;
@@ -1343,6 +1376,10 @@ footer {
             all: unset;
 
             @include button;
+
+            svg {
+                margin: -1px;
+            }
 
             padding: var(--padding_s) !important;
             background-color: var(--color_secondary);
@@ -1362,6 +1399,8 @@ footer {
             &.disabled {
                 opacity: .2 !important;
                 cursor: default;
+                background-color: var(--color_secondary) !important;
+                border-color: var(--color_secondary) !important;
             }
         }
 
@@ -1424,6 +1463,10 @@ footer {
         position: relative;
         margin: 0 auto;
         max-width: 444px;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
 
         &.invalid {
             .wpcf7-not-valid-tip {
@@ -1580,7 +1623,13 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: var(--padding_m);
+
+    .page-numbers {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 
     .prev,
     .next {

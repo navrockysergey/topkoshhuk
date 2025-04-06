@@ -1,8 +1,6 @@
 jQuery(document).ready(function ($) {
 	
-	let baseUrl = window.location.protocol + '//' + window.location.hostname,
-		body = $('body'),
-		sliderSpeed = 1000;
+	let body = $('body');
 
 	body.addClass('ready');
 
@@ -42,61 +40,7 @@ jQuery(document).ready(function ($) {
 		e.stopPropagation();
 	});
 
-    $('.category').hover(function() {
-		let category = $(this);
-		setTimeout(function() {
-			category.addClass('active');
-		}, 300);
-		
-	}, function() {
-		let category = $(this);
-		setTimeout(function() {
-			category.removeClass('active');
-		}, 300);
-	});
-
-	let carouselDiscount = $('#carousel-discount');
-
-	carouselDiscount.owlCarousel({
-		items: 4,
-		navSpeed: sliderSpeed,
-		autoplaySpeed: sliderSpeed,
-		nav: true,
-		autoplay: true,
-		autoplayTimeout: 6000,
-		margin: 30,
-		dots: true,
-		loop: (carouselDiscount.find('.item').length > 3),
-		navText: ['<i class="fa fa-arrow-left" aria-hidden="true"></i>', '<i class="fa fa-arrow-right" aria-hidden="true"></i>'],
-		mouseDrag: true,
-		touchDrag: true,
-		dragEndSpeed: sliderSpeed,
-		dotsSpeed: sliderSpeed,
-		autoHeight: true,
-		autoplayHoverPause: true,
-		responsive: {
-			0: {
-				items: 1,
-				nav: false,
-				autoplay: false,
-				loop: (carouselDiscount.find('.item').length > 1),
-			},
-			768: {
-				items: 2,
-				autoplay: false,
-				loop: (carouselDiscount.find('.item').length > 2),
-			},
-			1024: {
-				items: 3,
-				loop: (carouselDiscount.find('.item').length > 3),
-			},
-			1200: {
-				items: 4,
-				loop: (carouselDiscount.find('.item').length > 4),
-			}
-		}
-	});
-
+	// To top
 	let $toTop = $('.to-top'),
         offset = 300;
 
@@ -114,6 +58,7 @@ jQuery(document).ready(function ($) {
 		}, 500);
 	});
 
+	// Accordion
 	$('.accordion-header').click(function () {
 		let item = $(this).closest('.accordion-item');
 		let text = item.find('.accordion-content');
@@ -129,6 +74,7 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
+	// Show more
 	$('.show-more').each(function() {
 		const $container = $(this);
 		const buttonText = $container.data('button-text');
@@ -155,6 +101,24 @@ jQuery(document).ready(function ($) {
 			});
 		}
 	});
+
+    // Sets up number input validation to only allow digits
+    function setupNumberInputValidation() {
+        $('input[type="number"]:not([readonly])').each(function() {
+            const $input = $(this);
+
+            $input.on('input', function() {
+                let value = $input.val().replace(/\D/g, '');
+                $input.val(value === '' ? '' : value);
+            });
+
+            $input.on('focus', function() {
+                $input.select();
+            });
+        });
+    }
+
+    setupNumberInputValidation();
 
 });
 

@@ -27,6 +27,7 @@ class ComposerStaticInitbdcfae9b7070136310d12b15b11066a5
         ),
         'P' => 
         array (
+            'Picqer\\Barcode\\' => 15,
             'Peast\\' => 6,
         ),
         'M' => 
@@ -60,6 +61,10 @@ class ComposerStaticInitbdcfae9b7070136310d12b15b11066a5
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
         'Peast\\' => 
         array (

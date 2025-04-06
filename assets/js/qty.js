@@ -37,7 +37,7 @@ jQuery(document).ready(function ($) {
 				is_wholesale = true;
 			} else if ((input_val + step) > in_box) {
 				step = in_box;
-	a
+	
 				new_val      = roundToNearestMultiple(in_box, input_val + step);
 				fake_val     = new_val/in_box;
 				is_wholesale = true;

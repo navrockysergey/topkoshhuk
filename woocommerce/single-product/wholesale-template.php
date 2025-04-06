@@ -15,7 +15,7 @@ $price            = $product->get_price();
 $quentity_in_box  = intval( get_post_meta( $product_id, '_box_quantity', true ) );
 $quentity_in_cart = intval( apply_filters( 'get_cart_product_count', $product_id ) );
 ?>
-<div class="product-wholesales">
+<div class="product-summary-item product-wholesales">
     <?php
     foreach ( $wholesales as $inx => $level ) :
         $active                = '';

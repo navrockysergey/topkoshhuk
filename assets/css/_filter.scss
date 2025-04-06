@@ -30,13 +30,14 @@ body main .wpc-custom-selected-terms {
         all: unset;
 
         li.wpc-filter-chip {
-            margin: 0;
+            margin: 0 0 var(--gap_s);
 
             &.wpc-chip-reset-all {
                 a {
                     all: unset;
                     color: var(--color_black);
                     font-size: var(--font_size_p2);
+                    cursor: pointer;
         
                     &:hover {
                         color: var(--color_primary);
@@ -82,8 +83,14 @@ body main .widget_wpc_filters_widget {
 
         li.wpc-term-item {
             label {
-                display: flex;
-                gap: var(--gap_s);
+                display: block;
+                position: relative;
+                padding-left: calc(18px + var(--gap_s));
+
+                &::before {
+                    position: absolute;
+                    left: 0;
+                }
             }
         }
 

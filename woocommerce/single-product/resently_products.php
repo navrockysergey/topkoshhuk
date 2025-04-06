@@ -29,7 +29,7 @@ if ( $viewed_products ) : ?>
 				<h2><?php echo esc_html( $heading ); ?></h2>
 			<?php endif; ?>
 
-			<?php woocommerce_product_loop_start(); ?>
+			<ul class="products owl-carousel" id="carousel-resently-products">
 
 				<?php foreach ( $viewed_products as $viewed_product ) : ?>
 
@@ -46,7 +46,7 @@ if ( $viewed_products ) : ?>
 
 				<?php endforeach; ?>
 
-			<?php woocommerce_product_loop_end(); ?>
+			</ul>
 		</div>
 	</section>
 
