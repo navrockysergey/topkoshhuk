@@ -19,13 +19,9 @@ add_action( 'woocommerce_account_account-data_endpoint'         , 'account_perso
 // ===================================================================================================
 
 remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_template_loop_add_to_cart', 10 );
-
-add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_count_ajax' );
-add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fragments', 10, 1 );
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
-
 add_filter( 'woocommerce_account_menu_items'                    , 'custom_account_menu_items' );
 add_filter( 'body_class'                                        , 'add_woocommerce_class_to_body' );
 
@@ -36,8 +32,7 @@ function woocommerce_single_product_summary_changes() {
     remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
     remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
     remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_sharing', 50 );
-    remove_action( 'woocommerce_before_main_content'   , 'woocommerce_breadcrumb', 20 );
-
+    
     add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_main_data', 5 );
     add_action( 'woocommerce_single_product_summary', 'woocommerce_product_box_quantity', 10 );
     add_action( 'woocommerce_single_product_summary', 'woocommerce_single_template_wholesale', 20 );
@@ -49,6 +44,7 @@ function woocommerce_single_product_summary_changes() {
     add_action( 'woocommerce_after_single_product_summary', 'woocommerce_template_resently_products', 20 );
 }
 
+remove_action( 'woocommerce_before_main_content'        , 'woocommerce_breadcrumb', 20 );
 remove_action( 'woocommerce_after_shop_loop_item_title' , 'woocommerce_template_loop_price', 10 );
 remove_action( 'woocommerce_after_shop_loop_item'       , 'woocommerce_template_loop_add_to_cart', 10 ) ;
 remove_action( 'woocommerce_cart_collaterals'           , 'woocommerce_cross_sell_display' );
@@ -59,7 +55,6 @@ add_filter( 'woocommerce_sale_flash'                    , '__return_empty_string
 add_filter( 'woocommerce_new_product_badge'             , '__return_empty_string', 10 );
 add_filter( 'gettext'                                   , 'change_woocommerce_text', 20, 3 );
 add_filter( 'ngettext'                                  , 'change_woocommerce_text', 20, 3 );
-add_filter( 'woocommerce_get_price_html'                , 'custom_price_html', 100, 2 );
 add_filter( 'wpc_filters_label_term_html'               , 'wpc_label', 10, 4 );
 add_filter( 'wpc_filters_radio_term_html'               , 'wpc_label', 10, 4 );
 add_filter( 'wpc_filters_checkbox_term_html'            , 'wpc_label', 10, 4 );
@@ -71,17 +66,6 @@ add_action( 'baza_product_before_images'                , 'show_badges_on_produc
 add_action( 'woocommerce_before_shop_loop_item_title'   , 'show_badges_in_loop', 9 );
 add_action( 'woocommerce_after_cart'                    , 'cross_sell_display' );
 add_action( 'woocommerce_before_cart'                   , 'woocommerce_output_all_notices', 5 );
-add_action( 'woocommerce_before_cart'                   , 'open_cart_wrapper', 10 );
-add_action( 'woocommerce_after_cart'                    , 'close_cart_wrapper', 5 );
-
-
-function open_cart_wrapper() {
-    echo '<div class="container cart-page-wrapper">';
-}
-
-function close_cart_wrapper() {
-    echo '</div>';
-}
 
 function cross_sell_display() {
     woocommerce_cross_sell_display(4, 4);
@@ -101,6 +85,11 @@ function change_woocommerce_text($translated_text, $text, $domain) {
         'Супутні товари' => 'Ваc може зацікавити',
         'Додати в кошик' => 'Оформити замовлення',
         'Вас також може зацікавити&hellip;' => 'Додати до замовлення',
+        'Вам також може сподобатися&hellip;' => 'Додати до замовлення',
+        'Застосувати купон' => 'Застосувати',
+        'Позиції' => 'Товарів',
+        'Перейти до оформлення' => 'Оформити замовлення',
+        'Повернутись в магазин' => 'До каталогу',
     );
     
     if (array_key_exists($translated_text, $translations)) {
@@ -163,16 +152,6 @@ function start_single_product_container() {
 
 function end_single_product_container() {
     echo '</div>';
-}
-
-function custom_price_html( $price, $product ) {
-    $price = str_replace( '&nbsp;', ' ', $price );
-
-    $price_prefix = '<span class="price-prefix">' . __('від') . '</span>';
-    $price_suffix = '<span class="price-suffix">' . __('за шт.') . '</span>';
-    $price_wrapper = '<span class="price-wrapper">' . $price . '</span>';
-
-    return $price_prefix . $price_wrapper . $price_suffix;
 }
 
 function custom_price_button_wrapper() {
@@ -508,29 +487,9 @@ function add_ukrposhta_shipping_method( $methods ) {
     return $methods;
 }
 
-// ===============================================================
-
 // Remove tabs
 function remove_all_woocommerce_tabs($tabs) {
     return array();
-}
-
-// Remove link in cart
-function custom_remove_cart_item_button( $remove_link, $cart_item_key ) {
-    $remove_link = '<a href="' . esc_url( wc_get_cart_remove_url( $cart_item_key ) ) . '" class="remove">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11.8553 1.55871C12.0506 1.36345 12.0506 1.04686 11.8553 0.8516L11.1482 0.144494C10.953 -0.0507686 10.6364 -0.0507682 10.4411 0.144494L5.99992 4.58569L1.55872 0.144494C1.36346 -0.0507686 1.04688 -0.0507687 0.851617 0.144493L0.14451 0.8516C-0.0507518 1.04686 -0.0507515 1.36345 0.144511 1.55871L4.58571 5.9999L0.144494 10.4411C-0.0507686 10.6364 -0.0507687 10.953 0.144493 11.1482L0.8516 11.8553C1.04686 12.0506 1.36344 12.0506 1.55871 11.8553L5.99992 7.41412L10.4411 11.8553C10.6364 12.0506 10.953 12.0506 11.1482 11.8553L11.8553 11.1482C12.0506 10.953 12.0506 10.6364 11.8553 10.4411L7.41413 5.9999L11.8553 1.55871Z" fill="white"/>
-                        </svg>
-                    </a>';
-    return $remove_link;
-}
-
-// Remove shipping in cart
-function disable_shipping_calc_on_cart( $show_shipping ) {
-    if( is_cart() ) {
-        return false;
-    }
-    return $show_shipping;
 }
 
 // Checkoout item display
@@ -575,6 +534,7 @@ function remove_order_details_on_order_received() {
     }
 }
 
+// Account
 function custom_account_menu_items( $items ) {
     if (isset($items['downloads'])) {
         unset($items['downloads']);

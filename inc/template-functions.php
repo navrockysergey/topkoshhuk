@@ -17,8 +17,16 @@ function baza_dev_scripts_and_styles() {
     //wp_enqueue_script( 'baza-notiny-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/notiny.min.js', array('jquery'), false);
 	wp_enqueue_script( 'baza-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/jq.js', array('jquery'), false);
 
-    if (is_product() || is_cart()) {
+    if (is_product()) {
 	    wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
+    }
+
+    if (is_cart()) {
+	    wp_enqueue_script( 'baza-cart-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/cart.js', array('jquery'), false );
+        wp_localize_script( 'baza-cart-js', 'wc_cart_params', array(
+            'ajax_url'    => admin_url( 'admin-ajax.php' ),
+            'cart_nonce'  => wp_create_nonce( 'woocommerce-cart' ),
+        ) );      
     }
 
     if (is_product()) {

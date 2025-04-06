@@ -25,23 +25,19 @@ $product_reg_price  = $product->get_regular_price();
 $product_price      = $product->get_price();
 ?>
 <div class="<?php echo esc_attr( apply_filters( 'woocommerce_product_price_class', 'price' ) ); ?>">
+
     <?php if ( $product_price < $product_reg_price ) : ?>
-        <span class="price-wrapper">
-            <del aria-hidden="true">
-                <span class="woocommerce-Price-amount amount">
-                    <bdi><?php echo wc_price( $product_reg_price ); ?></bdi>
-                </span>
+        <span class="old-price">
+            <del>
+                <?php echo wc_price( $product_reg_price ); ?>
             </del>
-            <ins aria-hidden="true">
-                <span class="woocommerce-Price-amount amount">
-                    <bdi><?php echo wc_price( $product_price ); ?></bdi>
-                </span>
-            </ins>
-        </span>
-    <?php else : ?>
-        <span class="actual-price">
-            <?php echo wc_price( $product_price ); ?>
         </span>
     <?php endif; ?>
+
+    <span class="actual-price">
+        <ins>
+            <?php echo wc_price( $product_price ); ?>
+        </ins>
+    </span>
 </div>
 

@@ -34,11 +34,17 @@ $is_shop = is_shop();
                 <?php the_content(); ?>
             </div>
         </div>
+
         <?php else: ?>
-            <?php if (get_the_content()) : ?>
-                <div class="containner">
-                    <?php the_content(); ?>
-                </div>
+
+        <div class="header-title">
+            <div class="container">
+                <h1><?php the_title(); ?></h1>
+            </div>
+        </div>
+        
+        <?php if (get_the_content()) : ?>
+            <?php the_content(); ?>
         <?php endif; ?>
 
     <?php endif; ?>

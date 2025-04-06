@@ -6,13 +6,13 @@ defined('ABSPATH') || exit;
     <?php do_action('woocommerce_before_cart_totals'); ?>
 
     <div class="cart-totals-wrapper">
-        <!-- Cart items count -->
+
         <div class="cart-items-count">
             <div class="label"><?php esc_html_e('Items', 'woocommerce'); ?>:</div>
             <div class="value">
                 <?php 
                 $item_count = WC()->cart->get_cart_contents_count();
-                echo esc_html($item_count) . ' ' . _n('item', 'items', $item_count, 'woocommerce'); 
+                echo esc_html($item_count); 
                 ?>
             </div>
         </div>
@@ -43,6 +43,11 @@ defined('ABSPATH') || exit;
                 <div class="value"><?php wc_cart_totals_fee_html($fee); ?></div>
             </div>
         <?php endforeach; ?>
+
+        <div class="order-subtotal">
+            <div class="label"><?php esc_html_e('Total', 'woocommerce'); ?>:</div>
+            <div class="value"><?php wc_cart_totals_order_total_html(); ?></div>
+        </div>
 
         <?php
         if (wc_tax_enabled() && !WC()->cart->display_prices_including_tax()) {
@@ -98,7 +103,6 @@ defined('ABSPATH') || exit;
         <?php endif; ?>
 
         <div class="order-total">
-            <div class="label"><?php esc_html_e('Total', 'woocommerce'); ?>:</div>
             <div class="value"><?php wc_cart_totals_order_total_html(); ?></div>
         </div>
 
