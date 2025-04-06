@@ -15,10 +15,16 @@ add_action( 'woocommerce_shipping_init'                         , 'init_ukrposht
 add_filter( 'woocommerce_shipping_methods'                      , 'add_ukrposhta_shipping_method' );
 add_action( 'init'                                              , 'custom_account_endpoints', 25 );
 add_action( 'woocommerce_account_account-data_endpoint'         , 'account_person_data', 25 );
+add_action( 'woocommerce_account_account-security_endpoint'     , 'account_security_data', 25 );
+add_action( 'wp_ajax_get_product_prices'                        , 'get_product_prices' );
+add_action( 'wp_ajax_nopriv_get_product_prices'                 , 'get_product_prices' );
 
 // ===================================================================================================
 
 remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_template_loop_add_to_cart', 10 );
+
+add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_count_ajax' );
+add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fragments', 10, 1 );
 add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
@@ -116,26 +122,37 @@ function change_woocommerce_text($translated_text, $text, $domain) {
     return $translated_text;
 }
 
+function product_tags( $product_id ) {
+    return wp_get_post_terms( $product_id, 'product_tag' );
+}
+
 function display_badges() {
     global $product;
     
-    if (!$product) {
+    if ( ! $product ) {
         return '';
     }
 
-    $is_new_product = carbon_get_post_meta($product->get_id(), 'product_badge_new');
-    
+    $tags = product_tags( $product->get_id() );
+
     $output = '<div class="product-badges">';
+
+    foreach ( $tags as $tag ) {
+        switch ( $tag->name ) {
+            case 'hit' :
+                $output .= '<span class="product-badge hit"><span>' . __('Хіт') . '</span></span>';
+                break;
+            case 'new' :
+                $output .= '<span class="product-badge hit"><span>' . __('Новинка') . '</span></span>';
+                break;
+        }
+    }
     
-    if ($product->is_on_sale()) {
+    if ( $product->is_on_sale() ) {
         $output .= '<span class="product-badge onsale"><span>' . __('Знижка') . '</span></span>';
     }
-
-    if ($is_new_product) {
-        $output .= '<span class="product-badge new"><span>' . __('Новинка') . '</span></span>';
-    }
     
-    if (!$product->is_in_stock()) {
+    if ( ! $product->is_in_stock() ) {
         $output .= '<span class="product-badge out-of-stock"><span>' . __('Немає в наявності') . '</span>';
     }
     
@@ -315,10 +332,10 @@ function add_wholesale_price_fields() {
     echo '<div class="options_group"><h4>'.__('Wholesale Prices', 'woocommerce').'</h4>';
 
     woocommerce_wp_text_input(array(
-        'id' => '_wholesale_prices',
-        'label' => '',
-        'desc_tip' => 'true',
-        'type' => 'hidden',
+        'id'        => '_wholesale_prices',
+        'label'     => '',
+        'desc_tip'  => 'true',
+        'type'      => 'hidden',
     ));
 
     echo '</div>';
@@ -378,7 +395,7 @@ function get_cart_product_count( $product_id ) {
 function get_who_price( int $product_id, int $qty ) {
     $product = wc_get_product( $product_id );
     $who_str = get_post_meta( $product_id, '_wholesale_prices', true );
-    $out = 0;
+    $out     = 0;
 
     if ( empty( $who_str ) ) {
         $out = $product->get_price();
@@ -413,6 +430,30 @@ function dinamyc_set_price( $cart ) {
 
         $cart_item['data']->set_price( $price );
     }
+}
+
+function product_prices( $product_id, $qty = false ) {
+    $product    = wc_get_product( $product_id );
+    $who_price  = get_who_price( $product_id, $qty );
+
+    if ( ! $qty ) $qty = get_cart_product_count( $product_id );
+
+    return [
+        'has_sale'  => intval( $product->get_price() ) < intval( $product->get_regular_price() ) || 0 < $who_price,
+        'regular'   => wc_price( $product->get_regular_price() ),
+        'price'     => wc_price( $product->get_price() ),
+        'who_price' => 0 < $who_price ? wc_price( $who_price ) : $who_price,
+    ];
+}
+
+function get_product_prices() {
+    if ( ! isset( $_POST['prodId'] ) || ! isset( $_POST['prodQty'] ) ) {
+        return;
+    }
+
+    $result = product_prices( intval( $_POST['prodId'] ) , intval( $_POST['prodQty'] ) );
+
+    wp_send_json( $result );
 }
 
 function saved_resently_product() {
