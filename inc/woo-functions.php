@@ -15,6 +15,7 @@ add_action( 'woocommerce_shipping_init'                         , 'init_ukrposht
 add_filter( 'woocommerce_shipping_methods'                      , 'add_ukrposhta_shipping_method' );
 add_action( 'init'                                              , 'custom_account_endpoints', 25 );
 add_action( 'woocommerce_account_account-data_endpoint'         , 'account_person_data', 25 );
+add_action( 'woocommerce_account_account-security_endpoint'     , 'account_security_data', 25 );
 add_action( 'wp_ajax_get_product_prices'                        , 'get_product_prices' );
 add_action( 'wp_ajax_nopriv_get_product_prices'                 , 'get_product_prices' );
 
