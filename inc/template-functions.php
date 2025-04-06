@@ -181,3 +181,17 @@ add_filter( 'get_custom_excerpt', 'get_custom_excerpt', 10 );
 
 remove_filter( 'the_content', 'wpautop' );
 add_filter( 'wpcf7_autop_or_not', '__return_false' );
+
+function category_container_before() {
+    register_sidebar(
+        array(
+            'name'          => 'Category Container Before',
+            'id'            => 'category_container_before',
+            'before_widget' => '<div class="item">',
+            'after_widget'  => '</div>',
+            'before_title'  => '<h2 class="widget-title">',
+            'after_title'   => '</h2>',
+        )
+    );
+}
+add_action('widgets_init', 'category_container_before');

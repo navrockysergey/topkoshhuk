@@ -58,6 +58,8 @@ add_filter( 'ngettext'                                  , 'change_woocommerce_te
 add_filter( 'wpc_filters_label_term_html'               , 'wpc_label', 10, 4 );
 add_filter( 'wpc_filters_radio_term_html'               , 'wpc_label', 10, 4 );
 add_filter( 'wpc_filters_checkbox_term_html'            , 'wpc_label', 10, 4 );
+add_filter( 'woocommerce_catalog_orderby'               , 'custom_woocommerce_catalog_orderby', 20 );
+add_filter( 'woocommerce_default_catalog_orderby'       , 'custom_default_catalog_orderby', 20 ); 
 
 add_action( 'woocommerce_after_shop_loop_item'          , 'custom_price_button_wrapper', 10 );
 add_action( 'woocommerce_before_single_product_summary' , 'start_single_product_container', 5 );
@@ -66,6 +68,21 @@ add_action( 'baza_product_before_images'                , 'show_badges_on_produc
 add_action( 'woocommerce_before_shop_loop_item_title'   , 'show_badges_in_loop', 9 );
 add_action( 'woocommerce_after_cart'                    , 'cross_sell_display' );
 add_action( 'woocommerce_before_cart'                   , 'woocommerce_output_all_notices', 5 );
+
+function custom_woocommerce_catalog_orderby( $sortby ) {
+    unset($sortby['rating']);
+    unset($sortby['date']);
+    
+    $sortby['popularity'] = __('Популярні');
+    $sortby['price'] = __('Дешевші');
+    $sortby['price-desc'] = __('Дорожчі');
+    
+    return $sortby;
+}
+
+function custom_default_catalog_orderby( $default_orderby ) {
+    return 'popularity';
+}
 
 function cross_sell_display() {
     woocommerce_cross_sell_display(4, 4);
@@ -116,10 +133,6 @@ function display_badges() {
 
     if ($is_new_product) {
         $output .= '<span class="product-badge new"><span>' . __('Новинка') . '</span></span>';
-    }
-
-    if ($is_hit) {
-        $output .= '<span class="product-badge hit"><span>' . __('Хіт') . '</span></span>';
     }
     
     if (!$product->is_in_stock()) {

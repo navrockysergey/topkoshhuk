@@ -140,5 +140,62 @@ jQuery(document).ready(function ($) {
 	$(document.body).on('click', '.woocommerce-cart .checkout-button.disabled', function(e) {
 		e.preventDefault();
 	});
+
+	function categoryOrderby() {
+		const $select = $('select.orderby, select.wpc-orderby-select');
+		if (!$select.length) return;
+		
+		const $ulWrapper = $('<ul>', { class: 'select-wrapper' });
+		const $li = $('<li>');
+		const $selected = $('<a>', { class: 'selected', href: '#' });
+		const $ulDropdown = $('<ul>', { class: 'select-list' });
+		
+		$select.find('option').each(function() {
+			const value = $(this).val();
+			const text = $(this).text();
+			const isActive = value === $select.val();
+			
+			const $option = $('<li>', { 
+				'data-value': value, 
+				text: text,
+				class: isActive ? 'active' : ''
+			});
+			
+			$ulDropdown.append($option);
+			if (isActive) $selected.text(text);
+		});
+		
+		$li.append($selected, $ulDropdown);
+		$ulWrapper.append($li);
+		$select.after($ulWrapper).hide();
+
+		$(document).on('click', function(e) {
+			if (!$(e.target).closest('.select-wrapper').length) {
+				$ulDropdown.removeClass('active');
+			}
+		});
+		
+		$selected.on('click', function(e) {
+			e.preventDefault();
+			$ulDropdown.toggleClass('active');
+		});
+		
+		$ulDropdown.on('click', 'li:not(.active)', function() {
+			const value = $(this).data('value');
+			const text = $(this).text();
+			$ulDropdown.find('li').removeClass('active');
+			$(this).addClass('active');
+			$selected.text(text);
+			$select.val(value).change();
+			$ulDropdown.removeClass('active');
+		});
+	}	
+
+	categoryOrderby();
+
+	$(document).on('ready', function(e){
+		categoryOrderby();
+		removeNbsp();
+	});
 });
 
