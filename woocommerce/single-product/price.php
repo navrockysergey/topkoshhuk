@@ -39,9 +39,5 @@ $product_price      = $product->get_price();
             <?php echo wc_price( $product_price ); ?>
         </ins>
     </span>
-
-    <span class="actual-price">
-        <?php echo wc_price( $product_price ); ?>
-    </span>
 </div>
 
