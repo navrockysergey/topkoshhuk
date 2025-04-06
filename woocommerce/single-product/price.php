@@ -28,7 +28,7 @@ $product_price      = $product->get_price();
 
     <?php if ( $product_price < $product_reg_price ) : ?>
         <span class="old-price">
-            <del>
+            <del aria-hidden="true">
                 <?php echo wc_price( $product_reg_price ); ?>
             </del>
         </span>
@@ -38,6 +38,10 @@ $product_price      = $product->get_price();
         <ins>
             <?php echo wc_price( $product_price ); ?>
         </ins>
+    </span>
+
+    <span class="actual-price">
+        <?php echo wc_price( $product_price ); ?>
     </span>
 </div>
 
