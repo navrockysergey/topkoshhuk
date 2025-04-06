@@ -117,6 +117,10 @@ function display_badges() {
     if ($is_new_product) {
         $output .= '<span class="product-badge new"><span>' . __('Новинка') . '</span></span>';
     }
+
+    if ($is_hit) {
+        $output .= '<span class="product-badge hit"><span>' . __('Хіт') . '</span></span>';
+    }
     
     if (!$product->is_in_stock()) {
         $output .= '<span class="product-badge out-of-stock"><span>' . __('Немає в наявності') . '</span>';

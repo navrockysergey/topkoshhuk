@@ -29,7 +29,7 @@ if ( ! $products->have_posts() ) {
             ?>
         </div>
 
-        <div class="products">
+        <div class="products new-products">
             <?php
             while( $products->have_posts() ):
                 $products->the_post();

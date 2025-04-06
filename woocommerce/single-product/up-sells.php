@@ -31,7 +31,7 @@ if ( $upsells ) : ?>
 				<h2><?php echo esc_html( $heading ); ?></h2>
 			<?php endif; ?>
 
-			<?php woocommerce_product_loop_start(); ?>
+			<ul class="products owl-carousel" id="carousel-upsells-products">
 
 				<?php foreach ( $upsells as $upsell ) : ?>
 
@@ -45,7 +45,7 @@ if ( $upsells ) : ?>
 
 				<?php endforeach; ?>
 
-			<?php woocommerce_product_loop_end(); ?>
+			</ul>
 		</div>
 	</section>
 

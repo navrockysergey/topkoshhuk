@@ -478,9 +478,19 @@
 .category-side > * + * {
   margin-top: var(--padding_s);
 }
+@media (max-width: 767px) {
+  .category-side {
+    padding: 0;
+  }
+}
 
 .category-main {
   padding: var(--padding_m) 0;
+}
+@media (max-width: 767px) {
+  .category-main {
+    padding: var(--padding_s) 0 var(--padding_m);
+  }
 }
 
 .category-container {
@@ -930,6 +940,33 @@ ul.products:not(.owl-carousel) {
   grid-template-columns: repeat(3, 1fr);
   gap: var(--gap_m);
 }
+@media (min-width: 768px) and (max-width: 1024px) {
+  .products:not(.owl-carousel),
+  ul.products:not(.owl-carousel) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  .products:not(.owl-carousel),
+  ul.products:not(.owl-carousel) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap_s);
+  }
+}
+@media (max-width: 767px) and (max-width: 767px) {
+  .products:not(.owl-carousel) .product-sku-wrapper,
+  ul.products:not(.owl-carousel) .product-sku-wrapper {
+    display: none !important;
+  }
+}
+@media (max-width: 767px) and (max-width: 767px) {
+  .products:not(.owl-carousel) .price,
+  ul.products:not(.owl-carousel) .price {
+    flex-direction: column;
+    font-size: var(--font_size_h5);
+    align-items: flex-start;
+  }
+}
 @media (max-width: 767px) {
   .products.owl-carousel,
   ul.products.owl-carousel {
@@ -952,18 +989,6 @@ ul.products.owl-carousel .owl-item {
 .products.owl-carousel .product,
 ul.products.owl-carousel .product {
   flex: 1;
-}
-@media (min-width: 768px) and (max-width: 1024px) {
-  .products,
-  ul.products {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 767px) {
-  .products,
-  ul.products {
-    grid-template-columns: repeat(1, 1fr);
-  }
 }
 .products::before, .products::after,
 ul.products::before,
@@ -999,7 +1024,7 @@ ul.products li.product.product-brand {
   background-color: var(--color_black);
   padding: 0;
 }
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (max-width: 1023px) {
   .products .product.product-brand,
   .products li.product.product-brand,
   ul.products .product.product-brand,
@@ -1128,6 +1153,14 @@ ul.products li.product .woocommerce-loop-product__title {
   display: block;
   margin: 0;
   padding: 0;
+}
+@media (max-width: 767px) {
+  .products .product .woocommerce-loop-product__title,
+  .products li.product .woocommerce-loop-product__title,
+  ul.products .product .woocommerce-loop-product__title,
+  ul.products li.product .woocommerce-loop-product__title {
+    font-size: var(--font_size_p3);
+  }
 }
 .products .product img,
 .products li.product img,

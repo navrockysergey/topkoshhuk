@@ -1001,6 +1001,10 @@ footer {
                 text-align: center;
                 color: var(--color_white);
 
+                @include mobile {
+                    gap: var(--gap_xs);
+                }
+
                 .advantage-item-icon {
                     width: 48px;
                     height: 48px;
@@ -1030,6 +1034,10 @@ footer {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+
+                    p {
+                        margin: 0;
+                    }
                 }
             }
         }
@@ -1181,6 +1189,21 @@ footer {
     @include mobile {
         padding-top: var(--padding_m);
         padding-bottom: var(--padding_m);
+
+        .owl-carousel {
+            padding: 0 !important;
+            margin-left: calc(var(--padding_m) * -1);
+            margin-right: calc(var(--padding_m) * -1);
+            width: auto;
+
+            .owl-prev {
+                left: var(--padding_m) !important;
+            }
+
+            .owl-next {
+                right: var(--padding_m) !important;
+            }
+        }
     }
 
     .section-category-hero & {
@@ -1208,6 +1231,11 @@ footer {
         gap: var(--gap_m);
         text-align: center;
         color: var(--color_white);
+
+        @include mobile {
+            padding-left: calc(var(--padding_l) * 2);
+            padding-right: calc(var(--padding_l) * 2);
+        }
 
         &.active,
         &:hover {

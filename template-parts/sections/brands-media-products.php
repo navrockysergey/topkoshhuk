@@ -29,7 +29,7 @@ if ( empty( $brans_media_products_terms ) ) {
             $products = new WP_Query( $prod_args );
         ?>
             <div class="brand-products">
-                <div class="products">
+                <div class="products brands-products">
                     <li class="product product-brand">
                         <a class="product-brand-link" href="<?php echo $term_link?>" style="background-image: url(<?php echo esc_url($brand_bg_image)?>)">
                             <img src="<?php echo esc_url($brand_media_preview_src)?>" alt="<?php _e('Виробник')?>">

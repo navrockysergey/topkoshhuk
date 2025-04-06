@@ -1178,6 +1178,11 @@ footer ul {
   text-align: center;
   color: var(--color_white);
 }
+@media (max-width: 767px) {
+  .section.section-advantages .advantage-items .advantage-item {
+    gap: var(--gap_xs);
+  }
+}
 .section.section-advantages .advantage-items .advantage-item .advantage-item-icon {
   width: 48px;
   height: 48px;
@@ -1203,6 +1208,9 @@ footer ul {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.section.section-advantages .advantage-items .advantage-item .advantage-item-description p {
+  margin: 0;
 }
 .section.section-bestsellers {
   padding-bottom: 0;
@@ -1335,6 +1343,18 @@ footer ul {
     padding-top: var(--padding_m);
     padding-bottom: var(--padding_m);
   }
+  .main-category .owl-carousel {
+    padding: 0 !important;
+    margin-left: calc(var(--padding_m) * -1);
+    margin-right: calc(var(--padding_m) * -1);
+    width: auto;
+  }
+  .main-category .owl-carousel .owl-prev {
+    left: var(--padding_m) !important;
+  }
+  .main-category .owl-carousel .owl-next {
+    right: var(--padding_m) !important;
+  }
 }
 .section-category-hero .main-category {
   padding: 0;
@@ -1356,6 +1376,12 @@ footer ul {
   gap: var(--gap_m);
   text-align: center;
   color: var(--color_white);
+}
+@media (max-width: 767px) {
+  .main-category .item {
+    padding-left: calc(var(--padding_l) * 2);
+    padding-right: calc(var(--padding_l) * 2);
+  }
 }
 .main-category .item.active, .main-category .item:hover {
   color: var(--color_w);
