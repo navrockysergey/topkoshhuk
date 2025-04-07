@@ -218,5 +218,18 @@ function custom_posts_gutenberg_blocks() {
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
             include_once __THEME_DIR__ . '/template-parts/sections/vacancies-section.php';
-        } );    
+        } );
+
+    // Stores
+    Block::make( 'stores_block', __( 'Stores' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'stores_list_sep', __( 'Stores' ) ),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'admin-multisite' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            // extract( $fields );
+            include_once __THEME_DIR__ . '/template-parts/sections/stores-section.php';
+        } );
 }
