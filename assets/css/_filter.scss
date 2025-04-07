@@ -83,16 +83,9 @@ body main .widget_wpc_filters_widget {
             gap: 0;
         }
 
-        li.wpc-term-item {
-            label {
-                display: block;
-                position: relative;
-                padding-left: calc(18px + var(--gap_s));
-
-                &::before {
-                    position: absolute;
-                    left: 0;
-                }
+        .wpc-checkbox-item {
+            .wpc-term-item-content-wrapper {
+                @include checkbox;
             }
         }
 

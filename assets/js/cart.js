@@ -1,35 +1,36 @@
 jQuery(document).ready(function($) {
-
     let timer;
+    let isAdjusting = false;
+    let delay = 500
     
-    $(document).on('click', '.qty-plus', function(e) {
+    $(document).on('click', '.qty-plus, .qty-minus', function(e) {
         e.preventDefault();
+        
+        clearTimeout(timer);
         
         const $input = $(this).siblings('.quantity').find('.qty');
         const currentVal = parseFloat($input.val()) || 0;
-        const max = parseFloat($input.attr('max'));
         
-        if (!max || currentVal < max) {
-            $input.val(currentVal + 1);
-            ajaxUpdateCart($input);
+        if ($(this).hasClass('qty-plus')) {
+            const max = parseFloat($input.attr('max'));
+            if (!max || currentVal < max) {
+                $input.val(currentVal + 1);
+            }
+        } else {
+            const min = parseFloat($input.attr('min')) || 0;
+            if (currentVal > min) {
+                $input.val(currentVal - 1);
+            }
         }
-    });
-
-    $(document).on('click', '.qty-minus', function(e) {
-        e.preventDefault();
         
-        const $input = $(this).siblings('.quantity').find('.qty');
-        const currentVal = parseFloat($input.val()) || 0;
-        const min = parseFloat($input.attr('min')) || 0;
+        isAdjusting = true;
         
-        if (currentVal > min) {
-            $input.val(currentVal - 1);
+        timer = setTimeout(function() {
+            isAdjusting = false;
             ajaxUpdateCart($input);
-        }
-    });
-
-    $(document).on('change', '.qty', function() {
-        ajaxUpdateCart($(this));
+        }, delay);
+        
+        $('button[name="update_cart"]').prop('disabled', false);
     });
 
     $(document).on('input', '.qty', function() {
@@ -38,10 +39,14 @@ jQuery(document).ready(function($) {
         
         timer = setTimeout(function() {
             ajaxUpdateCart($input);
-        }, 500);
+        }, delay);
     });
 
     function ajaxUpdateCart($input) {
-        
+
+        if (!isAdjusting) {
+            $('button[name="update_cart"]').trigger('click');
+        }
     }
 });
+

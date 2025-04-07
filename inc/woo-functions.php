@@ -26,7 +26,6 @@ remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_t
 add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_count_ajax' );
 add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fragments', 10, 1 );
-add_filter( 'woocommerce_cart_item_name'                        , 'checkoout_item_display', 10, 3 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
 add_filter( 'woocommerce_account_menu_items'                    , 'custom_account_menu_items' );
 add_filter( 'body_class'                                        , 'add_woocommerce_class_to_body' );
@@ -65,7 +64,9 @@ add_filter( 'wpc_filters_label_term_html'               , 'wpc_label', 10, 4 );
 add_filter( 'wpc_filters_radio_term_html'               , 'wpc_label', 10, 4 );
 add_filter( 'wpc_filters_checkbox_term_html'            , 'wpc_label', 10, 4 );
 add_filter( 'woocommerce_catalog_orderby'               , 'custom_woocommerce_catalog_orderby', 20 );
-add_filter( 'woocommerce_default_catalog_orderby'       , 'custom_default_catalog_orderby', 20 ); 
+add_filter( 'woocommerce_default_catalog_orderby'       , 'custom_default_catalog_orderby', 20 );
+
+add_filter( 'woocommerce_cart_needs_shipping'           , 'remove_shipping_only_from_cart' );
 
 add_action( 'woocommerce_after_shop_loop_item'          , 'custom_price_button_wrapper', 10 );
 add_action( 'woocommerce_before_single_product_summary' , 'start_single_product_container', 5 );
@@ -74,6 +75,13 @@ add_action( 'baza_product_before_images'                , 'show_badges_on_produc
 add_action( 'woocommerce_before_shop_loop_item_title'   , 'show_badges_in_loop', 9 );
 add_action( 'woocommerce_after_cart'                    , 'cross_sell_display' );
 add_action( 'woocommerce_before_cart'                   , 'woocommerce_output_all_notices', 5 );
+
+function remove_shipping_only_from_cart($needs_shipping) {
+    if (is_cart()) {
+        return false;
+    }
+    return $needs_shipping;
+}
 
 function custom_woocommerce_catalog_orderby( $sortby ) {
     unset($sortby['rating']);
@@ -113,6 +121,7 @@ function change_woocommerce_text($translated_text, $text, $domain) {
         'Позиції' => 'Товарів',
         'Перейти до оформлення' => 'Оформити замовлення',
         'Повернутись в магазин' => 'До каталогу',
+        'Платіжні дані' => 'Дані покупця',
     );
     
     if (array_key_exists($translated_text, $translations)) {
@@ -143,7 +152,7 @@ function display_badges() {
                 $output .= '<span class="product-badge hit"><span>' . __('Хіт') . '</span></span>';
                 break;
             case 'new' :
-                $output .= '<span class="product-badge hit"><span>' . __('Новинка') . '</span></span>';
+                $output .= '<span class="product-badge new"><span>' . __('Новинка') . '</span></span>';
                 break;
         }
     }
@@ -548,40 +557,6 @@ function add_ukrposhta_shipping_method( $methods ) {
 // Remove tabs
 function remove_all_woocommerce_tabs($tabs) {
     return array();
-}
-
-// Checkoout item display
-function checkoout_item_display($name, $cart_item, $cart_item_key) {
-    if (!is_checkout()) {
-        return $name;
-    }
-    
-    $product = $cart_item['data'];
-    $quantity = $cart_item['quantity'];
-    $thumbnail = $product->get_image(array(100, 100));
-    $title = $product->get_title();
-    
-    $variation_html = '';
-    if (!empty($cart_item['variation'])) {
-        $variation_html = '<div class="product-variation">';
-        foreach ($cart_item['variation'] as $attribute => $value) {
-            $attribute_name = str_replace('attribute_', '', $attribute);
-            $attribute_label = wc_attribute_label($attribute_name);
-            $variation_html .= '<div class="variation-item">' . $attribute_label . ': <span>' . $value . '</span></div>';
-        }
-        $variation_html .= '</div>';
-    }
-
-    $output = '<div class="checkout-product-wrapper">';
-    $output .= '<div class="product-image">' . $thumbnail . '</div>';
-    $output .= '<div class="product-details">';
-    $output .= '<div class="product-title">' . $title . '</div>';
-    $output .= '<div class="product-quantity">' . __('Quantity', 'woocommerce') . ': <span>' . $quantity . '</span></div>';
-    $output .= $variation_html;
-    $output .= '</div>';
-    $output .= '</div>';
-    
-    return $output;
 }
 
 // Remove sections from woocommerce thankyou

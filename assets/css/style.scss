@@ -53,12 +53,12 @@
 
     @include m(tablet_h) {
         --container_padding: 48px;
-        --container: 1140px;
+        --container: 100%;
     }
 
     @include m(tablet_p) {
         --container_padding: 48px;
-        --container: 960px;
+        --container: 100%;
     }
 
 }
@@ -110,20 +110,20 @@ input:-webkit-autofill {
     box-shadow: 0 0 0px 1000px transparent inset !important;
 }
 
-input[type="radio"],
-input[type="checkbox"] {
-    display: none;
+input[type="radio"] {
+    display: none !important;
 
-    +span,
-    +label {
+    + span,
+    + label {
         display: flex;
         align-items: center;
         cursor: pointer;
         user-select: none;
-        line-height: 1;
         text-align: left;
         margin: 0;
         color: var(--color_black);
+        position: relative;
+        padding-left: calc(18px + var(--gap_s));
 
         a {
             color: var(--color_black);
@@ -135,35 +135,28 @@ input[type="checkbox"] {
 
         &:before {
             content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 16px;
-            min-width: 16px;
-            height: 16px;
-            border-radius: 6px;
+            width: 18px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
             border: 1px solid var(--color_secondary);
             transition: .5s ease;
-        }
-
-        &:hover {
-            &::before {
-                &::before {
-                    border-color: var(--color_primary);
-                }
-            }
         }
     }
 
     &:checked {
-
+    
         +span,
         +label {
 
             &:before {
-                background-color: var(--color_primary);
-                border-color: var(--color_primary);
-                color: var(--color_white);
+                box-shadow: inset 0 0 0 5px var(--color_primary);
             }
         }
     }
@@ -255,6 +248,7 @@ button {
 
 textarea {
     min-height: 100px;
+    resize: vertical;
 }
 
 button {
@@ -1207,7 +1201,7 @@ footer {
     border-top: 1px solid var(--color_grey);
     border-bottom: 1px solid var(--color_grey);
 
-    @include mobile {
+    @include max1024 {
         padding-top: var(--padding_m);
         padding-bottom: var(--padding_m);
 
@@ -1402,18 +1396,6 @@ footer {
 
             button.owl-prev {
                 transform: translate(0, -50%) rotate(180deg);
-            }
-        }
-    }
-
-    .owl-item {
-        transition: all .5s ease;
-        opacity: 1;
-
-        &:not(.active) {
-            @include desktop {
-                visibility: hidden;
-                opacity: 0;
             }
         }
     }
@@ -1681,43 +1663,48 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: var(--padding_m);
+    margin-top: var(--padding_l);
+    margin-bottom: var(--padding_m);
 
-    .page-numbers {
+    ul {
         list-style: none;
         padding: 0;
         margin: 0;
-    }
-
-    .prev,
-    .next {
-        display: none !important;
-    }
-
-    .nav-links {
         display: flex;
-        gap: 30px;
+        align-items: center;
+        gap: var(--gap_s);
     }
 
-    a {
-        color: var(--color_black_2);
-    }
-
-    .page-numbers {
+    span.page-numbers,
+    a.page-numbers {
+        padding: 0;
+        margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 8px 15px;
-        border-radius: 5px;
+        padding: var(--padding_xs);
+        border-radius: var(--radius);
         text-align: center;
         line-height: 1;
-        gap: 15px;
+        background-color: var(--color_white);
+        color: var(--color_black);
+        min-width: 40px;
+
+        &:hover:not(.current) {
+            background-color: var(--color_primary);
+            color: var(--color_white);
+        }
 
         &.current {
             background-color: var(--color_secondary);
             color: var(--color_white);
             text-decoration: none;
         }
+    }
+
+    .prev,
+    .next {
+        display: none !important;
     }
 }
 

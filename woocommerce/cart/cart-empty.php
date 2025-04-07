@@ -24,7 +24,7 @@ do_action( 'woocommerce_cart_is_empty' );
 
 if ( wc_get_page_id( 'shop' ) > 0 ) : ?>
 <div class="container">
-	<div class="cart-empty">
+	<div class="block-cart-empty">
 		<h2><?php _e('Кошик порожній'); ?></h2>
 		<p><?php _e('В нашому каталозі ви знайдете широкий асортимент спецій та приправ від виробника.'); ?></p>
 		<div class="return-to-shop">

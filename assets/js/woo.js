@@ -111,7 +111,7 @@ jQuery(document).ready(function ($) {
 				},
 				768: {
 					items: 2,
-					nav: true,
+					nav: false,
 					dots: false,
 					margin: 12,
 					stagePadding: 34,
@@ -119,11 +119,11 @@ jQuery(document).ready(function ($) {
 				},
 				1024: {
 					items: 2,
-					nav: true,
+					nav: false,
 					dots: false,
-					margin: 24,
-					stagePadding: 0,
-					loop: false,
+					margin: 12,
+					stagePadding: 48,
+					loop: true,
 				},
 				1200: {
 					items: 3,

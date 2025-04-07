@@ -24,13 +24,13 @@ defined('ABSPATH') || exit;
             </div>
         <?php endforeach; ?>
 
-        <?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
+        <?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping() && !is_checkout()) : ?>
             <div class="shipping-wrapper">
                 <?php do_action('woocommerce_cart_totals_before_shipping'); ?>
                 <?php wc_cart_totals_shipping_html(); ?>
                 <?php do_action('woocommerce_cart_totals_after_shipping'); ?>
             </div>
-        <?php elseif (WC()->cart->needs_shipping() && 'yes' === get_option('woocommerce_enable_shipping_calc')) : ?>
+        <?php elseif (WC()->cart->needs_shipping() && 'yes' === get_option('woocommerce_enable_shipping_calc') && !is_checkout()) : ?>
             <div class="shipping-wrapper">
                 <div class="label"><?php esc_html_e('Shipping', 'woocommerce'); ?>:</div>
                 <div class="value"><?php woocommerce_shipping_calculator(); ?></div>
@@ -109,9 +109,13 @@ defined('ABSPATH') || exit;
         <?php do_action('woocommerce_cart_totals_after_order_total'); ?>
     </div>
 
-    <div class="wc-proceed-to-checkout">
-        <?php do_action('woocommerce_proceed_to_checkout'); ?>
-    </div>
+    <?php if( !is_checkout() ): ?>
+
+        <div class="wc-proceed-to-checkout">
+            <?php do_action('woocommerce_proceed_to_checkout'); ?>
+        </div>
+
+    <?php endif; ?>
 
     <?php do_action('woocommerce_after_cart_totals'); ?>
 

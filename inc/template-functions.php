@@ -19,9 +19,10 @@ function baza_dev_scripts_and_styles() {
 
     if (is_product()) {
 	    wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
+        wp_enqueue_script( 'baza-product-gallery-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/product-gallery.js', array('jquery'), false);
     }
 
-    if (is_cart()) {
+    if (is_cart() || is_checkout()) {
 	    wp_enqueue_script( 'baza-cart-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/cart.js', array('jquery'), false );
         wp_localize_script( 'baza-cart-js', 'wc_cart_params', array(
             'ajax_url'    => admin_url( 'admin-ajax.php' ),
@@ -29,8 +30,14 @@ function baza_dev_scripts_and_styles() {
         ) );      
     }
 
-    if (is_product()) {
-        wp_enqueue_script( 'baza-product-gallery-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/product-gallery.js', array('jquery'), false);
+    if (is_checkout()) {
+        wp_enqueue_script(
+            'woocommerce-add-to-cart',
+            get_template_directory_uri() . '/wp-content/plugins/woocommerce/assets/js/frontend/cart.min.js',
+            array('jquery'),
+            false,
+            true
+        );
     }
 
     // CSS
