@@ -2,6 +2,7 @@
 $vacanсies = apply_filters( 'get_vacancies', false );
 
 if ( ! $vacanсies->have_posts() ) {
+    // TODO: Create window  
     echo "Vacansies not fount";
     return;
 }
