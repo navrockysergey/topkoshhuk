@@ -187,9 +187,28 @@ function custom_posts_gutenberg_blocks() {
         ) )
         ->set_category( 'top-koshik' )
         ->set_mode( 'both' )
-        ->set_icon( 'admin-post' )
+        ->set_icon( 'welcome-view-site' )
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
             include_once __THEME_DIR__ . '/template-parts/sections/text-section.php';
         } );
+
+    // Vacancies
+    Block::make( 'vacancies_list', __( 'Vacancies' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'vacancies_list_sep', __( 'Vacancies list' ) ),
+            Field::make( 'text', 'vacancies_block_title', __( 'Block title' ) ),
+            Field::make( 'complex', 'vacancies_block_offers', __( 'Offers' ) )
+                ->set_collapsed( true )
+                ->add_fields(  array(
+                    Field::make( 'text', 'single_offer', __( 'Offer title' ) )
+                )),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'groups' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            extract( $fields );
+            include_once __THEME_DIR__ . '/template-parts/sections/vacancies-section.php';
+        } );    
 }
