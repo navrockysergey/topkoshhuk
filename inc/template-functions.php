@@ -206,3 +206,81 @@ function category_container_before() {
     );
 }
 add_action('widgets_init', 'category_container_before');
+
+// ====================================================================================================
+
+add_action( 'init' , 'create_posts_types' );
+function create_posts_types() {
+    register_post_type( 'vacancie', [
+        'label'  => null,
+        'labels' => [
+            'name'               => __( 'Vacancies' ),
+            'singular_name'      => __( 'Vacancies' ),
+            'add_new'            => __( 'Add Vacancie' ),
+            'add_new_item'       => __( 'Add Vacancie' ),
+            'edit_item'          => __( 'Edit Vacancie' ),
+            'new_item'           => __( 'Add Vacancie' ),
+            'view_item'          => __( 'View Vacancie' ),
+            'search_items'       => __( 'Add Vacancies' ),
+            'not_found'          => __( 'Not found' ),
+            'not_found_in_trash' => __( 'Not found' ),
+            'menu_name'          => __( 'Vacancies' ),
+        ],
+        'description'         => '',
+        'public'              => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => false,
+        'menu_icon'           => 'dashicons-groups',
+        'hierarchical'        => false,
+        'supports'            => [ 'title', 'editor', 'excerpt' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+        'taxonomies'          => [],
+        'has_archive'         => false,
+        'rewrite'             => true,
+        'query_var'           => true,
+    ] );
+}
+
+add_action( 'init' , 'create_taxonomies' );
+function create_taxonomies() {
+    register_taxonomy( 'department', ['vacancie'], [
+        'labels'                => [
+                'name'              => 'Departments',
+                'singular_name'     => 'Department',
+                'search_items'      => 'Search Departments',
+                'all_items'         => 'All Departments',
+                'view_item '        => 'View Department',
+                'edit_item'         => 'Edit Department',
+                'update_item'       => 'Update Department',
+                'add_new_item'      => 'Add New Department',
+                'new_item_name'     => 'New Department Name',
+                'menu_name'         => 'Departments',
+                'back_to_items'     => '← Back to Department',
+            ],
+        'public'                => true,
+        'hierarchical'          => true,
+        'rewrite'               => true,
+        'show_in_rest'          => true,
+    ] );
+}
+
+add_filter( 'get_vacancies', 'get_vacancies' );
+function get_vacancies( $category = false ) {
+    $vacancies_args = [
+        'post_type'   => 'vacancie',
+        'post_status' => 'publish',
+    ];
+
+    if ( $category ) {
+        $vacancies_args['tax_query'] = [
+            'taxonomy' => 'department',
+            'field'    => 'slug',
+            'terms'    =>  $category,
+        ];
+    }
+
+    $vacanсies = new WP_Query( $vacancies_args );
+
+    wp_reset_postdata();
+
+    return $vacanсies;
+}

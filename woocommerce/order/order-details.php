@@ -56,5 +56,13 @@ $show_customer_details = $order->get_user_id() === get_current_user_id();
 				)
 			);
 		endforeach;
+
+		do_action( 'woocommerce_order_details_after_order_table', $order );
+		
+		do_action( 'woocommerce_after_order_details', $order );
+
+		if ( $show_customer_details ) {
+			wc_get_template( 'order/order-details-customer.php', array( 'order' => $order ) );
+		}
 	?>
 </div>
