@@ -433,11 +433,12 @@ function get_who_price( int $product_id, int $qty ) {
 
 function dinamyc_set_price( $cart ) {
     foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
-         $id = $cart_item['variation_id'] > 0 ? $cart_item['variation_id'] : $cart_item["product_id"];
+         $id        = $cart_item['variation_id'] > 0 ? $cart_item['variation_id'] : $cart_item["product_id"];
+         $who_price = get_who_price( $id, $cart_item["quantity"] );
 
-         $price = get_who_price( $id, $cart_item["quantity"] );
-
-        $cart_item['data']->set_price( $price );
+        if( 0 < $who_price ) {
+            $cart_item['data']->set_price( $who_price );
+        }
     }
 }
 

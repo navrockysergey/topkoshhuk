@@ -202,8 +202,16 @@ function custom_posts_gutenberg_blocks() {
                 ->set_collapsed( true )
                 ->add_fields(  array(
                     Field::make( 'text', 'single_offer', __( 'Offer title' ) )
-                )),
+                ))
+                ->set_header_template( '
+                    <% if (single_offer) { %>
+                        <%- single_offer %>
+                    <% } %>
+                ' ),
+            Field::make( 'text', 'vacancies_second_block_title', __( 'Second block title' ) ),
         ) )
+        ->set_inner_blocks( true )
+        ->set_inner_blocks_position( 'below' )
         ->set_category( 'top-koshik' )
         ->set_mode( 'both' )
         ->set_icon( 'groups' )
