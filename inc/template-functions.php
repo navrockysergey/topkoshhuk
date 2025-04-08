@@ -230,6 +230,34 @@ function create_posts_types() {
         'rewrite'             => true,
         'query_var'           => true,
     ] );
+
+    register_post_type( 'branch', [
+        'label'  => null,
+        'labels' => [
+            'name'               => __( 'Branches' ),
+            'singular_name'      => __( 'Branche' ),
+            'add_new'            => __( 'Add Branche' ),
+            'add_new_item'       => __( 'Add Branche' ),
+            'edit_item'          => __( 'Edit Branche' ),
+            'new_item'           => __( 'Add Branche' ),
+            'view_item'          => __( 'View Branche' ),
+            'search_items'       => __( 'Add Branches' ),
+            'not_found'          => __( 'Not found' ),
+            'not_found_in_trash' => __( 'Not found' ),
+            'menu_name'          => __( 'Branches' ),
+        ],
+        'description'         => '',
+        'public'              => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => false,
+        'menu_icon'           => 'dashicons-admin-multisite',
+        'hierarchical'        => false,
+        'supports'            => [ 'title', 'editor', 'excerpt', 'thumbnail' ], // 'title','editor','author','thumbnail','excerpt','trackbacks','custom-fields','comments','revisions','page-attributes','post-formats'
+        'taxonomies'          => [],
+        'has_archive'         => false,
+        'rewrite'             => true,
+        'query_var'           => true,
+    ] );
 }
 
 add_action( 'init' , 'create_taxonomies' );
@@ -275,4 +303,26 @@ function get_vacancies( $category = false ) {
     wp_reset_postdata();
 
     return $vacanсies;
+}
+
+add_filter( 'get_stores', 'get_stores' );
+function get_stores( $region = false ) {
+    $stores_args = [
+        'post_type'   => 'branch',
+        'post_status' => 'publish',
+    ];
+
+    if ( $region ) {
+        $stores_args['meta_query'] = [
+            'key'      => 'branch_addres_region',
+            'compare'  => '=',
+            'value'    =>  $region,
+        ];
+    }
+
+    $result = new WP_Query( $stores_args );
+
+    wp_reset_postdata();
+
+    return $result;
 }

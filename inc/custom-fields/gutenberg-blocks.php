@@ -202,13 +202,34 @@ function custom_posts_gutenberg_blocks() {
                 ->set_collapsed( true )
                 ->add_fields(  array(
                     Field::make( 'text', 'single_offer', __( 'Offer title' ) )
-                )),
+                ))
+                ->set_header_template( '
+                    <% if (single_offer) { %>
+                        <%- single_offer %>
+                    <% } %>
+                ' ),
+            Field::make( 'text', 'vacancies_second_block_title', __( 'Second block title' ) ),
         ) )
+        ->set_inner_blocks( true )
+        ->set_inner_blocks_position( 'below' )
         ->set_category( 'top-koshik' )
         ->set_mode( 'both' )
         ->set_icon( 'groups' )
         ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
             extract( $fields );
             include_once __THEME_DIR__ . '/template-parts/sections/vacancies-section.php';
-        } );    
+        } );
+
+    // Stores
+    Block::make( 'stores_block', __( 'Stores' ) )
+        ->add_fields( array(
+            Field::make( 'separator', 'stores_list_sep', __( 'Stores' ) ),
+        ) )
+        ->set_category( 'top-koshik' )
+        ->set_mode( 'both' )
+        ->set_icon( 'admin-multisite' )
+        ->set_render_callback( function ( $fields, $attributes, $inner_blocks ) {
+            // extract( $fields );
+            include_once __THEME_DIR__ . '/template-parts/sections/stores-section.php';
+        } );
 }
