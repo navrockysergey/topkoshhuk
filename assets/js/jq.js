@@ -121,4 +121,3 @@ jQuery(document).ready(function ($) {
     setupNumberInputValidation();
 
 });
-

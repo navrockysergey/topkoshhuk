@@ -34,9 +34,9 @@ $order_button_text = __('Підтвердити замовлення');
 	<div class="checkout-container">
 		<div class="checkout">
 			<form class="woocommerce-cart-form" action="<?php echo esc_url(wc_get_checkout_url()); ?>" method="post">
-				<h3><?php _e('Дані покупця'); ?></h3>
-
-				<?php get_template_part('woocommerce/cart', 'items'); ?>
+				<h3><?php _e('Склад замовлення'); ?></h3>
+				
+				<?php wc_get_template('cart-items.php'); ?>
 			</form>
 
 			<form name="checkout" method="post" class="woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__( 'Checkout', 'woocommerce' ); ?>">
@@ -73,7 +73,7 @@ $order_button_text = __('Підтвердити замовлення');
 					</div>
 				</div>
 
-				<form name="checkout" method="post" class="woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__( 'Checkout', 'woocommerce' ); ?>">
+				<form name="checkout" method="post" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__( 'Checkout', 'woocommerce' ); ?>">
 					<div class="form-row place-order">
 						<noscript>
 							<?php

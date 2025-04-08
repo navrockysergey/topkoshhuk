@@ -391,6 +391,7 @@ input[type=radio] + label:before {
 input[type=radio]:checked + span:before,
 input[type=radio]:checked + label:before {
   box-shadow: inset 0 0 0 5px var(--color_primary);
+  border-color: var(--color_primary);
 }
 
 h1,
@@ -1527,6 +1528,12 @@ footer ul {
     display: flex;
   }
 }
+@media (max-width: 1023px) {
+  .blog .article-items {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 .article-items .article-item {
   padding: 0;
   box-sizing: border-box;
@@ -1580,6 +1587,11 @@ footer ul {
   -o-object-fit: cover;
      object-fit: cover;
   height: 274px;
+}
+@media (max-width: 1023px) {
+  .blog .article-items .article-item .article-image img {
+    height: auto;
+  }
 }
 .article-items .article-item .article-footer {
   display: flex;
@@ -1904,6 +1916,18 @@ footer ul {
   justify-content: center;
   margin-top: var(--padding_l);
   margin-bottom: var(--padding_m);
+  gap: var(--gap_s);
+}
+.blog .woocommerce-pagination,
+.blog .pagination {
+  margin-bottom: 0;
+  margin-top: var(--padding_s);
+}
+@media (max-width: 767px) {
+  .blog .woocommerce-pagination,
+  .blog .pagination {
+    margin-top: 0;
+  }
 }
 .woocommerce-pagination ul,
 .pagination ul {
@@ -2011,6 +2035,7 @@ footer ul {
   color: var(--color_primary);
 }
 
+.article-month,
 .hidden {
   display: none !important;
 }/*# sourceMappingURL=style.css.map */

@@ -11,7 +11,7 @@ do_action('woocommerce_before_cart'); ?>
         
         <div class="cart-container">
 
-            <?php get_template_part('woocommerce/cart', 'items'); ?>
+            <?php wc_get_template('cart-items.php'); ?>
 
             <div class="cart-side">
                 <div class="cart-side-block">

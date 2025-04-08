@@ -14,12 +14,16 @@ function baza_dev_scripts_and_styles() {
 	wp_enqueue_script( 'baza-owl-carousel-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/owl.carousel.min.js', array('jquery'), false);
 	wp_enqueue_script( 'baza-inputmask-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/jquery.inputmask.min.js', array('jquery'), false);
     wp_enqueue_script( 'baza-woo-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/woo.js', array('jquery'), false);
-    //wp_enqueue_script( 'baza-notiny-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/notiny.min.js', array('jquery'), false);
+    wp_enqueue_script( 'baza-notiny-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/notiny.min.js', array('jquery'), false);
 	wp_enqueue_script( 'baza-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/jq.js', array('jquery'), false);
 
     if (is_product()) {
 	    wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
         wp_enqueue_script( 'baza-product-gallery-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/product-gallery.js', array('jquery'), false);
+
+        wp_localize_script( 'baza-qty-js', 'dataObj', [
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        ] );
     }
 
     if (is_cart() || is_checkout()) {
@@ -30,16 +34,6 @@ function baza_dev_scripts_and_styles() {
         ) );      
     }
 
-    if (is_checkout()) {
-        wp_enqueue_script(
-            'woocommerce-add-to-cart',
-            get_template_directory_uri() . '/wp-content/plugins/woocommerce/assets/js/frontend/cart.min.js',
-            array('jquery'),
-            false,
-            true
-        );
-    }
-
     // CSS
 
 	wp_enqueue_style( 'baza-owl-carousel', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/css/owl.carousel.min.css', array(), false );
@@ -47,9 +41,7 @@ function baza_dev_scripts_and_styles() {
     wp_enqueue_style( 'baza-woo-styles', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/css/woo.css', array(), false );
 	wp_enqueue_style( 'baza-styles', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/css/style.css', array(), false );
 
-    wp_localize_script( 'baza-qty-js', 'dataObj', [
-		'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-	] );
+    
 }
 
 add_action( 'wp_enqueue_scripts', 'baza_dev_scripts_and_styles' , 999 );

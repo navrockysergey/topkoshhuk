@@ -114,7 +114,6 @@ function change_woocommerce_text($translated_text, $text, $domain) {
     
     $translations = array(
         'Супутні товари' => 'Ваc може зацікавити',
-        'Додати в кошик' => 'Оформити замовлення',
         'Вас також може зацікавити&hellip;' => 'Додати до замовлення',
         'Вам також може сподобатися&hellip;' => 'Додати до замовлення',
         'Застосувати купон' => 'Застосувати',
@@ -122,6 +121,7 @@ function change_woocommerce_text($translated_text, $text, $domain) {
         'Перейти до оформлення' => 'Оформити замовлення',
         'Повернутись в магазин' => 'До каталогу',
         'Платіжні дані' => 'Дані покупця',
+        'Оплата та доставка' => 'Дані покупця',
     );
     
     if (array_key_exists($translated_text, $translations)) {
@@ -433,11 +433,12 @@ function get_who_price( int $product_id, int $qty ) {
 
 function dinamyc_set_price( $cart ) {
     foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
-         $id = $cart_item['variation_id'] > 0 ? $cart_item['variation_id'] : $cart_item["product_id"];
+         $id        = $cart_item['variation_id'] > 0 ? $cart_item['variation_id'] : $cart_item["product_id"];
+         $who_price = get_who_price( $id, $cart_item["quantity"] );
 
-         $price = get_who_price( $id, $cart_item["quantity"] );
-
-        $cart_item['data']->set_price( $price );
+        if( 0 < $who_price ) {
+            $cart_item['data']->set_price( $who_price );
+        }
     }
 }
 
