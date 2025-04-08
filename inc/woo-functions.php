@@ -18,6 +18,7 @@ add_action( 'woocommerce_account_account-data_endpoint'         , 'account_perso
 add_action( 'woocommerce_account_account-security_endpoint'     , 'account_security_data', 25 );
 add_action( 'wp_ajax_get_product_prices'                        , 'get_product_prices' );
 add_action( 'wp_ajax_nopriv_get_product_prices'                 , 'get_product_prices' );
+add_action( 'woocommerce_checkout_fields'                       , 'checkout_shipping_fields_settings' );
 
 // ===================================================================================================
 
@@ -554,6 +555,22 @@ function add_ukrposhta_shipping_method( $methods ) {
     $methods['ukrposhta'] = 'WC_Shipping_Ukrposhta';
     return $methods;
 }
+
+function checkout_shipping_fields_settings( $fields ) {
+    $is_ukposht_spipping = isset( $_POST['shipping_method'] ) && is_array( $_POST['shipping_method'] ) && strpos( current( $_POST['shipping_method'] ), 'ukrposhta' ) !== false;;
+
+    $fields['shipping']['shipping_address_1']['required']   = $is_ukposht_spipping;
+    $fields['shipping']['shipping_address_2']['required']   = $is_ukposht_spipping;
+    $fields['shipping']['shipping_city']['required']        = $is_ukposht_spipping;
+    $fields['shipping']['shipping_state']['required']       = $is_ukposht_spipping;
+    $fields['shipping']['shipping_postcode']['required']    = $is_ukposht_spipping;
+
+    $fields['shipping']['shipping_country']['required'] = false;
+    $fields['billing']['billing_country']['required']   = false;
+    return $fields;
+}
+
+// ====================================================================
 
 // Remove tabs
 function remove_all_woocommerce_tabs($tabs) {
