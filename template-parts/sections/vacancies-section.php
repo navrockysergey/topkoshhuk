@@ -1,15 +1,8 @@
 <?php
 $vacanсies = apply_filters( 'get_vacancies', false );
-
-if ( ! $vacanсies->have_posts() ) {
-    // TODO: Create window  
-    echo "Vacansies not fount";
-    return;
-}
-
 ?>
 
-<section class="vacancies-section">
+<section class="section section-vacancies">
     <div class="container">
         <?php
         if ( ! empty( $vacancies_block_title ) ) :
@@ -17,6 +10,15 @@ if ( ! $vacanсies->have_posts() ) {
         <h2 class="section-title"><?php echo esc_html( $vacancies_block_title )?></h2>
         <?php
         endif;
+
+        if ( ! $vacanсies->have_posts() ) {
+            // TODO: Create window  
+            echo '<div class="vacancies-empty">';
+            echo '<h3>' . __('Зараз розміщених вакансій немає.') . '</h3>';
+            echo '<p>' . __('Ви можете залишити нам своє резюме і ми звернемося до вас у випадку появи підходящої вам вакансії.') . '</p>';
+            echo '</div>';
+            return;
+        }
         
         if ( ! empty( $vacancies_block_offers ) ) :
             ?>
@@ -54,7 +56,7 @@ if ( ! $vacanсies->have_posts() ) {
 <?php
 if ( $inner_blocks && ! empty( $inner_blocks ) ) :
     ?>
-    <section class="vacancies-section">
+    <section class="section section-vacancies">
         <div class="container">
             <?php
             if ( ! empty( $vacancies_second_block_title ) ) :

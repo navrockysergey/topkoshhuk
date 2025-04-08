@@ -326,3 +326,12 @@ function get_stores( $region = false ) {
 
     return $result;
 }
+
+add_filter( 'wpcf7_form_elements', 'imp_wpcf7_form_elements' );
+function imp_wpcf7_form_elements( $content ) {
+    $str_pos = strpos( $content, 'name="your-file"' );
+    if ( $str_pos !== false ) {
+        $content = substr_replace( $content, 'title="' . __('Додайте файл резюме') . '"', $str_pos, 0 );
+    }
+    return $content;
+}

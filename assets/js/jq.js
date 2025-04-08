@@ -120,4 +120,21 @@ jQuery(document).ready(function ($) {
 
     setupNumberInputValidation();
 
+	$('span.wpcf7-form-control-wrap').each(function() {
+        var fileInput = $(this).find('input[type="file"]');
+        if (fileInput.length) {
+            let titleText = $(this).data('title');
+
+            $(this).append('<span class="file-placeholder"><span>' + titleText + '</span></span>');
+
+            fileInput.on('change', function() {
+                let fileName = $(this).val().split('\\').pop();
+                if (fileName) {
+                    $(this).next('.file-placeholder').text(fileName);
+                } else {
+                    $(this).next('.file-placeholder').text(titleText);
+                }
+            });
+        }
+    });
 });

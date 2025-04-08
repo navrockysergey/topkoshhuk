@@ -16,7 +16,11 @@ $hero_show = carbon_get_post_meta($page_id, 'hero_show');
         </div>
 
 		<?php if (get_the_content()) : ?>
-			<?php the_content(); ?>
+			<section class="section section-single">
+				<div class="container">
+					<?php the_content(); ?>
+				</div>
+			</section>
 		<?php endif; ?>
 		
 	</main>

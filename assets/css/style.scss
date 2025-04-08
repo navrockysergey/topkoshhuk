@@ -89,6 +89,36 @@ select {
     @include input;
 }
 
+input[type="file"] {
+    display: none !important;
+
+    + .file-placeholder {
+        @include input;
+
+        display: flex;
+        align-items: center;
+        gap: var(--gap_s);
+        cursor: pointer;
+
+        span {
+            display: block;
+            overflow: auto;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        &::before {
+            color: var(--color_black);
+        }
+
+        &:hover {
+            &::before {
+                color: var(--color_primary);
+            }
+        }
+    }
+}
+
 select {
     cursor: pointer;
     background-position: calc(100% - var(--padding_s)) center;
@@ -1103,6 +1133,144 @@ footer {
             }
         }
     }
+
+    &.section-single {
+        .container {
+            display: block;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: var(--font_size_h3);
+        }
+
+        h2, h3, h4, h5 {
+            font-size: var(--font_size_h4);
+            margin-top: var(--padding_m);
+            margin-bottom: var(--padding_m);
+        }
+
+        p {
+            margin-bottom: var(--padding_m);
+            margin-top: 0;
+        }
+    }
+
+    &.section-404 {
+
+        p {
+            margin: 0;
+        }
+
+        .block-404 {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap_s);
+            background-color: var(--color_white);
+            border-radius: var(--radius);
+            padding: var(--padding_m);
+            position: relative;
+            border: 1px solid var(--color_primary);
+            width: 100%;
+            max-width: 352px;
+            min-height: 352px;
+            margin: 0 auto;
+            text-align: center;
+
+            h2 {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: var(--font_size_h4);
+                text-transform: uppercase;
+                margin: 0;
+                color: var(--color_primary);
+                flex: 1;
+            }
+        }
+
+        .block-404-footer {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap_m);
+        }
+
+        .return-to {
+            display: flex;
+            align-items: center;
+            gap: var(--gap_m);
+
+            @include desktop {
+                justify-content: center;
+            }
+
+            @include mobile {
+                flex-direction: column;
+            }
+        }
+
+        @include mobile {
+            .button {
+                width: 100%;
+            }
+        }
+    }
+
+    &.section-vacancies {
+
+        .section-title {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+        }
+
+        .vacancies-empty {
+            border: 1px solid var(--color_primary);
+            border-radius: var(--radius);
+            padding: var(--padding_m);
+            text-align: center;
+            background-color: var(--color_white);
+
+            h3 {
+                margin: 0;
+                font-size: var(--font_size_h4);
+                text-transform: uppercase;
+            }
+        }
+    }
+}
+
+.wp-block-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap_s);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        display: flex;
+        gap: 4px;
+
+        &::before {
+            display: inline-block;
+            position: relative;
+            top: -2px;
+        }
+    }
+}
+
+.wp-block-image {
+    margin-bottom: var(--padding_m);
+
+    img {
+        display: block;
+        max-width: 100%;
+        border-radius: var(--radius);
+    }
 }
 
 .bestsellers {
@@ -1511,15 +1679,18 @@ footer {
 
     .wpcf7-form {
         display: grid;
-        grid-template-columns: 1fr auto;
         align-items: center;
         gap: var(--gap_s);
         position: relative;
         margin: 0 auto;
-        max-width: 444px;
+        
+        .section-subscribe & {
+            max-width: 444px;
+            grid-template-columns: 1fr auto;
 
-        @include mobile {
-            grid-template-columns: 1fr;
+            @include mobile {
+                grid-template-columns: 1fr;
+            }
         }
 
         &.invalid {

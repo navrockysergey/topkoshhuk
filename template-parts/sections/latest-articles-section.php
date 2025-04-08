@@ -1,9 +1,12 @@
 <?php
+$articles_per_page = isset( $latest_articles_per_page ) ? intval( $latest_articles_per_page ) : 3; 
+
 $posts_arge = [
     'post_type'   => 'post',
     'post_status' => 'publish',
     'order_by'    => 'date',
-    'order'       => 'DESC'
+    'order'       => 'DESC',
+    'posts_per_page' => $articles_per_page,
 ];
 
 $posts = new WP_Query( $posts_arge );

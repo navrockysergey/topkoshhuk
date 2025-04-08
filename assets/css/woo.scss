@@ -1741,6 +1741,12 @@ ul.products {
     }
 }
 
+.checkout-container {
+    .checkout-side {
+        order: 10;
+    }
+}
+
 .woocommerce-cart-form {
 
     display: flex;
@@ -2059,11 +2065,11 @@ ul.products {
     .woocommerce-cart-form {
         border: 1px solid var(--color_white);
         border-radius: var(--radius);
-        overflow: hidden;
         gap: 0;
         padding: var(--padding_s);
 
         h3 {
+            border-radius: var(--radius) var(--radius) 0 0;
             margin: calc(var(--padding_s) * -1) calc(var(--padding_s) * -1) var(--padding_s) calc(var(--padding_s) * -1);
             padding: var(--padding_s);
             font-size: var(--font_size_h5);
