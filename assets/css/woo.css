@@ -2117,13 +2117,6 @@ ul.products li.product .product-sku-wrapper {
   background-color: var(--color_white);
   line-height: 1;
 }
-.woocommerce-checkout .woocommerce-shipping-fields label,
-.woocommerce-checkout .woocommerce-checkout-payment label,
-.woocommerce-checkout .woocommerce-checkout-review-order-table label,
-.woocommerce-checkout .woocommerce-billing-fields label,
-.woocommerce-checkout .woocommerce-cart-form label {
-  display: none !important;
-}
 .woocommerce-checkout .woocommerce-shipping-fields__field-wrapper,
 .woocommerce-checkout .woocommerce-billing-fields__field-wrapper {
   display: grid;
