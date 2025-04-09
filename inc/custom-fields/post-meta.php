@@ -68,20 +68,23 @@ function custom_posts_meta_data() {
     Container::make( 'post_meta', __( 'Details' ) )
         ->where( 'post_type', '=', 'branch' )
         ->add_fields( array(
-            Field::make( 'text', 'branch_addres_city', __( 'City' ) ),
-            Field::make( 'text', 'branch_addres_region', __( 'Region' ) ),
+            Field::make( 'text', 'branch_addres_city', __( 'City' ) )
+                ->set_width( 50 ),
+            Field::make( 'text', 'branch_addres_region', __( 'Region' ) )
+                ->set_width( 50 ),
             Field::make( 'textarea', 'branch_addres_string', __( 'Addres' ) ),
             Field::make( 'text', 'branch_geo_latitude', __( 'latitude' ) )
                 ->set_width( 50 ),
             Field::make( 'text', 'branch_geo_longitude', __( 'longitude' ) )
                 ->set_width( 50 ),
-            Field::make( 'text', 'branch_shedule_before_string', __( 'Shedule notice' ) ),
+            Field::make( 'text', 'branch_shedule_before_string', __( 'Shedule notice' ) )
+                ->set_width( 33 ),
             Field::make( 'select', 'branch_time_work_start', __( 'Work start time' ) )
-                ->set_width( 50 )
+                ->set_width( 33 )
                 ->add_options( $hourses_opt )
                 ->set_default_value( '9' ),
             Field::make( 'select', 'branch_time_work_end', __( 'Work end time' ) )
-                ->set_width( 50 )
+                ->set_width( 33 )
                 ->add_options( $hourses_opt )
                 ->set_default_value( '21' ),
             Field::make( 'complex', 'branch_phones', __( 'Phones' ) )

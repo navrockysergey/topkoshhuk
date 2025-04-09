@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
 
 	body.addClass('ready');
 
-	$('input[name="phone"]').inputmask('+38(999)999-99-99');
+	$('input[name="phone"], [name="billing_phone"]').inputmask('+38(999)999-99-99');
 
 	$(document).on('click', '.menu-toggle', function() {
 		if ($(this).hasClass('active')) {
@@ -121,20 +121,29 @@ jQuery(document).ready(function ($) {
     setupNumberInputValidation();
 
 	$('span.wpcf7-form-control-wrap').each(function() {
-        var fileInput = $(this).find('input[type="file"]');
-        if (fileInput.length) {
-            let titleText = $(this).data('title');
-
-            $(this).append('<span class="file-placeholder"><span>' + titleText + '</span></span>');
-
-            fileInput.on('change', function() {
-                let fileName = $(this).val().split('\\').pop();
-                if (fileName) {
-                    $(this).next('.file-placeholder').text(fileName);
-                } else {
-                    $(this).next('.file-placeholder').text(titleText);
-                }
-            });
-        }
-    });
+		var fileInput = $(this).find('input[type="file"]');
+		if (fileInput.length) {
+			let titleText = $(this).data('title');
+	
+			$(this).append('<span class="file-placeholder"><span class="placeholder-text">' + titleText + '</span></span>');
+	
+			fileInput.on('change', function() {
+				let fileName = $(this).val().split('\\').pop();
+				let placeholderElement = $(this).next('.file-placeholder').find('.placeholder-text');
+				
+				if (fileName) {
+					if (fileName.length > 20) {
+						let truncatedName = fileName.substring(0, 10) + '...' + fileName.substring(fileName.length - 7);
+						placeholderElement.text(truncatedName);
+					} else {
+						placeholderElement.text(fileName);
+					}
+					placeholderElement.attr('title', fileName);
+				} else {
+					placeholderElement.text(titleText);
+					placeholderElement.removeAttr('title');
+				}
+			});
+		}
+	});
 });

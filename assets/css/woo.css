@@ -19,6 +19,7 @@ select {
   content: url("data:image/svg+xml;utf8,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19 8.20866C18.9996 8.2741 18.9862 8.3388 18.9604 8.39895C18.9346 8.4591 18.8971 8.51348 18.85 8.55888L10.71 16.704C10.617 16.7978 10.5064 16.8722 10.3846 16.923C10.2627 16.9738 10.132 17 10 17C9.86799 17 9.73728 16.9738 9.61542 16.923C9.49356 16.8722 9.38296 16.7978 9.29 16.704L5.15 12.5614C5.10291 12.516 5.06537 12.4616 5.03961 12.4015C5.01385 12.3413 5.00038 12.2766 5 12.2112C5.00033 12.076 5.05428 11.9464 5.15 11.851L5.85 11.1505C5.89648 11.1036 5.95178 11.0664 6.01271 11.041C6.07364 11.0156 6.13899 11.0025 6.205 11.0025C6.27101 11.0025 6.33636 11.0156 6.39729 11.041C6.45822 11.0664 6.51352 11.1036 6.56 11.1505L10 14.5927L17.44 7.14799C17.4865 7.1011 17.5418 7.06388 17.6027 7.03848C17.6636 7.01308 17.729 7 17.795 7C17.861 7 17.9264 7.01308 17.9873 7.03848C18.0482 7.06388 18.1035 7.1011 18.15 7.14799L18.85 7.84843C18.9457 7.94388 18.9997 8.07344 19 8.20866Z' fill='white'/></svg>");
 }
 
+.offers .item::before,
 .wp-block-list li::before {
   content: url("data:image/svg+xml;utf8,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M19 8.20866C18.9996 8.2741 18.9862 8.3388 18.9604 8.39895C18.9346 8.4591 18.8971 8.51348 18.85 8.55888L10.71 16.704C10.617 16.7978 10.5064 16.8722 10.3846 16.923C10.2627 16.9738 10.132 17 10 17C9.86799 17 9.73728 16.9738 9.61542 16.923C9.49356 16.8722 9.38296 16.7978 9.29 16.704L5.15 12.5614C5.10291 12.516 5.06537 12.4616 5.03961 12.4015C5.01385 12.3413 5.00038 12.2766 5 12.2112C5.00033 12.076 5.05428 11.9464 5.15 11.851L5.85 11.1505C5.89648 11.1036 5.95178 11.0664 6.01271 11.041C6.07364 11.0156 6.13899 11.0025 6.205 11.0025C6.27101 11.0025 6.33636 11.0156 6.39729 11.041C6.45822 11.0664 6.51352 11.1036 6.56 11.1505L10 14.5927L17.44 7.14799C17.4865 7.1011 17.5418 7.06388 17.6027 7.03848C17.6636 7.01308 17.729 7 17.795 7C17.861 7 17.9264 7.01308 17.9873 7.03848C18.0482 7.06388 18.1035 7.1011 18.15 7.14799L18.85 7.84843C18.9457 7.94388 18.9997 8.07344 19 8.20866Z' fill='%23EF3E33'/></svg>");
 }
@@ -612,6 +613,10 @@ input[type=radio]:checked + label:before,
   .category-container {
     grid-template-columns: auto 1fr;
   }
+}
+.category-container.no-results {
+  grid-template-columns: 1fr;
+  text-align: center;
 }
 
 .product-badges {
@@ -1887,6 +1892,7 @@ ul.products li.product .product-sku-wrapper {
 }
 .checkout .cart-items .cart-item {
   grid-template-columns: 60px 1fr;
+  padding: var(--padding_s);
 }
 .cart-items .cart-item:hover {
   border-color: var(--color_primary);
@@ -1918,6 +1924,10 @@ ul.products li.product .product-sku-wrapper {
   position: absolute;
   right: var(--padding_m);
   top: var(--padding_m);
+}
+.checkout .cart-items .cart-item .product-remove {
+  right: var(--padding_s);
+  top: var(--padding_s);
 }
 @media (max-width: 767px) {
   .cart-items .cart-item .product-remove {
@@ -2058,11 +2068,6 @@ ul.products li.product .product-sku-wrapper {
   display: flex;
 }
 
-.woocommerce-checkout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap_m);
-}
 .woocommerce-checkout .woocommerce ul {
   list-style: none;
   padding: 0;
@@ -2108,6 +2113,7 @@ ul.products li.product .product-sku-wrapper {
   display: flex;
   flex-direction: column;
   gap: var(--gap_m);
+  margin-top: var(--padding_m);
 }
 .woocommerce-checkout .woocommerce-shipping-fields,
 .woocommerce-checkout .woocommerce-checkout-payment,
@@ -2142,6 +2148,10 @@ ul.products li.product .product-sku-wrapper {
   .woocommerce-checkout .woocommerce-billing-fields__field-wrapper {
     grid-template-columns: 1fr;
   }
+}
+.woocommerce-checkout .woocommerce-shipping-fields label:not(.checkbox),
+.woocommerce-checkout .woocommerce-billing-fields label:not(.checkbox) {
+  display: none !important;
 }
 .woocommerce-checkout .woocommerce-additional-fields {
   margin-top: var(--padding_s);

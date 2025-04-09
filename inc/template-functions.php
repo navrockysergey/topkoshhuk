@@ -17,6 +17,10 @@ function baza_dev_scripts_and_styles() {
     wp_enqueue_script( 'baza-notiny-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/notiny.min.js', array('jquery'), false);
 	wp_enqueue_script( 'baza-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/jq.js', array('jquery'), false);
 
+    if (is_page(195)) {
+        wp_enqueue_script( 'baza-map-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/map.js', array('jquery'), false);
+    }
+
     if (is_product()) {
 	    wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
         wp_enqueue_script( 'baza-product-gallery-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/product-gallery.js', array('jquery'), false);
@@ -220,6 +224,8 @@ function create_posts_types() {
         ],
         'description'         => '',
         'public'              => true,
+        'has_archive'         => false,
+        'publicly_queryable'  => false,
         'show_in_menu'        => true,
         'show_in_rest'        => false,
         'menu_icon'           => 'dashicons-groups',
@@ -248,6 +254,8 @@ function create_posts_types() {
         ],
         'description'         => '',
         'public'              => true,
+        'has_archive'         => false,
+        'publicly_queryable'  => false,
         'show_in_menu'        => true,
         'show_in_rest'        => false,
         'menu_icon'           => 'dashicons-admin-multisite',
@@ -310,6 +318,9 @@ function get_stores( $region = false ) {
     $stores_args = [
         'post_type'   => 'branch',
         'post_status' => 'publish',
+        'orderby' => 'menu_order',
+        'order' => 'DESC',
+        'posts_per_page' => -1,
     ];
 
     if ( $region ) {
@@ -335,3 +346,30 @@ function imp_wpcf7_form_elements( $content ) {
     }
     return $content;
 }
+
+add_filter('block_categories_all', function($categories, $post) {
+    $exists = false;
+    foreach ($categories as $key => $category) {
+        if ($category['slug'] === 'top-koshik') {
+            unset($categories[$key]);
+            $exists = true;
+            break;
+        }
+    }
+    
+    if ($exists) {
+        array_unshift($categories, [
+            'slug' => 'top-koshik',
+            'title' => __('Top Koshik'),
+            'icon' => 'smiley'
+        ]);
+    } else {
+        array_unshift($categories, [
+            'slug' => 'top-koshik',
+            'title' => __('Top Koshik'),
+            'icon' => 'smiley'
+        ]);
+    }
+    
+    return $categories;
+}, 10, 2);

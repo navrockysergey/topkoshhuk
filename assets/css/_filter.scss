@@ -107,6 +107,14 @@ body main .widget_wpc_filters_widget {
             border: 1px solid var(--color_white);
             border-radius: var(--radius);
             margin-top: var(--padding_s);
+
+            a {
+                color: var(--color_black);
+
+                &:hover {
+                    color: var(--color_primary);
+                }
+            }
         }
 
         .wpc-instead-of-posts-found {

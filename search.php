@@ -21,10 +21,14 @@ get_header();
 		</div>
 	</section>
 	
-	<div class="container category-container search-container">
-		<div class="category-side">
-			<?php get_template_part('template-parts/blocks/block', 'filter'); ?>
-		</div>
+	<div class="container category-container search-container<?php if ( !have_posts() ) : ?> no-results<?php endif; ?>">
+
+		<?php if ( have_posts() ) : ?>
+			<div class="category-side">
+				<?php get_template_part('template-parts/blocks/block', 'filter'); ?>
+			</div>
+		<?php endif; ?>
+
 		<div class="category-main">
 			<?php if ( have_posts() ) : ?>
 				<div class="search-result-info">
@@ -50,6 +54,13 @@ get_header();
 							</li>
 						<?php endwhile; ?>
 					</ul>
+				</div>
+			<?php else : ?>
+				<div class="container no-results-container">
+					<div class="no-results-message">
+						<h1><?php echo esc_html__( 'Нічого не знайдено'); ?></h1>
+						<p><?php echo esc_html__( 'На жаль, за вашим запитом нічого не знайдено. Спробуйте змінити пошуковий запит.'); ?></p>
+					</div>
 				</div>
 			<?php endif; ?>
 		</div>
