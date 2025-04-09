@@ -46,7 +46,6 @@ $order_button_text = __('Підтвердити замовлення');
 
 				<div id="customer_details">
 					<?php do_action( 'woocommerce_checkout_billing' ); ?>
-					<?php do_action( 'woocommerce_checkout_shipping' ); ?>
 				</div>
 
 				<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
@@ -62,6 +61,14 @@ $order_button_text = __('Підтвердити замовлення');
 				</div>
 
 				<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+
+				<div id="customer_details">
+					<?php do_action( 'woocommerce_checkout_shipping' ); ?>
+				</div>
+
+				<?php
+				do_action( 'woo_pyment' );
+				?>
 			</form>
 		</div>
 
