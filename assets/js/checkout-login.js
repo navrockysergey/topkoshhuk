@@ -76,15 +76,10 @@ jQuery(function($) {
         initLoginForm();
     });
     
-    // Reinitialize when checkout is updated (alternative event)
-    $(document.body).on('update_checkout', function() {
-        initLoginForm();
-    });
-    
-    // Additional listener for WooCommerce AJAX completed actions
-    $(document).ajaxComplete(function(event, xhr, options) {
-        if (options.url && options.url.indexOf('wc-ajax=') !== -1) {
-            initLoginForm();
-        }
-    });
+    // // Additional listener for WooCommerce AJAX completed actions
+    // $(document).ajaxComplete(function(event, xhr, options) {
+    //     if (options.url && options.url.indexOf('wc-ajax=') !== -1) {
+    //         initLoginForm();
+    //     }
+    // });
 });
