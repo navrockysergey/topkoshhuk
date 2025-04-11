@@ -13,6 +13,7 @@ select {
   font-style: normal;
   font-display: block;
 }
+.icon-nova_poshta_shipping::before,
 .product-summary-box::before,
 .section-single-vacancie .content ul li::before,
 .offers .item::before,
@@ -259,6 +260,7 @@ label[for*=local_pickup]::before,
   content: "\e92c";
 }
 
+.icon-nova_poshta_shipping::before,
 .wc-ukr-shipping-np-fields #wcus_np_billing_warehouse_field .select2-selection__rendered::before,
 label[for*=nova_poshta]::before,
 .icon-novaposhta:before,
