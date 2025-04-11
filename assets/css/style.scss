@@ -95,7 +95,7 @@ input[type="file"] {
     + .file-placeholder {
         @include input;
 
-        display: flex;
+        display: flex !important;
         align-items: center;
         gap: var(--gap_s);
         cursor: pointer;
@@ -107,6 +107,7 @@ input[type="file"] {
 
         &::before {
             color: var(--color_black);
+            font-size: 16px;
         }
 
         &:hover {
@@ -2197,6 +2198,18 @@ footer {
 }
 
 .wpcf7 {
+
+    [data-name="your-name"] {
+        @include field_icon('\e93b', var(--text_color));
+    }
+
+    [data-name="your-phone"] {
+        @include field_icon('\e92f', var(--text_color));
+    }
+
+    [data-name="your-email"] {
+        @include field_icon('\e91a', var(--text_color));
+    }
 
     .wpcf7-form {
         display: grid;

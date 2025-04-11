@@ -1,3 +1,16 @@
+.widget_wpc_filters_widget {
+    @include min1024 {
+        position: sticky !important;
+        top: var(--padding_m);
+        z-index: 1000;
+    }
+
+    .admin-bar & {
+        @include min1024 {
+            top: 32px;
+        }
+    }
+}
 
 body main .wpc-filters-open-button-container a.wpc-filters-open-widget, 
 body main .wpc-filters-open-button-container a.wpc-open-close-filters-button {
