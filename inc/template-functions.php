@@ -30,12 +30,39 @@ function baza_dev_scripts_and_styles() {
         ] );
     }
 
-    if (is_cart() || is_checkout()) {
+    if (is_cart()) {
 	    wp_enqueue_script( 'baza-cart-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/cart.js', array('jquery'), false );
         wp_localize_script( 'baza-cart-js', 'wc_cart_params', array(
             'ajax_url'    => admin_url( 'admin-ajax.php' ),
             'cart_nonce'  => wp_create_nonce( 'woocommerce-cart' ),
         ) );      
+    }
+
+    if (is_checkout()) {
+        wp_enqueue_script('baza-checkout-js', trailingslashit(get_stylesheet_directory_uri()) . 'assets/js/checkout.js', array('jquery'), false);
+        wp_localize_script('baza-checkout-js', 'wc_cart_params', array(
+            'ajax_url'                      => admin_url('admin-ajax.php'),
+            'wc_ajax_url'                   => WC_AJAX::get_endpoint('%%endpoint%%'),
+            'cart_nonce'                    => wp_create_nonce('woocommerce-cart'),
+            'fragment_refresh_nonce'        => wp_create_nonce('woocommerce-refresh-fragments'),
+            'update_shipping_method_nonce'  => wp_create_nonce('update-shipping-method')
+        ));
+
+        wp_enqueue_script( 'baza-nova-poshta-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/nova-poshta.js', array('jquery'), false);
+    }
+
+    if (is_checkout() && !is_user_logged_in()) {
+ 
+        wp_register_script('baza-checkout-login-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/checkout-login.js', array('jquery'), false, true);
+        
+        wp_localize_script('baza-checkout-login-js', 'checkout_login_params', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'login_process_text' => __('Авторизація...'),
+            'error_text' => __('Сталася помилка. Будь ласка, спробуйте ще раз.'),
+            'success_text' => __('Успішна авторизація! Перезавантаження сторінки...')
+        ));
+        
+        wp_enqueue_script('baza-checkout-login-js');
     }
 
     // CSS
@@ -225,7 +252,7 @@ function create_posts_types() {
         'description'         => '',
         'public'              => true,
         'has_archive'         => false,
-        'publicly_queryable'  => false,
+        'publicly_queryable'  => true,
         'show_in_menu'        => true,
         'show_in_rest'        => false,
         'menu_icon'           => 'dashicons-groups',
@@ -373,3 +400,27 @@ add_filter('block_categories_all', function($categories, $post) {
     
     return $categories;
 }, 10, 2);
+
+// Cusom color
+
+function custom_gutenberg_colors() {
+    add_theme_support('editor-color-palette', array(
+        array(
+            'name'  => __('White'),
+            'slug'  => 'section-light',
+            'color' => '#ffffff',
+        ),
+        array(
+            'name'  => __('Primary'),
+            'slug'  => 'section-dark',
+            'color' => '#EF3E33',
+        ),
+        array(
+            'name'  => __('Black'),
+            'slug'  => 'section-dark',
+            'color' => '#020202',
+        ),
+    ));
+    remove_theme_support('editor-font-sizes');
+}
+add_action('after_setup_theme', 'custom_gutenberg_colors');

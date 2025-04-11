@@ -70,6 +70,19 @@ function baza_customize_register( $wp_customize ) {
         'type'    => 'text',
     ));
 
+    // Add Coordinates
+    $wp_customize->add_setting('address', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ));
+
+    $wp_customize->add_control('address', array(
+        'label'   => __('Address'),
+        'section' => 'site_info',
+        'type'    => 'text',
+    ));
+
 	// Opening hours
 
 	$wp_customize->add_setting('opening_hours', array(

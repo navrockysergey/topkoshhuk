@@ -37,7 +37,7 @@
 						<?php get_template_part( 'template-parts/blocks/block', 'social-links' ); ?>
 					</div>
 
-					<?php if ($opening_hours) : ?>
+					<?php if ($copyright) : ?>
 						<div class="footer-copyright">
 							<?php echo do_shortcode(nl2br(esc_html($copyright))); ?>
 						</div>

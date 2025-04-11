@@ -31,56 +31,56 @@ $order_button_text = __('Підтвердити замовлення');
 ?>
 
 <div class="container">
-	<div class="checkout-container">
-		<div class="checkout">
-			<form class="woocommerce-cart-form" action="<?php echo esc_url(wc_get_checkout_url()); ?>" method="post">
-				<h3><?php _e('Склад замовлення'); ?></h3>
-				
-				<?php wc_get_template('cart-items.php'); ?>
-			</form>
+	<form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__( 'Checkout', 'woocommerce' ); ?>">
+		
+		<div class="checkout-container">
+			<div class="checkout-main">
 
-			<form name="checkout" method="post" class="woocommerce-checkout" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__( 'Checkout', 'woocommerce' ); ?>">
-				<?php if ( $checkout->get_checkout_fields() ) : ?>
-
-				<?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
-
-				<div id="customer_details">
-					<?php do_action( 'woocommerce_checkout_billing' ); ?>
+				<div class="woocommerce-cart-form" data-action="<?php echo esc_url(wc_get_checkout_url()); ?>">
+					<h3><?php _e('Склад замовлення'); ?></h3>
+					
+					<?php wc_get_template('cart-items.php'); ?>
 				</div>
 
-				<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
+				<div id="customer_details">
+			
+				<?php if ( $checkout->get_checkout_fields() ) : ?>
+
+					<?php do_action( 'woocommerce_checkout_before_customer_details' ); ?>
+
+					<?php do_action( 'woocommerce_checkout_billing' ); ?>
+
+					<?php do_action( 'woocommerce_checkout_after_customer_details' ); ?>
 
 				<?php endif; ?>
 
-				<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
-				
-				<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
+					<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
+					
+					<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
 
-				<div id="order_review" class="woocommerce-checkout-review-order">
-					<?php do_action( 'woocommerce_checkout_order_review' ); ?>
-				</div>
-
-				<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
-
-				<div id="customer_details">
-					<?php do_action( 'woocommerce_checkout_shipping' ); ?>
-				</div>
-
-				<?php
-				do_action( 'woo_pyment' );
-				?>
-			</form>
-		</div>
-
-		<div class="checkout-side">
-			<div class="checkout-side-block">
-				<div class="checkout-totals-wrapper">
-					<div class="cart-collaterals">
-						<?php get_template_part('woocommerce/cart/cart', 'totals'); ?>
+					<div id="order_review" class="woocommerce-checkout-review-order">
+						<?php do_action( 'woocommerce_checkout_order_review' ); ?>
 					</div>
+
+					<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+
+
+					<?php do_action( 'woocommerce_checkout_shipping' ); ?>
+
+					<?php do_action( 'woo_pyment' ); ?>
+
 				</div>
 
-				<form name="checkout" method="post" action="<?php echo esc_url( wc_get_checkout_url() ); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__( 'Checkout', 'woocommerce' ); ?>">
+			</div>
+
+			<div class="checkout-side">
+				<div class="checkout-side-block">
+					<div class="checkout-totals-wrapper">
+						<div class="cart-collaterals">
+							<?php get_template_part('woocommerce/cart/cart', 'totals'); ?>
+						</div>
+					</div>
+
 					<div class="form-row place-order">
 						<noscript>
 							<?php
@@ -100,10 +100,11 @@ $order_button_text = __('Підтвердити замовлення');
 
 						<?php wp_nonce_field( 'woocommerce-process_checkout', 'woocommerce-process-checkout-nonce' ); ?>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
-	</div>
+
+	</form>
 </div>
 
 <?php do_action( 'woocommerce_after_checkout_form', $checkout ); ?>

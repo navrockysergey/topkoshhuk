@@ -23,13 +23,9 @@ add_action( 'woocommerce_checkout_fields'                       , 'checkout_ship
 remove_action( 'woocommerce_checkout_order_review'              , 'woocommerce_checkout_payment', 20 );
 add_action( 'woo_pyment'                                        , 'woocommerce_checkout_payment', 20 );
 
-
 // ===================================================================================================
 
 remove_action( 'woocommerce_after_shop_loop_item'               , 'woocommerce_template_loop_add_to_cart', 10 );
-
-add_action( 'wp_ajax_get_cart_count'                            , 'get_cart_count_ajax' );
-add_action( 'wp_ajax_nopriv_get_cart_count'                     , 'get_cart_count_ajax' );
 add_filter( 'woocommerce_add_to_cart_fragments'                 , 'cart_count_fragments', 10, 1 );
 add_action( 'wp'                                                , 'remove_order_details_on_order_received' );
 add_filter( 'woocommerce_account_menu_items'                    , 'custom_account_menu_items' );
@@ -59,6 +55,7 @@ remove_action( 'woocommerce_after_shop_loop_item_title' , 'woocommerce_template_
 remove_action( 'woocommerce_after_shop_loop_item'       , 'woocommerce_template_loop_add_to_cart', 10 ) ;
 remove_action( 'woocommerce_cart_collaterals'           , 'woocommerce_cross_sell_display' );
 remove_action( 'woocommerce_before_cart'                , 'woocommerce_output_all_notices', 10 );
+remove_action( 'woocommerce_before_checkout_form'       , 'woocommerce_checkout_login_form', 10 );
 
 add_filter( 'woocommerce_get_stock_html'                , '__return_empty_string', 10, 2 );
 add_filter( 'woocommerce_sale_flash'                    , '__return_empty_string', 10 );
@@ -70,8 +67,10 @@ add_filter( 'wpc_filters_radio_term_html'               , 'wpc_label', 10, 4 );
 add_filter( 'wpc_filters_checkbox_term_html'            , 'wpc_label', 10, 4 );
 add_filter( 'woocommerce_catalog_orderby'               , 'custom_woocommerce_catalog_orderby', 20 );
 add_filter( 'woocommerce_default_catalog_orderby'       , 'custom_default_catalog_orderby', 20 );
-
 add_filter( 'woocommerce_cart_needs_shipping'           , 'remove_shipping_only_from_cart' );
+add_filter( 'woocommerce_checkout_fields'               , 'remove_shipping_address_2' );
+add_filter( 'woocommerce_ship_to_different_address_checked', '__return_false' );
+add_filter('the_content'                                , 'remove_nbsp_from_content', 99);
 
 add_action( 'woocommerce_after_shop_loop_item'          , 'custom_price_button_wrapper', 10 );
 add_action( 'woocommerce_before_single_product_summary' , 'start_single_product_container', 5 );
@@ -80,6 +79,183 @@ add_action( 'baza_product_before_images'                , 'show_badges_on_produc
 add_action( 'woocommerce_before_shop_loop_item_title'   , 'show_badges_in_loop', 9 );
 add_action( 'woocommerce_after_cart'                    , 'cross_sell_display' );
 add_action( 'woocommerce_before_cart'                   , 'woocommerce_output_all_notices', 5 );
+add_action( 'woocommerce_thankyou'                      , 'add_catalog_link_after_order', 10 );
+add_action( 'woocommerce_after_checkout_billing_form'   , 'custom_ajax_checkout_login_block', 10 );
+add_action( 'wp_ajax_nopriv_ajax_checkout_login'        , 'ajax_checkout_login_callback' );
+
+add_action( 'wp_ajax_update_cart'                       , 'handle_update_cart' );
+add_action( 'wp_ajax_nopriv_update_cart'                , 'handle_update_cart' );
+add_action( 'wp_ajax_get_cart_count'                    , 'get_cart_count' );
+add_action( 'wp_ajax_nopriv_get_cart_count'             , 'get_cart_count' );
+
+add_action('template_redirect', function() {
+    ob_start(function($buffer) {
+        return str_replace('&nbsp;', '', $buffer);
+    });
+});
+
+function remove_nbsp_from_content($content) {
+    return str_replace('&nbsp;', ' ', $content);
+}
+
+function cart_count_fragments($fragments) {
+    $count = WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
+    
+    $fragments['.cart-count'] = '<span class="cart-count">' . $count . '</span>';
+    
+    return $fragments;
+}
+add_filter('woocommerce_add_to_cart_fragments', 'cart_count_fragments');
+
+function get_cart_count() {
+    if (!check_ajax_referer('woocommerce-cart', 'security', false)) {
+        wp_send_json_error(array('message' => 'Security check failed.'));
+        return;
+    }
+    
+    $count = WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
+    wp_send_json_success(array('count' => $count));
+}
+
+function handle_update_cart() {
+
+    if (!check_ajax_referer('woocommerce-cart', 'cart_nonce', false)) {
+        error_log('Cart nonce verification failed');
+        wp_send_json_error(array('message' => 'Security check failed.'));
+        return;
+    }
+    
+    if (!isset($_POST['cart_item_key']) || !isset($_POST['quantity'])) {
+        error_log('Missing required parameters');
+        wp_send_json_error(array('message' => 'Required parameters missing.'));
+        return;
+    }
+    
+    $cart_item_key = sanitize_text_field($_POST['cart_item_key']);
+    $quantity = intval($_POST['quantity']);
+    
+    if (!isset(WC()->cart->get_cart()[$cart_item_key])) {
+        error_log('Cart item not found: ' . $cart_item_key);
+        wp_send_json_error(array('message' => 'Cart item not found.'));
+        return;
+    }
+    
+    if ($quantity > 0) {
+        WC()->cart->set_quantity($cart_item_key, $quantity, true);
+        
+        WC()->cart->calculate_totals();
+        
+        wp_send_json_success(array(
+            'message' => 'Cart updated successfully.',
+            'cart_total' => WC()->cart->get_cart_total()
+        ));
+    } else {
+        wp_send_json_error(array('message' => 'Quantity must be greater than zero.'));
+    }
+}
+
+function remove_shipping_address_2( $fields ) {
+    unset($fields['shipping']['shipping_address_2']);
+    return $fields;
+}
+
+function custom_ajax_checkout_login_block() {
+    if (is_user_logged_in()) {
+        return;
+    }
+    ?>
+    <div id="login-form-container" class="login-form-container">
+        <div class="woocommerce-form-login-toggle">
+            <?php wc_print_notice(apply_filters('woocommerce_checkout_login_message', esc_html__('Returning customer?', 'woocommerce')) . ' <a href="#" class="button showlogin">' . esc_html__('Login', 'woocommerce') . '</a>'); ?>
+        </div>
+        <div class="woocommerce-ajax-login login">
+            <div class="fields">
+                <p class="form-row form-row-first">
+                    <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="ajax_username" autocomplete="username" placeholder="<?php esc_html_e('Username or email', 'woocommerce'); ?>">
+                </p>
+                <p class="form-row form-row-last">
+                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="ajax_password" autocomplete="current-password" placeholder="<?php esc_html_e('Password', 'woocommerce'); ?>">
+                </p>
+                <p class="form-row form-row-submit">
+                    <?php wp_nonce_field('custom-login-nonce', 'custom-login-nonce'); ?>
+                    <button type="button" class="woocommerce-button button woocommerce-form-login__submit ajax-login-button"><?php esc_html_e('Login', 'woocommerce'); ?></button>
+                    <label class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
+                        <input class="woocommerce-form__input woocommerce-form__input-checkbox" type="checkbox" id="ajax_rememberme" value="forever"> 
+                        <span><?php esc_html_e('Remember me', 'woocommerce'); ?></span>
+                    </label>
+                </p>
+                <p class="lost_password">
+                    <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
+                </p>
+                <div class="ajax-login-message"></div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
+function ajax_checkout_login_callback() {
+    check_ajax_referer('custom-login-nonce', 'security');
+    
+    $username = isset($_POST['username']) ? sanitize_user($_POST['username']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;
+    
+    $user = wp_signon(
+        array(
+            'user_login'    => $username,
+            'user_password' => $password,
+            'remember'      => $remember,
+        ),
+        is_ssl()
+    );
+    
+    if (is_wp_error($user)) {
+        wp_send_json_error(array('message' => $user->get_error_message()));
+    } else {
+        $fragments = array();
+        
+        ob_start();
+        WC()->cart->calculate_shipping();
+        WC()->cart->calculate_totals();
+        woocommerce_checkout_payment();
+        $fragments['.woocommerce-checkout-payment'] = ob_get_clean();
+        
+        ob_start();
+        woocommerce_order_review();
+        $fragments['.woocommerce-checkout-review-order-table'] = ob_get_clean();
+        
+        ob_start();
+        woocommerce_form_field('billing_first_name', array(
+            'type'        => 'text',
+            'label'       => __('Имя', 'woocommerce'),
+            'required'    => true,
+            'class'       => array('form-row-first'),
+            'default'     => get_user_meta($user->ID, 'billing_first_name', true),
+        ));
+        $fragments['.woocommerce-billing-fields #billing_first_name_field'] = ob_get_clean();
+        
+        wp_send_json_success(array(
+            'message' => __('Успішна авторизація! Оновлення даних...'),
+            'fragments' => $fragments,
+            'reload' => false
+        ));
+    }
+    
+    wp_die();
+}
+
+function add_catalog_link_after_order($order_id) {
+    if (!$order_id) return;
+
+    $shop_url = get_permalink(wc_get_page_id('shop'));
+    
+    echo '
+        <div class="catalog-return-link">
+            <a href="' . esc_url($shop_url) . '" class="button">' . __('До каталогу'). '</a>
+        </div>
+    ';
+}
 
 function remove_shipping_only_from_cart($needs_shipping) {
     if (is_cart()) {
@@ -127,6 +303,9 @@ function change_woocommerce_text($translated_text, $text, $domain) {
         'Повернутись в магазин' => 'До каталогу',
         'Платіжні дані' => 'Дані покупця',
         'Оплата та доставка' => 'Дані покупця',
+        'Зберегти зміни' => 'Зберегти',
+        'Дякуємо. Ваше замовлення було отримано.' => 'Замовлення прийняте',
+        'Вже замовляли у нас?' => 'Якщо ви зареєстровані, увійдіть у свій обліковий запис, щоб зберегти дані про покупку.',
     );
     
     if (array_key_exists($translated_text, $translations)) {
@@ -211,11 +390,7 @@ function custom_price_button_wrapper() {
     echo '<span class="price">' . $product->get_price_html() . '</span>';
     
     echo '
-    <a href="' . esc_url( $link ) . '" class="button button-product-view">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.8 11.6C17.0666 11.8 17.0666 12.2 16.8 12.4L9.8 17.8991C9.47038 18.1463 9 17.9111 9 17.4991L9 6.50091C9 6.08888 9.47038 5.85369 9.8 6.10091L16.8 11.6Z" fill="currentColor"/>
-        </svg>
-    </a>';
+    <a href="' . esc_url( $link ) . '" class="button button-product-view"></a>';
     
     echo '</div>';
 }

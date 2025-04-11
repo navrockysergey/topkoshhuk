@@ -41,22 +41,27 @@ $show_customer_details = $order->get_user_id() === get_current_user_id();
 
 ?>
 <div class="woocommerce-order-details">
-	<?php
-		foreach ( $order_items as $item_id => $item ) :
-			$product = $item->get_product();
-			wc_get_template(
-				'order/order-details-item.php',
-				array(
-					'order'              => $order,
-					'item_id'            => $item_id,
-					'item'               => $item,
-					'show_purchase_note' => $show_purchase_note,
-					'purchase_note'      => $product ? $product->get_purchase_note() : '',
-					'product'            => $product,
-				)
-			);
-		endforeach;
 
+	<div class="order-items">
+		<?php
+			foreach ( $order_items as $item_id => $item ) :
+				$product = $item->get_product();
+				wc_get_template(
+					'order/order-details-item.php',
+					array(
+						'order'              => $order,
+						'item_id'            => $item_id,
+						'item'               => $item,
+						'show_purchase_note' => $show_purchase_note,
+						'purchase_note'      => $product ? $product->get_purchase_note() : '',
+						'product'            => $product,
+					)
+				);
+			endforeach;
+		?>
+	</div>
+
+	<?php
 		do_action( 'woocommerce_order_details_after_order_table', $order );
 		
 		do_action( 'woocommerce_after_order_details', $order );

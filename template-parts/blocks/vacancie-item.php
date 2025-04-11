@@ -11,7 +11,7 @@ $max_salary         = carbon_get_post_meta( $vid, 'max_salary' );
 $currency_symbol    = get_woocommerce_currency_symbol();
 ?>
 
-<div class="item">
+<a class="item" href="<?php echo get_the_permalink() ?>">
 
     <?php
     if ( $departments ) :
@@ -90,4 +90,4 @@ $currency_symbol    = get_woocommerce_currency_symbol();
             </div>
         </div>
     </div>
-</div>
+</a>

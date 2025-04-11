@@ -39,9 +39,9 @@ foreach ( $shipping_data as $id => $shipping ) {
 
 $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_address();
 ?>
-<div class="woocommerce-customer-details flex">
+<div class="woocommerce-customer-details">
 	<div class="order-data-item shipping-method">
-		<span class="icon <?php echo esc_attr( $shipping_method_id )?>"></span>
+		<i class="icon-<?php echo esc_attr( $shipping_method_id )?>"></i>
 
 		<span class="content">
 			<?php
@@ -54,7 +54,7 @@ $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_a
 		if ( $show_shipping ) :
 		?>
 		<div class="order-data-item shipping">
-			<span class="icon"></span>
+			<i class="icon-map-24"></i>
 
 			<address class="content">
 				<?php
@@ -76,7 +76,7 @@ $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_a
 		else :
 			?>
 			<div class="order-data-item billing">
-				<span class="icon"></span>
+				<i class="icon-wallet-24"></i>
 
 				<address class="content">
 				<?php
@@ -99,7 +99,7 @@ $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_a
 	?>
 
 	<div class="order-data-item customer">
-		<span class="icon"></span>
+		<span class="icon-user"></span>
 
 		<span class="content">
 			<?php
@@ -112,7 +112,7 @@ $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_a
 	if ( ! empty( $payment_method ) ) :
 		?>
 		<div class="order-data-item order-pyment">
-			<span class="icon <?php echo esc_attr( $payment_method )?>"></span>
+			<i class="icon-wallet-24 <?php echo esc_attr( $payment_method )?>"></i>
 
 			<div class="content">
 				<?php echo esc_attr( $payment_method_title )?>

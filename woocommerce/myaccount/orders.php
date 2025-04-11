@@ -32,23 +32,23 @@ do_action( 'woocommerce_before_account_orders', $has_orders ); ?>
 			$status     = $order->get_status();
 
 			?>
-			<div class="order" data-order="<?php echo $order->get_id()?>">
-				<div class="flex order-head">
-					<div class="order-row order-number">
+			<div class="order accordion-item" data-order="<?php echo $order->get_id()?>">
+				<div class="order-header accordion-header">
+					<div class="order-number">
 						№ <?php echo $order_id ?>
 					</div>
 
-					<div class="order-row order-status">
-						<span class="status-icon <?php echo $status?>">
-							<?php echo esc_html( wc_get_order_status_name( $status ) ); ?>
-						</span>
+					<div class="order-status <?php echo $status?>">
+						<?php echo esc_html( wc_get_order_status_name( $status ) ); ?>
 					</div>
 				</div>
 
-				<?php
-				// See woocommerce/order/order-details.php
-				do_action( 'woocommerce_view_order', $order_id );
-				?>
+				<div class="order-details accordion-content">
+					<?php
+						// See woocommerce/order/order-details.php
+						do_action( 'woocommerce_view_order', $order_id );
+					?>
+				</div>
 			</div>
 			<?php
 		endforeach;

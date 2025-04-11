@@ -10,14 +10,14 @@
             if ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_cart_item_visible', true, $cart_item, $cart_item_key)) {
                 $product_permalink = apply_filters('woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink($cart_item) : '', $cart_item, $cart_item_key);
                 ?>
-                <div class="cart-item <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>">
+                <div class="cart-item <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>" data-key="<?php echo esc_attr($cart_item_key); ?>">
                     
                     <div class="product-remove">
                         <?php
                         echo apply_filters(
                             'woocommerce_cart_item_remove_link',
                             sprintf(
-                                '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.8553 7.55871C18.0506 7.36345 18.0506 7.04686 17.8553 6.8516L17.1482 6.14449C16.953 5.94923 16.6364 5.94923 16.4411 6.14449L11.9999 10.5857L7.55872 6.14449C7.36346 5.94923 7.04688 5.94923 6.85162 6.14449L6.14451 6.8516C5.94925 7.04686 5.94925 7.36345 6.14451 7.55871L10.5857 11.9999L6.14449 16.4411C5.94923 16.6364 5.94923 16.953 6.14449 17.1482L6.8516 17.8553C7.04686 18.0506 7.36344 18.0506 7.55871 17.8553L11.9999 13.4141L16.4411 17.8553C16.6364 18.0506 16.953 18.0506 17.1482 17.8553L17.8553 17.1482C18.0506 16.953 18.0506 16.6364 17.8553 16.4411L13.4141 11.9999L17.8553 7.55871Z" fill="currentColor"/></svg></a>',
+                                '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-product_sku="%s"></a>',
                                 esc_url(wc_get_cart_remove_url($cart_item_key)),
                                 esc_html__('Remove this item', 'woocommerce'),
                                 esc_attr($product_id),

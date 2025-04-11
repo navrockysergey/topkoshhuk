@@ -57,7 +57,18 @@ $thumbnail_url = get_the_post_thumbnail_url( $item->get_product_id(), 'thumbnail
 		?>
 	</div>
 
-	<div class="woocommerce-item__product-total product-total">
-		<?php echo $order->get_formatted_line_subtotal( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+	<div class="product-price-info">
+		<span class="product-single-price">
+			<?php 
+				$product_price = $order->get_item_subtotal( $item, false, true );
+				echo wc_price(  $product_price ); 
+			?>
+		</span>
+		<span class="product-quantity">
+			<?php echo $qty_display; ?>
+		</span>
+		<span class="product-total-price">
+			<?php echo $order->get_formatted_line_subtotal( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		</span>
 	</div>
 </div>

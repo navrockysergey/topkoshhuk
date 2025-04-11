@@ -205,6 +205,7 @@
             color: var(--color_black);
             position: relative;
             padding-left: calc(18px + var(--gap_s));
+            line-height: 1.1;
     
             a {
                 color: var(--color_black);
@@ -225,9 +226,12 @@
                 width: 16px;
                 min-width: 16px;
                 height: 16px;
-                border-radius: 6px;
+                border-radius: 4px;
                 border: 1px solid var(--color_secondary);
-                transition: .5s ease;
+                transition: .3s ease;
+                color: var(--color_white);
+                font-size: 0px;
+                text-indent: -2px;
             }
     
             &:hover {
@@ -243,10 +247,11 @@
             +label {
     
                 &:before {
-                    content: $icon_checkbox;
+                    content: "\e914";
                     background-color: var(--color_primary);
                     border-color: var(--color_primary);
                     color: var(--color_white);
+                    font-size: 16px;
                 }
             }
         }
@@ -303,6 +308,21 @@
     transition: all .3s ease;
     line-height: 1;
 
+    i {
+        color: var(--color_white);
+        font-size: 24px;
+        position: relative;
+        margin: -1px;
+    }
+
+    &::before,
+    &::after {
+        color: var(--color_white);
+        font-size: 24px;
+        position: relative;
+        margin: -1px;
+    }
+
     svg {
         line-height: 0;
         position: relative;
@@ -317,5 +337,67 @@
 
     &.button-secondary {
         @include button-secondary;
+    }
+}
+
+@mixin field_icon($icon: "\e001", $color: var(--text_color)) {
+    &::before {
+        content: $icon;
+        font-family: 'icons' !important;
+        speak: never;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        font-size: 24px;
+        color: $color;
+        position: absolute;
+        z-index: 10;
+        top: 50%;
+        transform: translate(0, -50%);
+        left: var(--padding_xs);
+    }
+
+    input {
+        padding-left: calc(var(--padding_s) + 24px) !important;
+    }
+
+    &.woocommerce-invalid-required-field {
+        &::before {
+            color: var(--color_error) !important;
+        }
+    }
+}
+
+@mixin field_icon($icon, $color) {
+    position: relative !important;
+    
+    &::before {
+        content: $icon;
+        font-family: 'icons' !important;
+        speak: never;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        font-size: 24px;
+        color: $color;
+        position: absolute;
+        z-index: 10;
+        top: 50%;
+        transform: translate(0, -50%);
+        left: var(--padding_xs);
+    }
+
+    input {
+        padding-left: calc(var(--padding_s) + 24px) !important;
+    }
+
+    &.woocommerce-invalid-required-field {
+        &::before {
+            color: var(--color_error) !important;
+        }
     }
 }
