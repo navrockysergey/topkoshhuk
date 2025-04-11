@@ -1058,6 +1058,7 @@ label[for=payment_method_cod]::before,
     right: var(--padding_m);
     top: var(--padding_m);
     line-height: 0;
+    height: 56px;
   }
   .product-media-popup .container.product-container .product-media .product-thumbnails-wrapper {
     order: 1;

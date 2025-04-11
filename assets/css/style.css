@@ -1395,7 +1395,7 @@ input[type=submit].button-secondary:hover {
 }
 
 button[type=submit] {
-  min-height: 56px;
+  min-height: var(--item_size);
 }
 
 .header-title {
@@ -2112,6 +2112,9 @@ footer ul {
 .section.section-bestsellers {
   padding-bottom: 0;
 }
+.section.section-bestsellers .button.button-product-view {
+  height: var(--item_size);
+}
 .section.section-subscribe {
   text-align: center;
   background-color: var(--color_secondary);
@@ -2512,7 +2515,7 @@ footer ul {
   grid-template-columns: 150px 1fr;
   gap: var(--gap_s) var(--gap_m);
   position: relative;
-  padding-right: calc(56px + var(--padding_s) * 2);
+  padding-right: calc(var(--item_size) + var(--padding_s) * 2);
 }
 @media (max-width: 767px) {
   .section.section-stores .items .item {
@@ -2581,7 +2584,7 @@ footer ul {
 }
 .section.section-stores .items .item .item-map {
   grid-column: span 2;
-  margin-right: calc((56px + var(--padding_s) / 2) * -1);
+  margin-right: calc((var(--item_size) + var(--padding_s) / 2) * -1);
 }
 .section.section-stores .items .item .item-map:empty {
   display: none !important;
@@ -3321,7 +3324,7 @@ footer ul {
   position: relative;
 }
 .wpcf7 .wpcf7-submit {
-  height: 56px;
+  height: var(--item_size);
 }
 .wpcf7 .wpcf7-form-control:not(.wpcf7-submit) {
   font-size: var(--font_size_p1);

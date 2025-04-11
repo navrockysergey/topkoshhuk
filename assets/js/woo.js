@@ -22,6 +22,24 @@ jQuery(document).ready(function ($) {
 		}
 	});
 	
+	const $form = $('.woocommerce-product-search');
+    const $searchInput = $form.find('input[type="search"]');
+
+    $form.on('submit', function(e) {
+        const value = $searchInput.val().trim();
+
+        if (value === '') {
+            e.preventDefault();
+
+            $searchInput.focus();
+
+            $searchInput.on('input', function() {
+                if ($(this).val().trim() !== '') {
+                    $(this).focus();
+                }
+            });
+        }
+    });
     
     if ($('.category-header select').length > 0 && $.fn.select2) {
         $('.category-header select').select2({
