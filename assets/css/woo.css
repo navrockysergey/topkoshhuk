@@ -383,6 +383,10 @@ label[for=payment_method_cod]::before,
     transform: rotate(360deg);
   }
 }
+.container-archive-product {
+  padding-top: var(--padding_m);
+}
+
 .woocommerce-notices-wrapper {
   outline: none !important;
   display: flex;

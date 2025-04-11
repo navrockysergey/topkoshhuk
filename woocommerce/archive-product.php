@@ -19,11 +19,29 @@ defined( 'ABSPATH' ) || exit;
 
 get_header( 'shop' );
 
-echo '<div class="container">';
+?>
+
+<div class="breadcrumb-container">
+	<div class="container">
+		<?php
+			if ( function_exists('yoast_breadcrumb') ) {
+				yoast_breadcrumb( '<div id="breadcrumbs">','</div>' );
+			}
+		?>
+	</div>
+</div>
+
+<div class="header-title">
+    <div class="container">
+        <?php do_action( 'woocommerce_shop_loop_header' ); ?>
+    </div>
+</div>
+
+<?php
+
+echo '<div class="container container-archive-product">';
 
 do_action( 'woocommerce_before_main_content' );
-
-do_action( 'woocommerce_shop_loop_header' );
 
 if ( woocommerce_product_loop() ) {
 

@@ -30,6 +30,10 @@ body {
     }
 }
 
+.container-archive-product {
+    padding-top: var(--padding_m);
+}
+
 .woocommerce-notices-wrapper {
     outline: none !important;
     display: flex;
