@@ -154,12 +154,12 @@ jQuery(document).ready(function($) {
         var $shippingAddress = $('.shipping_address');
 
         if (isNovaPoshtaSelected) {
-            $shippingAddress.css('display', 'none');
+            $shippingAddress.hide();
         } else {
-            $shippingAddress.css('display', '');
+            $shippingAddress.show();
         }
     }
-
+      
     $('.shipping_method').change(function () {
         updateShippingAddressVisibility();
     });

@@ -1,5 +1,5 @@
 jQuery(function($) {
-    // Initialize login form functionality
+
     function initLoginForm() {
         $('#login-form-container .showlogin').off('click').on('click', function(e) {
             e.preventDefault();
@@ -49,10 +49,6 @@ jQuery(function($) {
                                 $(key).replaceWith(value);
                             });
                             
-                            // Trigger checkout update
-                            $(document.body).trigger('update_checkout');
-                            
-                        } else if (response.data.reload) {
                             window.location.reload();
                         }
                     } else {
@@ -68,18 +64,9 @@ jQuery(function($) {
         });
     }
 
-    // Initialize on document ready
     initLoginForm();
     
-    // Reinitialize when checkout is updated
     $(document.body).on('updated_checkout', function() {
         initLoginForm();
     });
-    
-    // // Additional listener for WooCommerce AJAX completed actions
-    // $(document).ajaxComplete(function(event, xhr, options) {
-    //     if (options.url && options.url.indexOf('wc-ajax=') !== -1) {
-    //         initLoginForm();
-    //     }
-    // });
 });
