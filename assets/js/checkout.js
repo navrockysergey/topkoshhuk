@@ -104,6 +104,7 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     $('.cart-count').text(response.data.count);
+                    $('.cart-items-count .value').text(response.data.count);
                 }
             },
             error: function(xhr, textStatus, errorThrown) {
@@ -141,26 +142,11 @@ jQuery(document).ready(function($) {
         
         $(document.body).one('updated_checkout', function() {
             $checkoutForm.unblock().removeClass('processing').css('position', '');
-            $cartCollaterals.unblock().removeClass('processing').css('position', '');
         });
     }
 
     function updateCartCollaterals() {
-        $.ajax({
-            url: wc_cart_params.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'get_refreshed_fragments',
-                security: wc_cart_params.cart_nonce
-            },
-            success: function(response) {
-                if (response && response.fragments) {
-                    $.each(response.fragments, function(key, value) {
-                        $(key).replaceWith(value);
-                    });
-                }
-            }
-        });
+        
     }
 });
 

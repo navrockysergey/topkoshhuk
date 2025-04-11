@@ -1249,6 +1249,13 @@ ul.products {
             }
         }
 
+        .woocommerce-notices-wrapper {
+            grid-column: span 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
         #customer_login {
             grid-column: span 2;
             display: grid;
@@ -2533,6 +2540,10 @@ ul.products {
         flex-direction: column;
         gap: var(--gap_xs);
         margin: 0;
+
+        .checkout-inline-error-message {
+            display: none !important;
+        }
 
         &#shipping_first_name_field,
         &#billing_first_name_field {

@@ -1703,6 +1703,12 @@ ul.products li.product .product-sku-wrapper {
 .woocommerce-account .woocommerce .woocommerce-ResetPassword p {
   margin: 0;
 }
+.woocommerce-account .woocommerce .woocommerce-notices-wrapper {
+  grid-column: span 2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+}
 .woocommerce-account .woocommerce #customer_login {
   grid-column: span 2;
   display: grid;
@@ -2862,6 +2868,9 @@ ul.products li.product .product-sku-wrapper {
   flex-direction: column;
   gap: var(--gap_xs);
   margin: 0;
+}
+.woocommerce-checkout .form-row .checkout-inline-error-message {
+  display: none !important;
 }
 .woocommerce-checkout .form-row#shipping_first_name_field, .woocommerce-checkout .form-row#billing_first_name_field {
   position: relative !important;

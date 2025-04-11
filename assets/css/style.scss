@@ -165,6 +165,10 @@ input:-webkit-autofill {
     box-shadow: 0 0 0px 1000px transparent inset !important;
 }
 
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px var(--color_white) inset !important;
+}
+
 input[type="radio"]:not(.shipping_method):not([name="payment_method"]) {
     display: none !important;
 
@@ -1130,6 +1134,10 @@ footer {
             @include mobile {
                 font-size: var(--font_size_p2);
             }
+        }
+
+        .wpcf7-form-control-wrap {
+            @include field_icon('\e91a', var(--color_white));
         }
     }
 
@@ -2196,6 +2204,10 @@ footer {
         gap: var(--gap_s);
         position: relative;
         margin: 0 auto;
+
+        span {
+            display: block;
+        }
         
         .section-subscribe & {
             max-width: 444px;
@@ -2281,6 +2293,14 @@ footer {
         .section-vacancies & {
             max-width: 80%;
             margin: 0 auto;
+        }
+    }
+
+    .wpcf7-form-control-wrap {
+        &.focus {
+            &::before {
+                color: var(--text_color);
+            }
         }
     }
 

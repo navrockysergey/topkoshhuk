@@ -1,13 +1,32 @@
 jQuery(function ($) {
-    const npAreaSelector = '#wcus_np_billing_area';
-    const npCitySelector = '#wcus_np_billing_city';
-    const npWarehouseSelector = '#wcus_np_billing_warehouse';
+    const selectors = {
+        billing: {
+            area: '#wcus_np_billing_area',
+            city: '#wcus_np_billing_city',
+            warehouse: '#wcus_np_billing_warehouse'
+        },
+        shipping: {
+            area: '#wcus_np_shipping_area',
+            city: '#wcus_np_shipping_city',
+            warehouse: '#wcus_np_shipping_warehouse'
+        }
+    };
+    
     const npDisabledClass = 'np-disabled';
 
     function refreshFields() {
-        const $area = $(npAreaSelector);
-        const $city = $(npCitySelector);
-        const $warehouse = $(npWarehouseSelector);
+        refreshFieldSet(selectors.billing);
+        refreshFieldSet(selectors.shipping);
+    }
+    
+    function refreshFieldSet(fieldSet) {
+        const $area = $(fieldSet.area);
+        const $city = $(fieldSet.city);
+        const $warehouse = $(fieldSet.warehouse);
+        
+        if (!$area.length || !$city.length || !$warehouse.length) {
+            return;
+        }
 
         if (!$area.val()) {
             $city.addClass(npDisabledClass);
@@ -37,7 +56,6 @@ jQuery(function ($) {
     }
 
     function init() {
-  
         $(document).on('mousedown mouseup click focus', 
             '.' + npDisabledClass + ', ' + 
             '.' + npDisabledClass + ' + .select2-container, ' +
@@ -57,11 +75,19 @@ jQuery(function ($) {
             return false;
         });
 
-        $(document).on('change', npAreaSelector, function () {
+        $(document).on('change', selectors.billing.area, function () {
             refreshFields();
         });
 
-        $(document).on('change', npCitySelector, function () {
+        $(document).on('change', selectors.billing.city, function () {
+            refreshFields();
+        });
+        
+        $(document).on('change', selectors.shipping.area, function () {
+            refreshFields();
+        });
+
+        $(document).on('change', selectors.shipping.city, function () {
             refreshFields();
         });
 
@@ -70,7 +96,10 @@ jQuery(function ($) {
     }
 
     function checkFieldsAndInit() {
-        if ($(npAreaSelector).length && $(npCitySelector).length) {
+        const billingFieldsExist = $(selectors.billing.area).length && $(selectors.billing.city).length;
+        const shippingFieldsExist = $(selectors.shipping.area).length && $(selectors.shipping.city).length;
+        
+        if (billingFieldsExist || shippingFieldsExist) {
             init();
         } else {
             setTimeout(checkFieldsAndInit, 300);
@@ -81,5 +110,9 @@ jQuery(function ($) {
 
     $(document).on('updated_checkout', function () {
         setTimeout(refreshFields, 500);
+    });
+    
+    $(document).on('change', '#ship-to-different-address-checkbox', function() {
+        setTimeout(refreshFields, 300);
     });
 });

@@ -160,38 +160,37 @@ function remove_shipping_address_2( $fields ) {
 }
 
 function custom_ajax_checkout_login_block() {
-    if (is_user_logged_in()) {
-        return;
-    }
+    if (!is_user_logged_in()) {
     ?>
-    <div id="login-form-container" class="login-form-container">
-        <div class="woocommerce-form-login-toggle">
-            <?php wc_print_notice(apply_filters('woocommerce_checkout_login_message', esc_html__('Returning customer?', 'woocommerce')) . ' <a href="#" class="button showlogin">' . esc_html__('Login', 'woocommerce') . '</a>'); ?>
-        </div>
-        <div class="woocommerce-ajax-login login">
-            <div class="fields">
-                <p class="form-row form-row-first">
-                    <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="ajax_username" autocomplete="username" placeholder="<?php esc_html_e('Username or email', 'woocommerce'); ?>">
-                </p>
-                <p class="form-row form-row-last">
-                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="ajax_password" autocomplete="current-password" placeholder="<?php esc_html_e('Password', 'woocommerce'); ?>">
-                </p>
-                <p class="form-row form-row-submit">
-                    <?php wp_nonce_field('custom-login-nonce', 'custom-login-nonce'); ?>
-                    <button type="button" class="woocommerce-button button woocommerce-form-login__submit ajax-login-button"><?php esc_html_e('Login', 'woocommerce'); ?></button>
-                    <label class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
-                        <input class="woocommerce-form__input woocommerce-form__input-checkbox" type="checkbox" id="ajax_rememberme" value="forever"> 
-                        <span><?php esc_html_e('Remember me', 'woocommerce'); ?></span>
-                    </label>
-                </p>
-                <p class="lost_password">
-                    <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
-                </p>
-                <div class="ajax-login-message"></div>
+        <div id="login-form-container" class="login-form-container">
+            <div class="woocommerce-form-login-toggle">
+                <?php wc_print_notice(apply_filters('woocommerce_checkout_login_message', esc_html__('Returning customer?', 'woocommerce')) . ' <a href="#" class="button showlogin">' . esc_html__('Login', 'woocommerce') . '</a>'); ?>
+            </div>
+            <div class="woocommerce-ajax-login login">
+                <div class="fields">
+                    <p class="form-row form-row-first">
+                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="ajax_username" autocomplete="username" placeholder="<?php esc_html_e('Username or email', 'woocommerce'); ?>">
+                    </p>
+                    <p class="form-row form-row-last">
+                        <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="ajax_password" autocomplete="current-password" placeholder="<?php esc_html_e('Password', 'woocommerce'); ?>">
+                    </p>
+                    <p class="form-row form-row-submit">
+                        <?php wp_nonce_field('custom-login-nonce', 'custom-login-nonce'); ?>
+                        <button type="button" class="woocommerce-button button woocommerce-form-login__submit ajax-login-button"><?php esc_html_e('Login', 'woocommerce'); ?></button>
+                        <label class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
+                            <input class="woocommerce-form__input woocommerce-form__input-checkbox" type="checkbox" id="ajax_rememberme" value="forever"> 
+                            <span><?php esc_html_e('Remember me', 'woocommerce'); ?></span>
+                        </label>
+                    </p>
+                    <p class="lost_password">
+                        <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
+                    </p>
+                    <div class="ajax-login-message"></div>
+                </div>
             </div>
         </div>
-    </div>
-    <?php
+        <?php
+    }
 }
 
 function ajax_checkout_login_callback() {

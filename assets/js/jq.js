@@ -20,6 +20,14 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
+	$(document).on('focus', 'input', function () {
+		$(this).parent().addClass('focus');
+	});
+
+	$(document).on('blur', 'input', function () {
+		$(this).parent().removeClass('focus');
+	});	  
+
 	$(document).on('click', '.close-menu', function(e) {
 		e.preventDefault();
 		$('.menu-toggle').removeClass('active');
