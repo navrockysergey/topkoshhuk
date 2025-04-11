@@ -148,5 +148,26 @@ jQuery(document).ready(function($) {
     function updateCartCollaterals() {
         
     }
+
+    function updateShippingAddressVisibility() {
+        var isNovaPoshtaSelected = $('.shipping_method:checked[value*=nova_poshta]').length > 0;
+        var $shippingAddress = $('.shipping_address');
+
+        if (isNovaPoshtaSelected) {
+            $shippingAddress.css('display', 'none');
+        } else {
+            $shippingAddress.css('display', '');
+        }
+    }
+
+    $('.shipping_method').change(function () {
+        updateShippingAddressVisibility();
+    });
+
+    updateShippingAddressVisibility();
+
+    $(document.body).on('updated_checkout', function () {
+        updateShippingAddressVisibility();
+    });
 });
 

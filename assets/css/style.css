@@ -13,6 +13,7 @@ select {
   font-style: normal;
   font-display: block;
 }
+.icon-nova_poshta_billing::before,
 .icon-nova_poshta_shipping::before,
 .product-summary-box::before,
 .section-single-vacancie .content ul li::before,
@@ -246,6 +247,8 @@ label[for*=local_pickup]::before,
   content: "\e929";
 }
 
+.wc-ukr-shipping-np-fields #wcus_np_shipping_city_field .select2-selection__rendered::before,
+.wc-ukr-shipping-np-fields #wcus_np_shipping_area_field .select2-selection__rendered::before,
 .wc-ukr-shipping-np-fields #wcus_np_billing_city_field .select2-selection__rendered::before,
 .wc-ukr-shipping-np-fields #wcus_np_billing_area_field .select2-selection__rendered::before,
 .icon-map-24:before {
@@ -261,6 +264,7 @@ label[for*=local_pickup]::before,
 }
 
 .icon-nova_poshta_shipping::before,
+.wc-ukr-shipping-np-fields #wcus_np_shipping_warehouse_field .select2-selection__rendered::before,
 .wc-ukr-shipping-np-fields #wcus_np_billing_warehouse_field .select2-selection__rendered::before,
 label[for*=nova_poshta]::before,
 .icon-novaposhta:before,
@@ -370,6 +374,7 @@ select {
   font-style: normal;
   font-display: block;
 }
+.icon-nova_poshta_billing::before,
 .icon-nova_poshta_shipping::before,
 .product-summary-box::before,
 .section-single-vacancie .content ul li::before,
@@ -603,6 +608,8 @@ label[for*=local_pickup]::before,
   content: "\e929";
 }
 
+.wc-ukr-shipping-np-fields #wcus_np_shipping_city_field .select2-selection__rendered::before,
+.wc-ukr-shipping-np-fields #wcus_np_shipping_area_field .select2-selection__rendered::before,
 .wc-ukr-shipping-np-fields #wcus_np_billing_city_field .select2-selection__rendered::before,
 .wc-ukr-shipping-np-fields #wcus_np_billing_area_field .select2-selection__rendered::before,
 .icon-map-24:before {
@@ -618,6 +625,7 @@ label[for*=local_pickup]::before,
 }
 
 .icon-nova_poshta_shipping::before,
+.wc-ukr-shipping-np-fields #wcus_np_shipping_warehouse_field .select2-selection__rendered::before,
 .wc-ukr-shipping-np-fields #wcus_np_billing_warehouse_field .select2-selection__rendered::before,
 label[for*=nova_poshta]::before,
 .icon-novaposhta:before,
