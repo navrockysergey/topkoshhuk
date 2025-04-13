@@ -75,7 +75,6 @@ jQuery(document).ready(function($) {
 
                         triggerCheckoutUpdate();
                         updateCartCount();
-                        updateCartCollaterals();
 
                     } else {
 
@@ -114,49 +113,30 @@ jQuery(document).ready(function($) {
     }
 
     function triggerCheckoutUpdate() {
-        const $checkoutForm = $('.woocommerce-checkout');
-        
-        $checkoutForm.addClass('processing').css('position', 'relative');
-        
-        $checkoutForm.block({
-            message: null,
-            overlayCSS: {
-                background: '#F2F2F2',
-                opacity: 0.3
-            }
-        });
-    
-        $.ajax({
-            url: wc_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'get_refreshed_fragments'),
-            type: 'POST',
-            success: function(response) {
-                if (response && response.fragments) {
-                    $.each(response.fragments, function(key, value) {
-                        $(key).replaceWith(value);
-                    });
-                }
-                
-                $(document.body).trigger('update_checkout');
-            }
-        });
-        
-        $(document.body).one('updated_checkout', function() {
-            $checkoutForm.unblock().removeClass('processing').css('position', '');
-        });
-    }
-
-    function updateCartCollaterals() {
-        
+        window.location.reload();
     }
 
     function updateShippingAddressVisibility() {
-        var isNovaPoshtaSelected = $('.shipping_method:checked[value*=nova_poshta]').length > 0;
-        var $shippingAddress = $('.shipping_address');
+        let isLocalPickupSelected = $('.shipping_method:checked[value*=local_pickup]').length > 0;
+        let isNovaPoshtaSelected = $('.shipping_method:checked[value*=nova_poshta]').length > 0;
+        let $shippingAddress = $('.woocommerce-shipping-fields');
+        
+        if (isLocalPickupSelected) {
 
-        if (isNovaPoshtaSelected) {
             $shippingAddress.hide();
+        } else if (isNovaPoshtaSelected) {
+
+            $shippingAddress.show();
+            let isShipToDifferent = $('#ship-to-different-address-checkbox').is(':checked');
+            
+            if (isShipToDifferent) {
+                $('.shipping_address').show();
+            } else {
+                $('.shipping_address').hide();
+            }
         } else {
             $shippingAddress.show();
+            $('.shipping_address').show();
         }
     }
       
@@ -166,8 +146,58 @@ jQuery(document).ready(function($) {
 
     updateShippingAddressVisibility();
 
+    function processCheckboxLabels() {
+        $('.woocommerce-checkout .form-row input[type="checkbox"]').each(function() {
+            let $checkbox = $(this);
+            let $label = $checkbox.closest('label.checkbox');
+            
+            if ($label.length) {
+
+                if ($label.data('processed')) {
+                    return;
+                }
+                
+                $label.data('processed', true);
+                
+                $label.find('.checkbox-text').remove();
+                
+                $label.find('.optional').remove();
+                
+                let labelText = '';
+                $label.contents().filter(function() {
+                    return this.nodeType === 3;
+                }).each(function() {
+                    labelText += this.textContent;
+                });
+                
+                $label.contents().filter(function() {
+                    return this.nodeType === 3;
+                }).remove();
+                
+                if (labelText.trim() !== '') {
+                    $checkbox.after($('<span class="checkbox-text"></span>').text(labelText.trim()));
+                }
+            }
+        });
+    }
+
+    processCheckboxLabels();
+
+    function moveCallbackField() {
+        let $callbackField = $('#shipping_call_back_field');
+        let $customerDetails = $('#customer_details');
+        
+        if ($callbackField.length && $customerDetails.length) {
+            $customerDetails.append($callbackField);
+        }
+    }
+    
+    moveCallbackField();
+
     $(document.body).on('updated_checkout', function () {
         updateShippingAddressVisibility();
+        processCheckboxLabels();
+        moveCallbackField();
     });
 });
 

@@ -1,4 +1,19 @@
 <?php
+
+add_filter('woocommerce_cart_needs_payment', '__return_false');
+add_filter('woocommerce_checkout_fields', function($fields) {
+    foreach ($fields as $fieldset_key => $fieldset) {
+        foreach ($fieldset as $field_key => $field) {
+            $fields[$fieldset_key][$field_key]['required'] = false;
+            
+            if (strpos($field_key, 'payment_') === 0) {
+                $fields[$fieldset_key][$field_key]['type'] = 'hidden';
+            }
+        }
+    }
+    return $fields;
+}, 9999);
+
 add_filter( 'woocommerce_product_tabs'                          , 'remove_all_woocommerce_tabs', 100 );
 add_action( 'wp_loaded'                                         , 'woocommerce_single_product_summary_changes' );
 add_filter( 'get_wholesale_prices'                              , 'get_wholesale_prices' );
@@ -80,8 +95,9 @@ add_action( 'woocommerce_before_shop_loop_item_title'   , 'show_badges_in_loop',
 add_action( 'woocommerce_after_cart'                    , 'cross_sell_display' );
 add_action( 'woocommerce_before_cart'                   , 'woocommerce_output_all_notices', 5 );
 add_action( 'woocommerce_thankyou'                      , 'add_catalog_link_after_order', 10 );
-add_action( 'woocommerce_after_checkout_billing_form'   , 'custom_ajax_checkout_login_block', 10 );
-add_action( 'wp_ajax_nopriv_ajax_checkout_login'        , 'ajax_checkout_login_callback' );
+add_action( 'woocommerce_after_checkout_billing_form'   , 'ajax_checkout_login_block', 10 );
+add_action( 'wp_ajax_nopriv_ajax_checkout_login'        , 'ajax_login_callback' );
+add_action( 'wp_ajax_nopriv_ajax_register'              , 'ajax_register_callback' );
 
 add_action( 'wp_ajax_update_cart'                       , 'handle_update_cart' );
 add_action( 'wp_ajax_nopriv_update_cart'                , 'handle_update_cart' );
@@ -157,91 +173,6 @@ function handle_update_cart() {
 function remove_shipping_address_2( $fields ) {
     unset($fields['shipping']['shipping_address_2']);
     return $fields;
-}
-
-function custom_ajax_checkout_login_block() {
-    if (!is_user_logged_in()) {
-    ?>
-        <div id="login-form-container" class="login-form-container">
-            <div class="woocommerce-form-login-toggle">
-                <?php wc_print_notice(apply_filters('woocommerce_checkout_login_message', esc_html__('Returning customer?', 'woocommerce')) . ' <a href="#" class="button showlogin">' . esc_html__('Login', 'woocommerce') . '</a>'); ?>
-            </div>
-            <div class="woocommerce-ajax-login login">
-                <div class="fields">
-                    <p class="form-row form-row-first">
-                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="ajax_username" autocomplete="username" placeholder="<?php esc_html_e('Username or email', 'woocommerce'); ?>">
-                    </p>
-                    <p class="form-row form-row-last">
-                        <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="ajax_password" autocomplete="current-password" placeholder="<?php esc_html_e('Password', 'woocommerce'); ?>">
-                    </p>
-                    <p class="form-row form-row-submit">
-                        <?php wp_nonce_field('custom-login-nonce', 'custom-login-nonce'); ?>
-                        <button type="button" class="woocommerce-button button woocommerce-form-login__submit ajax-login-button"><?php esc_html_e('Login', 'woocommerce'); ?></button>
-                        <label class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
-                            <input class="woocommerce-form__input woocommerce-form__input-checkbox" type="checkbox" id="ajax_rememberme" value="forever"> 
-                            <span><?php esc_html_e('Remember me', 'woocommerce'); ?></span>
-                        </label>
-                    </p>
-                    <p class="lost_password">
-                        <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
-                    </p>
-                    <div class="ajax-login-message"></div>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-}
-
-function ajax_checkout_login_callback() {
-    check_ajax_referer('custom-login-nonce', 'security');
-    
-    $username = isset($_POST['username']) ? sanitize_user($_POST['username']) : '';
-    $password = isset($_POST['password']) ? $_POST['password'] : '';
-    $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;
-    
-    $user = wp_signon(
-        array(
-            'user_login'    => $username,
-            'user_password' => $password,
-            'remember'      => $remember,
-        ),
-        is_ssl()
-    );
-    
-    if (is_wp_error($user)) {
-        wp_send_json_error(array('message' => $user->get_error_message()));
-    } else {
-        $fragments = array();
-        
-        ob_start();
-        WC()->cart->calculate_shipping();
-        WC()->cart->calculate_totals();
-        woocommerce_checkout_payment();
-        $fragments['.woocommerce-checkout-payment'] = ob_get_clean();
-        
-        ob_start();
-        woocommerce_order_review();
-        $fragments['.woocommerce-checkout-review-order-table'] = ob_get_clean();
-        
-        ob_start();
-        woocommerce_form_field('billing_first_name', array(
-            'type'        => 'text',
-            'label'       => __('Имя', 'woocommerce'),
-            'required'    => true,
-            'class'       => array('form-row-first'),
-            'default'     => get_user_meta($user->ID, 'billing_first_name', true),
-        ));
-        $fragments['.woocommerce-billing-fields #billing_first_name_field'] = ob_get_clean();
-        
-        wp_send_json_success(array(
-            'message' => __('Успішна авторизація! Оновлення даних...'),
-            'fragments' => $fragments,
-            'reload' => false
-        ));
-    }
-    
-    wp_die();
 }
 
 function add_catalog_link_after_order($order_id) {
@@ -854,4 +785,248 @@ function add_woo_account_body_class($classes) {
         $classes[] = 'woo-logged-in-account';
     }
     return $classes;
+}
+
+// Ajax login and registration
+function ajax_login_callback() {
+    check_ajax_referer('custom-login-nonce', 'security');
+    
+    $username = isset($_POST['username']) ? sanitize_user($_POST['username']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;
+    
+    $user = wp_signon(
+        array(
+            'user_login'    => $username,
+            'user_password' => $password,
+            'remember'      => $remember,
+        ),
+        is_ssl()
+    );
+    
+    if (is_wp_error($user)) {
+        wp_send_json_error(array('message' => $user->get_error_message()));
+    } else {
+        $fragments = array();
+        
+        ob_start();
+        WC()->cart->calculate_shipping();
+        WC()->cart->calculate_totals();
+        woocommerce_checkout_payment();
+        $fragments['.woocommerce-checkout-payment'] = ob_get_clean();
+        
+        ob_start();
+        woocommerce_order_review();
+        $fragments['.woocommerce-checkout-review-order-table'] = ob_get_clean();
+        
+        ob_start();
+        woocommerce_form_field('billing_first_name', array(
+            'type'        => 'text',
+            'label'       => __('Имя', 'woocommerce'),
+            'required'    => true,
+            'class'       => array('form-row-first'),
+            'default'     => get_user_meta($user->ID, 'billing_first_name', true),
+        ));
+        $fragments['.woocommerce-billing-fields #billing_first_name_field'] = ob_get_clean();
+        
+        wp_send_json_success(array(
+            'message' => __('Успішна авторизація! Оновлення даних...'),
+            'fragments' => $fragments,
+            'reload' => false
+        ));
+    }
+    
+    wp_die();
+}
+
+function ajax_checkout_login_block() {
+    if (!is_user_logged_in()) {
+    ?>
+        <div id="login-form-container" class="login-form-container">
+            <div class="woocommerce-form-login-toggle">
+                <?php wc_print_notice(apply_filters('woocommerce_checkout_login_message', esc_html__('Returning customer?', 'woocommerce')) . ' <a href="#" class="button showlogin">' . esc_html__('Login', 'woocommerce') . '</a>'); ?>
+            </div>
+            <div class="woocommerce-ajax-login login">
+                <div class="fields">
+                    <p class="form-row form-row-first">
+                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="ajax_username" autocomplete="username" placeholder="<?php esc_html_e('Username or email', 'woocommerce'); ?>">
+                    </p>
+                    <p class="form-row form-row-last">
+                        <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="ajax_password" autocomplete="current-password" placeholder="<?php esc_html_e('Password', 'woocommerce'); ?>">
+                    </p>
+                    <p class="form-row form-row-submit">
+                        <?php wp_nonce_field('custom-login-nonce', 'custom-login-nonce'); ?>
+                        <button type="button" class="woocommerce-button button woocommerce-form-login__submit ajax-login-button"><?php esc_html_e('Login', 'woocommerce'); ?></button>
+                    </p>
+                    <p class="lost_password">
+                        <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
+                    </p>
+                    <div class="ajax-login-message"></div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+}
+
+function ajax_register_callback() {
+    check_ajax_referer('custom-register-nonce', 'security');
+    
+    $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    
+    $error = new WP_Error();
+    
+    if (empty($name)) {
+        $error->add('empty_name', __('Будь ласка, введіть ім\'я', 'woocommerce'));
+    }
+    
+    if (empty($email) || !is_email($email)) {
+        $error->add('email', __('Будь ласка, введіть коректну електронну пошту', 'woocommerce'));
+    }
+    
+    if (email_exists($email)) {
+        $error->add('email_exists', __('Ця електронна пошта вже використовується', 'woocommerce'));
+    }
+    
+    if (empty($password)) {
+        $error->add('empty_password', __('Будь ласка, введіть пароль', 'woocommerce'));
+    }
+    
+    if ($error->has_errors()) {
+        wp_send_json_error(array('message' => $error->get_error_message()));
+        wp_die();
+    }
+    
+    // Extract first and last name
+    $name_parts = explode(' ', $name, 2);
+    $first_name = $name_parts[0];
+    $last_name = isset($name_parts[1]) ? $name_parts[1] : '';
+    
+    // Create user
+    $username = sanitize_user(current(explode('@', $email)), true);
+    
+    // Ensure username is unique
+    $append = 1;
+    $o_username = $username;
+    while (username_exists($username)) {
+        $username = $o_username . $append;
+        $append++;
+    }
+    
+    $user_id = wp_create_user($username, $password, $email);
+    
+    if (is_wp_error($user_id)) {
+        wp_send_json_error(array('message' => $user_id->get_error_message()));
+        wp_die();
+    }
+    
+    // Update user meta
+    update_user_meta($user_id, 'first_name', $first_name);
+    update_user_meta($user_id, 'last_name', $last_name);
+    update_user_meta($user_id, 'billing_first_name', $first_name);
+    update_user_meta($user_id, 'billing_last_name', $last_name);
+    update_user_meta($user_id, 'billing_email', $email);
+    update_user_meta($user_id, 'billing_phone', $phone);
+    
+    // Log the user in
+    $user = get_user_by('id', $user_id);
+    wp_set_current_user($user_id, $user->user_login);
+    wp_set_auth_cookie($user_id);
+    do_action('wp_login', $user->user_login, $user);
+    
+    wp_send_json_success(array(
+        'message' => __('Реєстрація успішна! Перезавантаження сторінки...'),
+        'reload' => true
+    ));
+    
+    wp_die();
+}
+
+function header_login_dropdown() {
+    if (!is_user_logged_in()) {
+        ?>
+        <div class="login-container"> 
+            <a class="header-login toggle-login-dropdown" href="#">
+                <i class="icon-user"></i>
+            </a>
+            <div id="header-login-form-container" class="login-form-container dropdown-content">
+                <div class="tabs-container">
+                    <div class="tabs-nav">
+                        <a href="#" class="tab-link active" data-tab="login-tab"><?php esc_html_e('Вхід', 'woocommerce'); ?></a>
+                        <a href="#" class="tab-link" data-tab="register-tab"><?php esc_html_e('Реєстрація', 'woocommerce'); ?></a>
+                    </div>
+                    
+                    <div id="login-tab" class="tab-content active">
+                        <div class="woocommerce-ajax-login">
+                            <div class="fields">
+                                <p class="form-row form-row-first form-row-username">
+                                    <input type="text" class="woocommerce-Input input-text" name="username" id="header_ajax_username" autocomplete="username" placeholder="<?php esc_html_e('Username or email', 'woocommerce'); ?>">
+                                </p>
+                                <p class="form-row form-row-last form-row-password">
+                                    <input class="woocommerce-Input input-text" type="password" name="password" id="header_ajax_password" autocomplete="current-password" placeholder="<?php esc_html_e('Password', 'woocommerce'); ?>">
+                                </p>
+                                <p class="form-row form-row-submit">
+                                    <?php wp_nonce_field('custom-login-nonce', 'custom-login-nonce'); ?>
+                                    <button type="button" class="woocommerce-button button woocommerce-form-login__submit header-ajax-login-button"><?php esc_html_e('Вхід', 'woocommerce'); ?></button>
+                                </p>
+                                <p class="lost_password">
+                                    <a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
+                                </p>
+                                <div class="ajax-login-message"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="register-tab" class="tab-content">
+                        <div class="woocommerce-ajax-register">
+                            <div class="fields">
+                                <p class="form-row form-row-first form-row-username">
+                                    <input type="text" class="woocommerce-Input input-text" name="reg_name" id="header_ajax_reg_name" autocomplete="name" placeholder="<?php esc_html_e('Ім\'я та прізвище', 'woocommerce'); ?>">
+                                </p>
+                                <p class="form-row form-row-email">
+                                    <input type="email" class="woocommerce-Input input-text" name="reg_email" id="header_ajax_reg_email" autocomplete="email" placeholder="<?php esc_html_e('Електронна пошта', 'woocommerce'); ?>">
+                                </p>
+                                <p class="form-row form-row-phone">
+                                    <input type="tel" class="woocommerce-Input input-text" name="reg_phone" id="header_ajax_reg_phone" autocomplete="tel" placeholder="<?php esc_html_e('Номер телефону', 'woocommerce'); ?>">
+                                </p>
+                                <p class="form-row form-row-last form-row-password">
+                                    <input class="woocommerce-Input input-text" type="password" name="reg_password" id="header_ajax_reg_password" autocomplete="new-password" placeholder="<?php esc_html_e('Пароль', 'woocommerce'); ?>">
+                                </p>
+                                <p class="form-row form-row-submit">
+                                    <?php wp_nonce_field('custom-register-nonce', 'custom-register-nonce'); ?>
+                                    <button type="button" class="woocommerce-button button woocommerce-form-register__submit header-ajax-register-button"><?php esc_html_e('Зареєструватись', 'woocommerce'); ?></button>
+                                </p>
+                                <div class="ajax-register-message"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    } else {
+        $current_user = wp_get_current_user();
+        $first_name = $current_user->first_name;
+        $last_name = $current_user->last_name;
+        $display_name = !empty($first_name) && !empty($last_name) ? $first_name . ' ' . $last_name : $current_user->display_name;
+        ?>
+        <div class="login-container">
+            <a class="header-login toggle-login-dropdown" href="#">
+                <i class="icon-user"></i>
+            </a>
+            <div class="dropdown-content">
+                <p class="welcome-text"><?php echo esc_html($display_name); ?></p>
+                <ul class="user-menu">
+                    <li class="first"><a href="<?php echo wc_get_account_endpoint_url('orders'); ?>"><?php esc_html_e('Замовлення'); ?></a></li>
+                    <li><a href="<?php echo wc_get_account_endpoint_url('account-data'); ?>"><?php esc_html_e('Платіжні дані'); ?></a></li>
+                    <li class="last"><a href="<?php echo wc_get_account_endpoint_url('account-security'); ?>"><?php esc_html_e('Безпека'); ?></a></li>
+                </ul>
+                <a class="button button-logout" href="<?php echo wp_logout_url(home_url()); ?>"><?php esc_html_e('Вийти', 'woocommerce'); ?></a>
+            </div>
+        </div>
+        <?php
+    }
 }

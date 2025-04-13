@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
 
 	body.addClass('ready');
 
-	$('input[name="phone"], [name="billing_phone"]').inputmask('+38(999)999-99-99');
+	$('input[name="phone"], [name="billing_phone"], [name="reg_phone"]').inputmask('+38(999)999-99-99');
 
 	$(document).on('click', '.menu-toggle', function() {
 		if ($(this).hasClass('active')) {
@@ -154,4 +154,20 @@ jQuery(document).ready(function ($) {
 			});
 		}
 	});
+
+    function initDropdowns() {
+        $('.toggle-login-dropdown').off('click').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).siblings('.dropdown-content').toggleClass('active');
+        });
+ 
+        $(document).off('click.dropdown').on('click.dropdown', function(e) {
+            if (!$(e.target).closest('.login-container').length) {
+                $('.dropdown-content').removeClass('active');
+            }
+        });
+    }
+
+	initDropdowns();
 });

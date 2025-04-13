@@ -195,7 +195,7 @@
 	input[type="checkbox"] {
         display: none;
     
-        +span,
+        +span:not(.optional),
         +label {
             display: block;
             cursor: pointer;
@@ -204,7 +204,7 @@
             margin: 0;
             color: var(--color_black);
             position: relative;
-            padding-left: calc(18px + var(--gap_s));
+            padding-left: calc(12px + var(--gap_s));
             line-height: 1.1;
     
             a {
@@ -243,7 +243,7 @@
     
         &:checked {
     
-            +span,
+            +span:not(.optional),
             +label {
     
                 &:before {
@@ -340,36 +340,6 @@
     }
 }
 
-@mixin field_icon($icon: "\e001", $color: var(--text_color)) {
-    &::before {
-        content: $icon;
-        font-family: 'icons' !important;
-        speak: never;
-        font-style: normal;
-        font-weight: normal;
-        font-variant: normal;
-        text-transform: none;
-        line-height: 1;
-        font-size: 24px;
-        color: $color;
-        position: absolute;
-        z-index: 10;
-        top: 50%;
-        transform: translate(0, -50%);
-        left: var(--padding_xs);
-    }
-
-    input {
-        padding-left: calc(var(--padding_s) + 24px) !important;
-    }
-
-    &.woocommerce-invalid-required-field {
-        &::before {
-            color: var(--color_error) !important;
-        }
-    }
-}
-
 @mixin field_icon($icon, $color) {
     position: relative !important;
     
@@ -391,6 +361,7 @@
         left: var(--padding_xs);
     }
 
+    select,
     input {
         padding-left: calc(var(--padding_s) + 24px) !important;
     }

@@ -32,6 +32,10 @@ body {
 
 .container-archive-product {
     padding-top: var(--padding_m);
+
+    .woocommerce-pagination {
+        margin-top: var(--padding_m);
+    }
 }
 
 .woocommerce-notices-wrapper {
@@ -1869,12 +1873,15 @@ ul.products {
         .select2-selection__rendered {
             display: flex;
             align-items: center;
-            gap: 4px;
             padding: 0 var(--padding_s) 0 0 !important;
             flex: 1;
             position: relative;
+            gap: calc(var(--gap_xs) + 1px);
+            position: relative;
 
             &::before {
+                position: static !important;
+                transform: unset !important;
                 margin-left: -5px;
             }
         }
@@ -2390,6 +2397,21 @@ ul.products {
         }
     }
 
+    .thwcfd-field-wrapper {
+   
+        &#shipping_call_back_field {
+             grid-column: span 2;
+        }
+        
+        label {
+            display: block !important;
+        }
+    }
+
+    .checkbox {
+        @include checkbox;
+    }
+
     .wc-ukr-shipping-np-fields {
 
         &:not([style="display: none;"]) {
@@ -2398,6 +2420,7 @@ ul.products {
         
         grid-template-columns: repeat(2, 1fr);
         gap: var(--gap_s);
+        margin-top: var(--gap_s);
 
         @include mobile {
             grid-template-columns: repeat(1, 1fr);
@@ -2425,6 +2448,10 @@ ul.products {
 
     .woocommerce-terms-and-conditions-checkbox-text {
         font-size: var(--font_size_p2);
+
+        &::before {
+            top: -1px !important;
+        }
     }
 
     .woocommerce-checkout-payment ul,
@@ -2568,6 +2595,19 @@ ul.products {
         &#shipping_email_field,
         &#billing_email_field {
             @include field_icon('\e91a', var(--text_color));
+        }
+
+        &#shipping_state_field,
+        &#shipping_postcode_field,
+        &#shipping_city_field,
+        &#shipping_address_1_field {
+            @include field_icon('\e943', var(--text_color));
+        }
+
+        &#shipping_state_field {
+            .select2-selection__rendered {
+                @include field_icon('\e943', var(--text_color));
+            }
         }
 
         &.woocommerce-invalid {
@@ -2757,6 +2797,7 @@ ul.products {
     margin-bottom: var(--padding_m);
 }
 
+.woocommerce-checkout-payment,
 wc-order-attribution-inputs,
 .woocommerce-additional-fields,
 .woocommerce-info.cart-empty {

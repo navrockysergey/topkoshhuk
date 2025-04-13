@@ -35,7 +35,7 @@ function baza_dev_scripts_and_styles() {
         wp_localize_script( 'baza-cart-js', 'wc_cart_params', array(
             'ajax_url'    => admin_url( 'admin-ajax.php' ),
             'cart_nonce'  => wp_create_nonce( 'woocommerce-cart' ),
-        ) );      
+        ) ); 
     }
 
     if (is_checkout()) {
@@ -51,18 +51,18 @@ function baza_dev_scripts_and_styles() {
         wp_enqueue_script( 'baza-nova-poshta-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/nova-poshta.js', array('jquery'), false);
     }
 
-    if (is_checkout() && !is_user_logged_in()) {
+    if (!is_user_logged_in()) {
  
-        wp_register_script('baza-checkout-login-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/checkout-login.js', array('jquery'), false, true);
-        
-        wp_localize_script('baza-checkout-login-js', 'checkout_login_params', array(
+        wp_register_script('baza-user-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/user.js', array('jquery'), false, true);
+        wp_localize_script('baza-user-js', 'login_params', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'login_process_text' => __('Авторизація...'),
+            'register_process_text' => __('Реєстрація...'),
             'error_text' => __('Сталася помилка. Будь ласка, спробуйте ще раз.'),
             'success_text' => __('Успішна авторизація! Перезавантаження сторінки...')
         ));
         
-        wp_enqueue_script('baza-checkout-login-js');
+        wp_enqueue_script('baza-user-js');
     }
 
     // CSS

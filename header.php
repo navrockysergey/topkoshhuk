@@ -59,20 +59,44 @@
 					</div>
 
 					<?php if (function_exists('WC') && !is_cart()) : 
-						$cart_count = WC()->cart->get_cart_contents_count();
-						$cart_url = wc_get_cart_url(); 
+							$cart_count = WC()->cart->get_cart_contents_count();
+							$cart_url = wc_get_cart_url(); 
 						?>
-						<a class="header-cart header-cart-link" href="<?php echo esc_url($cart_url); ?>">
+						<a class="header-cart header-cart-link" href="<?php echo esc_url($cart_url); ?>" data-cart-fragment="true">
 							<span class="cart-label">
 								<i class="icon-cart"></i>
 							</span>
 							<span class="cart-count"><?php echo esc_html($cart_count); ?></span>
 						</a>
+
+						<script type="text/javascript">
+							jQuery(function($) {
+								$(document.body).on('added_to_cart removed_from_cart wc_fragments_loaded wc_fragments_refreshed', function() {
+									let cartCount = 0;
+									
+									if (typeof wc_cart_fragments_params !== 'undefined') {
+										let fragments = JSON.parse(sessionStorage.getItem(wc_cart_fragments_params.fragment_name));
+										if (fragments && fragments['div.widget_shopping_cart_content']) {
+											let $temp = $('<div>').html(fragments['div.widget_shopping_cart_content']);
+											cartCount = parseInt($temp.find('.cart-count').text()) || 0;
+											
+											if (isNaN(cartCount) || cartCount < 0) {
+												cartCount = 0;
+											}
+											
+											$('.cart-count').text(cartCount);
+										}
+									}
+								});
+							});
+						</script>
 					<?php endif; ?>
 
-					<a class="header-login" href="<?php echo wc_get_account_endpoint_url( 'orders' ); ?>">
-						<i class="icon-user"></i>
-					</a>
+					<?php 
+						if (function_exists('header_login_dropdown')) {
+							header_login_dropdown(); 
+						}
+					?>
 
 					<a class="menu-toggle">
 						<i class="icon-menu"></i>
