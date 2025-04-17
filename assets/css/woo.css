@@ -1256,6 +1256,10 @@ label[for=payment_method_cod]::before,
   font-size: var(--font_size_p1);
   color: var(--text_color);
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.container.product-container .summary .box-variations .box-variation i {
+  color: inherit;
 }
 .container.product-container .summary .box-variations .box-variation.active {
   background-color: var(--color_secondary);
@@ -1339,6 +1343,10 @@ label[for=payment_method_cod]::before,
   background-color: var(--bg);
   border-radius: var(--radius);
 }
+.qty-container .qty-suffix {
+  display: flex;
+  align-items: center;
+}
 .qty-container .quantity {
   flex: 1;
 }
@@ -1346,6 +1354,9 @@ label[for=payment_method_cod]::before,
   color: var(--color_black);
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+}
+.qty-container .button-qty i {
+  color: inherit;
 }
 .qty-container .button-qty:focus, .qty-container .button-qty:hover {
   color: var(--color_primary);
@@ -3358,7 +3369,7 @@ ul.products li.product .product-sku-wrapper {
 .blockUI.blockOverlay {
   background: var(--bg) !important;
 }
-.cart-side .blockUI.blockOverlay, .checkout-side .blockUI.blockOverlay {
+.summary .blockUI.blockOverlay, .cart-side .blockUI.blockOverlay, .checkout-side .blockUI.blockOverlay {
   background: var(--color_white) !important;
 }
 

@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": ">=5.6",
-        "htmlburger/carbon-fields": "^3.6",
-        "picqer/php-barcode-generator": "^3.2"
+        "picqer/php-barcode-generator": "^3.2",
+        "htmlburger/carbon-fields": "^3.3"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",

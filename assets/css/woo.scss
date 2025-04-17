@@ -841,6 +841,11 @@ body {
                 font-size: var(--font_size_p1);
                 color: var(--text_color);
                 cursor: pointer;
+                transition: all .3s ease;
+
+                i {
+                    color: inherit;
+                }
 
                 &.active {
                     background-color: var(--color_secondary);
@@ -944,6 +949,11 @@ body {
     background-color: var(--bg);
     border-radius: var(--radius);
 
+    .qty-suffix {
+        display: flex;
+        align-items: center;
+    }
+
     .quantity {
         flex: 1;
     }
@@ -952,6 +962,10 @@ body {
         color: var(--color_black);
         padding-top: 0 !important;
         padding-bottom: 0 !important;
+
+        i {
+            color: inherit;
+        }
 
         &:focus,
         &:hover {
@@ -2819,6 +2833,7 @@ ul.products {
 .blockUI.blockOverlay {
     background: var(--bg) !important;
 
+    .summary &,
     .cart-side &,
     .checkout-side & {
         background: var(--color_white) !important;

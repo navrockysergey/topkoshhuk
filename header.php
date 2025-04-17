@@ -59,7 +59,8 @@
 					</div>
 
 					<?php if (function_exists('WC') && !is_cart()) : 
-							$cart_count = WC()->cart->get_cart_contents_count();
+							// $cart_count = WC()->cart->get_cart_contents_count();
+							$cart_count = count( WC()->cart->get_cart() );
 							$cart_url = wc_get_cart_url(); 
 						?>
 						<a class="header-cart header-cart-link" href="<?php echo esc_url($cart_url); ?>" data-cart-fragment="true">

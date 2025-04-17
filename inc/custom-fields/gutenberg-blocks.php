@@ -2,7 +2,7 @@
 use Carbon_Fields\Block;
 use Carbon_Fields\Field;
 
-add_action( 'carbon_fields_register_fields', 'custom_posts_gutenberg_blocks' );
+add_action( 'carbon_fields_register_fields', 'custom_posts_gutenberg_blocks', 99 );
 
 function custom_posts_gutenberg_blocks() {
     $def_per_page  = get_option( 'posts_per_page' );

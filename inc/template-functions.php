@@ -22,13 +22,14 @@ function baza_dev_scripts_and_styles() {
     }
 
     if (is_product()) {
-	    wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
         wp_enqueue_script( 'baza-product-gallery-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/product-gallery.js', array('jquery'), false);
-
-        wp_localize_script( 'baza-qty-js', 'dataObj', [
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-        ] );
     }
+
+    wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
+
+    wp_localize_script( 'baza-qty-js', 'dataObj', [
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+    ] );
 
     if (is_cart()) {
 	    wp_enqueue_script( 'baza-cart-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/cart.js', array('jquery'), false );
