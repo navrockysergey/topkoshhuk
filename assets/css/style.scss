@@ -1000,6 +1000,22 @@ header.site-header {
                     &::placeholder {
                         color: var(--color_white);
                     }
+
+                    &:-webkit-autofill {
+                        color: var(--color_white) !important;
+                        background-color: var(--color_secondary) !important;
+                        -webkit-box-shadow: 0 0 0px 1000px var(--color_secondary) inset !important;
+                        -webkit-text-fill-color: var(--color_white) !important;
+                    }
+
+                    &:focus {
+                        &:-webkit-autofill {
+                            color: var(--color_white) !important;
+                            background-color: var(--color_secondary) !important;
+                            -webkit-box-shadow: 0 0 0px 1000px var(--color_secondary) inset !important;
+                            -webkit-text-fill-color: var(--color_white) !important;
+                        }
+                    }
                 }
             }
         }

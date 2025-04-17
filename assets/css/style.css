@@ -864,6 +864,9 @@ body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-checkbox-item .
   color: var(--color_white);
   font-size: 16px;
 }
+body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-checkbox-item .wpc-term-item-content-wrapper input[type=checkbox] + label::before {
+  top: -1px;
+}
 body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-filters-section {
   padding: var(--padding_s);
 }
@@ -2093,6 +2096,18 @@ header.site-header .login-container .dropdown-content .form-row input::-moz-plac
 }
 header.site-header .login-container .dropdown-content .form-row input::placeholder {
   color: var(--color_white);
+}
+header.site-header .login-container .dropdown-content .form-row input:-webkit-autofill {
+  color: var(--color_white) !important;
+  background-color: var(--color_secondary) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--color_secondary) inset !important;
+  -webkit-text-fill-color: var(--color_white) !important;
+}
+header.site-header .login-container .dropdown-content .form-row input:focus:-webkit-autofill {
+  color: var(--color_white) !important;
+  background-color: var(--color_secondary) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--color_secondary) inset !important;
+  -webkit-text-fill-color: var(--color_white) !important;
 }
 
 .social-links {

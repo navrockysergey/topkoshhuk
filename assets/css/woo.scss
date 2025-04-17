@@ -32,6 +32,7 @@ body {
 
 .container-archive-product {
     padding-top: var(--padding_m);
+    padding-bottom: var(--padding_m);
 
     .woocommerce-pagination {
         margin-top: var(--padding_m);
@@ -563,7 +564,7 @@ body {
             display: flex;
 
             &::-webkit-scrollbar {
-                width: 0;
+                display: none !important;
             }
         }
     }
@@ -838,10 +839,13 @@ body {
                 background-color: transparent;
                 line-height: 1;
                 font-size: var(--font_size_p1);
+                color: var(--text_color);
+                cursor: pointer;
 
                 &.active {
                     background-color: var(--color_secondary);
                     color: var(--color_white);
+                    cursor: default;
                 }
             }
         }
@@ -880,6 +884,19 @@ body {
             button[type="submit"] {
                 background-color: var(--color_secondary);
                 border-color: var(--color_secondary);
+
+                &:hover {
+                    background-color: var(--color_primary);
+                    border-color: var(--color_primary);
+                }
+            }
+        }
+
+        .button {
+            &.button-checkout {
+                background-color: var(--color_secondary);
+                border-color: var(--color_secondary);
+                grid-column: span 2;
 
                 &:hover {
                     background-color: var(--color_primary);
@@ -970,7 +987,7 @@ ul.products {
     &:not(.owl-carousel) {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--gap_m);
+        gap: var(--gap_s);
 
         @include tablet-p {
             grid-template-columns: repeat(2, 1fr);
@@ -2426,6 +2443,12 @@ ul.products {
             grid-template-columns: repeat(1, 1fr);
         }
 
+        .wc-urk-shipping-form-group {
+            padding: var(--gap_xs) 0 !important;
+        }
+
+        .j-wcus-np-custom-address-block,
+        .wc-urk-shipping-form-group,
         .j-wcus-warehouse-block {
             grid-column: span 2;
         }
@@ -2523,6 +2546,10 @@ ul.products {
         display: flex;
         flex-direction: column;
         gap: var(--gap_s);
+
+        .wc-ukr-shipping-np-fields {
+            margin-top: 0;
+        }
     }
 
     .woocommerce-shipping-fields,
@@ -2558,8 +2585,12 @@ ul.products {
 
     .woocommerce-shipping-fields,
     .woocommerce-billing-fields {
-        label:not(.checkbox) {
+        label:not(.checkbox):not(.wc-ukr-shipping-checkbox) {
             display: none !important;
+        }
+        
+        .wc-ukr-shipping-checkbox {
+            @include checkbox;
         }
     }
 
@@ -2597,6 +2628,7 @@ ul.products {
             @include field_icon('\e91a', var(--text_color));
         }
 
+        &#wcus_np_billing_custom_address_field,
         &#shipping_state_field,
         &#shipping_postcode_field,
         &#shipping_city_field,

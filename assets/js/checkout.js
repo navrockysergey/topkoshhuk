@@ -147,9 +147,9 @@ jQuery(document).ready(function($) {
     updateShippingAddressVisibility();
 
     function processCheckboxLabels() {
-        $('.woocommerce-checkout .form-row input[type="checkbox"]').each(function() {
+        $('.woocommerce-checkout .form-row input[type="checkbox"], .woocommerce-checkout .wc-urk-shipping-form-group input[type="checkbox"]').each(function() {
             let $checkbox = $(this);
-            let $label = $checkbox.closest('label.checkbox');
+            let $label = $checkbox.closest('label');
             
             if ($label.length) {
 

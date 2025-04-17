@@ -106,6 +106,12 @@ body main .widget_wpc_filters_widget {
         .wpc-checkbox-item {
             .wpc-term-item-content-wrapper {
                 @include checkbox;
+
+                input[type=checkbox] + label {
+                    &::before {
+                        top: -1px;
+                    }
+                }
             }
         }
 
