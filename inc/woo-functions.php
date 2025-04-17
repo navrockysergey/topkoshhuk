@@ -23,7 +23,9 @@ add_action( 'woocommerce_product_options_general_product_data'  , 'add_wholesale
 add_action( 'woocommerce_process_product_meta'                  , 'save_custom_options_fields' );
 add_action( 'woocommerce_after_shop_loop_item'                  , 'add_sku_before_price', 9 );
 add_action( 'get_cart_product_count'                            , 'get_cart_product_count', 10, 1 );
-add_action( 'woocommerce_before_calculate_totals'               , 'dinamyc_set_price', 10, 1 );
+add_action( 'woocommerce_before_calculate_totals'               , 'dynamic_set_price', 10, 1 );
+add_action( 'wp_ajax_dynamic_add_to_cart'                       , 'dynamic_add_to_cart' );
+add_action( 'wp_ajax_nopriv_dynamic_add_to_cart'                , 'dynamic_add_to_cart' );
 add_action( 'template_redirect'                                 , 'saved_resently_product', 20 );
 add_filter( 'woo_get_brands'                                    , 'woo_get_brands', 1 );
 add_action( 'woocommerce_shipping_init'                         , 'init_ukrposhta_shipping_method' );
@@ -541,7 +543,7 @@ function get_who_price( int $product_id, int $qty ) {
     return $out;
 }
 
-function dinamyc_set_price( $cart ) {
+function dynamic_set_price( $cart ) {
     foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
          $id        = $cart_item['variation_id'] > 0 ? $cart_item['variation_id'] : $cart_item["product_id"];
          $who_price = get_who_price( $id, $cart_item["quantity"] );
@@ -574,6 +576,76 @@ function get_product_prices() {
     $result = product_prices( intval( $_POST['prodId'] ) , intval( $_POST['prodQty'] ) );
 
     wp_send_json( $result );
+}
+
+function dynamic_add_to_cart() {
+    if ( ! isset( $_POST['prodId'] ) || ! isset( $_POST['prodQuentity'] ) ) {
+        wp_send_json_error( array( 'error' => 'Missing product ID or quantity' ) );
+        exit;
+    }
+
+    $WC_Cart = WC()->cart;
+
+    $product_id          = intval( $_POST['prodId'] );
+    $product             = wc_get_product( $product_id );
+    $is_variable         = $product->get_parent_id() > 0;
+    $item_count          = get_cart_product_count( $product_id );
+    $quantity            = intval( $_POST['prodQuentity'] );
+    $cart_item_key       = $WC_Cart->generate_cart_id( $product_id );
+    $price               = get_who_price( $product_id, $quantity ) > 0 ? get_who_price( $product_id, $quantity ) : $product->get_price();
+    $product_permalink   = get_the_permalink( $product_id );
+    $item_subtotal       = $quantity * $price;
+    $cart_item_html      = "";
+    $result              = false;
+
+    if ( $item_count > 0 ) {
+        $items = $WC_Cart->get_cart();
+        foreach( $items as $item_key => $item ) {
+            if( $product_id == $item['product_id'] || $product_id == $item['variation_id'] ) {
+                $cart_item_key = $item_key;
+            }
+        }
+
+        $result = $WC_Cart->set_quantity( $cart_item_key, $quantity );
+    } else {
+        if( ! $is_variable ) {
+            $result = $WC_Cart->add_to_cart( $product_id, $quantity );
+        } else {
+            $result = $WC_Cart->add_to_cart( $product->get_parent_id(), $quantity, $product_id );
+        }
+        
+    }
+
+    if ( is_wp_error( $result ) ) {
+        wp_send_json_error( $result->get_error_message() );
+    }
+
+    if ( ! $result ) {
+        wp_send_json_error( array( 'error' => 'Failed to add product to cart' ) );
+        exit;
+    }
+
+    $WC_Cart->calculate_totals();
+
+    
+    foreach ( $WC_Cart->get_cart() as $key => $cart_item ) {
+        if( $cart_item_key == $key ) {
+            $total_price = $cart_item['line_total'];
+        }
+    }
+
+    $out = [
+        'product_count'         => get_cart_product_count( $product_id ),
+        // 'all_counts'            => $WC_Cart->get_cart_contents_count(),
+        'number_of_positions'   => count( $WC_Cart->get_cart() ),
+        'old_price'             => $product->get_regular_price(),
+        'price'                 => $price,
+        // 'product_total'         => wc_price( $total_price ),
+        // 'total'                 => wc_price( WC()->cart->get_displayed_subtotal() ),
+        // 'total_sum'             => $WC_Cart->get_displayed_subtotal(),
+    ];
+
+    wp_send_json_success( $out );
 }
 
 function saved_resently_product() {

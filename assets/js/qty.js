@@ -15,6 +15,29 @@ jQuery(document).ready(function ($) {
 		}
 	}
 
+	function setWhoMethod( input = 'wholesale' ) {
+		let inputs = $( '.qty-container' ).find( 'input' );
+
+		inputs.each( function() {
+			$( this ).toggleClass( 'hidden' );
+		} );
+
+		$( '.box-variations .active' ).removeClass( 'active' );
+		$( '.box-variations' ).find( '.box-variation.'+input ).addClass('active');
+	}
+
+	$( '.box-variation' ).on( 'click', function() {
+		let input = '';
+
+		if ( $( this ).hasClass( 'retail' ) ) {
+			input = 'retail';
+		} else if ( $( this ).hasClass( 'wholesale' ) ) {
+			input = 'wholesale';
+		}
+
+		setWhoMethod( input )
+	} )
+
 	function replaceActualyProductPrice( prodId , prodQty ) {
 		$.ajax({
 			type 	 : 'POST',
@@ -46,13 +69,35 @@ jQuery(document).ready(function ($) {
 		});
 	}
 
-	$(document).on('click', '.button-qty', function(e) {
-		e.preventDefault();
-		let productId  = $(this).closest('form').find('button[name="add-to-cart"]').prop('value');
+	function ajaxAddToCart( prodId, qty ) {
+		$.ajax({
+			type : 'POST',
+			dataType : 'json',
+			url : dataObj['ajaxUrl'],
+			data : {
+				action : 'dynamic_add_to_cart',
+				prodId : prodId,
+				prodQuentity : qty,
+			},
+			success : function( response ) {
+				if ( response['success'] ) {
+					if ( $('body').hasClass('single-product') ) {
+						$( '.header-cart .cart-count' ).text( response['data']['number_of_positions'] );
+						replaceActualyProductPrice( prodId , qty );
+					} else {
+						window.location.reload();
+					}
+				}
+			}
+		});
+	}
+
+	$(document).on( 'click', '.button-qty', function(e) {
+		e.preventDefault();		
 		let wholesales = $('.product-wholesales').find('.wholesale-item');
-		let parent     = $(this).closest('form');
+		let parent     = $(this).closest('.qty-container');
 		let in_box     = parseInt(parent.data('in-box'));
-		let input      = parent.find('input[name="quantity"]');
+		let input      = parent.find('input.qty');
 		let fake_input = parent.find('input.fake-qty');
 		let input_val  = parseInt(input.val());
 		let step       = 1;
@@ -60,7 +105,7 @@ jQuery(document).ready(function ($) {
 		let fake_val;
 		let is_wholesale = false;
 
-		if ($(this).hasClass('qty-plus')) {
+		if ( $(this).hasClass( 'qty-plus' ) ) {
 			if ((input_val + step) == in_box) {
 				step = 1;
 
@@ -97,9 +142,6 @@ jQuery(document).ready(function ($) {
 		}
 
 		if (is_wholesale) {
-			$('.box-variation.wholesale').addClass('active');
-			$('.box-variation.retail').removeClass('active');
-
 			wholesales.each(function(i, el) {
 				let data_q = parseInt($(el).data('pr-count'));
 				let next_q = false;
@@ -115,14 +157,12 @@ jQuery(document).ready(function ($) {
 			});
 		} else {
 			$('.product-wholesales').find('.wholesale-item.active').removeClass('active');
-			$('.box-variation.retail').addClass('active');
-			$('.box-variation.wholesale').removeClass('active');
 		}
 
 		input.val(new_val);
 		fake_input.val(fake_val);
 
-		replaceActualyProductPrice( productId, new_val );
+		setInterval( ajaxAddToCart( parent.data( 'product-id' ), new_val ), 500 );
 	});
 
 	function setupNumberInputValidation() {
@@ -139,6 +179,26 @@ jQuery(document).ready(function ($) {
             });
         });
     }
+
+	$('.qty-container').find('input').on('change', function(){
+		let new_val, fake_val, parent, in_box;
+			parent     = $(this).closest('.qty-container');
+			in_box     = parseInt(parent.data('in-box'));
+
+		if( $(this).hasClass('fake-qty') ) {
+			new_val = parseInt($(this).val()*in_box);
+
+			parent.find('input.qty').val(new_val);
+		} else {
+			new_val = roundToNearestMultiple(in_box, parseInt($(this).val()));
+			fake_val = new_val/in_box;
+
+			$(this).val(new_val);
+			parent.find('input.fake-qty').val(fake_val);
+		}
+		
+		setInterval( ajaxAddToCart( parent.data( 'product-id' ), new_val ), 500 );
+	})
 
 	setupNumberInputValidation();
 });
