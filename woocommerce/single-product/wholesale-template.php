@@ -11,7 +11,7 @@ if ( empty( $wholesales_str ) ) {
 
 $wholesales       = json_decode( $wholesales_str );
 $currency         = get_woocommerce_currency_symbol();
-$price            = $product->get_price();
+// $price            = $product->get_price();
 $quentity_in_box  = intval( get_post_meta( $product_id, '_box_quantity', true ) );
 $quentity_in_cart = intval( apply_filters( 'get_cart_product_count', $product_id ) );
 ?>
@@ -22,14 +22,15 @@ $quentity_in_cart = intval( apply_filters( 'get_cart_product_count', $product_id
         $lvl_count             = intval( $level->min_product_count );
         $wholesale_lvl_price   = floatval( $level->wh_price );
 
-        if ( $quentity_in_cart >= $lvl_count &&
-             array_key_exists( $inx+1, $wholesales ) ||
-             $quentity_in_cart >= $lvl_count && // TODO:
-             ! array_key_exists( $inx+1, $wholesales )
-             )
-             {
+        if ( -1 < ( $quentity_in_cart <=> $lvl_count ) &&
+                array_key_exists( $inx+1, $wholesales ) &&
+                -1 == ( $quentity_in_cart <=> intval( $wholesales[$inx+1]->min_product_count ) ) ||
+                -1 < ( $quentity_in_cart <=> $lvl_count ) &&
+                ! array_key_exists( $inx+1, $wholesales )
+            )
+            {
                 $active = 'active';
-             }
+            }
         ?>
         <span class="wholesale-item <?php echo $active?>" data-pr-count="<?php echo $lvl_count?>">
             <?php

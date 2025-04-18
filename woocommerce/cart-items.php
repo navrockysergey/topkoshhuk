@@ -77,7 +77,9 @@
 
                         <div class="qty-container" data-in-box="<?php echo $in_box?>" data-product-id="<?php echo $product_id?>">
                             <button class="button button-qty qty-minus">
-                                <i class="icon-minus-24"></i>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 11C5.22386 11 5 11.2239 5 11.5V12.5C5 12.7761 5.22386 13 5.5 13H18.5C18.7761 13 19 12.7761 19 12.5V11.5C19 11.2239 18.7761 11 18.5 11H5.5Z" fill="currentColor"></path>
+                                </svg>
                             </button>
                             <?php
                                 if ($_product->is_sold_individually()) {
@@ -99,7 +101,9 @@
                                 echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item);
                             ?>
                             <button class="button button-qty qty-plus">
-                                <i class="icon-plus-24"></i>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 11V5.5C13 5.22386 12.7761 5 12.5 5H11.5C11.2239 5 11 5.22386 11 5.5V11H5.5C5.22386 11 5 11.2239 5 11.5V12.5C5 12.7761 5.22386 13 5.5 13H11V18.5C11 18.7761 11.2239 19 11.5 19H12.5C12.7761 19 13 18.7761 13 18.5V13H18.5C18.7761 13 19 12.7761 19 12.5V11.5C19 11.2239 18.7761 11 18.5 11H13Z" fill="currentColor"></path>
+                                </svg>
                             </button>
                         </div>
 
