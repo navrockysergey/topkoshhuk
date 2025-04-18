@@ -1,4 +1,6 @@
 jQuery(document).ready(function($) {
+
+    /*
     let timer;
     let isAdjusting = false;
     let delay = 500;
@@ -115,6 +117,7 @@ jQuery(document).ready(function($) {
     function triggerCheckoutUpdate() {
         window.location.reload();
     }
+    */
 
     function updateShippingAddressVisibility() {
         let isLocalPickupSelected = $('.shipping_method:checked[value*=local_pickup]').length > 0;
