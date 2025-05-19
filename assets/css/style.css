@@ -3171,6 +3171,9 @@ footer ul {
   height: 100px;
   width: 100px;
 }
+.section-category-hero .main-category .item .item-image svg {
+  width: 60px;
+}
 .section-category-hero .main-category .item .item-image img {
   height: 100px;
   width: 100px;
@@ -3189,6 +3192,12 @@ footer ul {
     padding-left: calc(var(--padding_l) * 2);
     padding-right: calc(var(--padding_l) * 2);
   }
+}
+.main-category .item .item-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 .main-category .item.active, .main-category .item:hover {
   color: var(--color_w);

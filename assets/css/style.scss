@@ -2175,6 +2175,10 @@ footer {
                 height: 100px;
                 width: 100px;
 
+                svg {
+                    width: 60px;
+                }
+
                 img {
                     height: 100px;
                     width: 100px;
@@ -2195,6 +2199,13 @@ footer {
         @include mobile {
             padding-left: calc(var(--padding_l) * 2);
             padding-right: calc(var(--padding_l) * 2);
+        }
+
+        .item-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
 
         &.active,

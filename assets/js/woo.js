@@ -117,6 +117,14 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
+	let activeElement = carouselCategories.find('.item.active');
+	let originalItems = carouselCategories.find('.owl-item:not(.cloned) .item');
+	let correctIndex = originalItems.index(activeElement);
+
+	if (correctIndex !== -1) {
+		carouselCategories.trigger('to.owl.carousel', [correctIndex, 0, true]);
+	}
+
 	$('.products.owl-carousel').each(function() {
 		let $carousel = $(this);
 	

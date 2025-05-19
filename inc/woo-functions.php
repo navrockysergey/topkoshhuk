@@ -105,6 +105,7 @@ add_action( 'wp_ajax_update_cart'                       , 'handle_update_cart' )
 add_action( 'wp_ajax_nopriv_update_cart'                , 'handle_update_cart' );
 add_action( 'wp_ajax_get_cart_count'                    , 'get_cart_count' );
 add_action( 'wp_ajax_nopriv_get_cart_count'             , 'get_cart_count' );
+add_filter( 'woocommerce_pagination_args'               , 'reduce_woocommerce_pagination_items' );
 
 add_action('template_redirect', function() {
     ob_start(function($buffer) {
@@ -1101,4 +1102,12 @@ function header_login_dropdown() {
         </div>
         <?php
     }
+}
+
+// Reduce the number of page numbers shown
+function reduce_woocommerce_pagination_items( $args ) {
+    $args['end_size'] = 2; // Default is 3 - show 1 number at the start/end
+    $args['mid_size'] = 2; // Default is 3 - show 1 number before/after current page
+    
+    return $args;
 }

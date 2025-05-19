@@ -25,6 +25,10 @@ if ( ! empty( $categories ) ) :
             <a class="item item-item-<?php echo $category->term_id . $is_active; ?>" href="<?php echo esc_url($category_link); ?>">
                 <?php if ( $image_url ) : ?>
                     <span class="item-image"><img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $image_alt ); ?>"></span>
+                    <?php else: ?>
+                    <span class="item-image">
+                        <?php get_template_part('template-parts/blocks/empty-image'); ?>
+                    </span>
                 <?php endif; ?>
                 <span class="item-name">
                     <?php echo esc_html( $category->name ); ?>
