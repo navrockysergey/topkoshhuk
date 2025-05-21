@@ -28,13 +28,13 @@ $total_media_count = 1 + count($attachment_ids) + (!empty($video_id) ? 1 : 0);
         <div class="product-gallery owl-carousel" id="product-gallery">
             <?php
                 echo '<div class="product-gallery-item" data-image-id="0">';
-                echo wp_get_attachment_image($main_image_id, 'full');
+                echo wp_get_attachment_image($main_image_id, 'large');
                 echo '</div>';
 
                 $index = 1;
                 foreach ($attachment_ids as $attachment_id) :
                     echo '<div class="product-gallery-item" data-image-id="' . $index . '">';
-                    echo wp_get_attachment_image($attachment_id, 'full');
+                    echo wp_get_attachment_image($attachment_id, 'large');
                     echo '</div>';
                     $index++;
                 endforeach;

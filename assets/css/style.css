@@ -808,6 +808,9 @@ body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-filters-widget-
   border-radius: var(--radius);
   gap: 0;
 }
+body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-checkbox-item .wpc-term-item-content-wrapper {
+  text-transform: lowercase;
+}
 body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-checkbox-item .wpc-term-item-content-wrapper input[type=checkbox] {
   display: none;
 }
@@ -863,6 +866,9 @@ body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-checkbox-item .
   border-color: var(--color_primary);
   color: var(--color_white);
   font-size: 16px;
+}
+body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-checkbox-item .wpc-term-item-content-wrapper *::first-letter {
+  text-transform: uppercase;
 }
 body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-checkbox-item .wpc-term-item-content-wrapper input[type=checkbox] + label::before {
   top: -1px;
@@ -2238,6 +2244,10 @@ footer ul {
 }
 #breadcrumbs a {
   color: var(--color_white);
+  text-transform: lowercase;
+}
+#breadcrumbs a *::first-letter {
+  text-transform: uppercase;
 }
 #breadcrumbs a:visited {
   color: var(--color_white);
@@ -3226,6 +3236,12 @@ footer ul {
      object-fit: cover;
   transition: all 1s var(--cubic_bezier);
   transform: scale(0.95);
+}
+.main-category .item .item-name {
+  text-transform: lowercase;
+}
+.main-category .item .item-name::first-letter {
+  text-transform: uppercase;
 }
 
 .article-items {

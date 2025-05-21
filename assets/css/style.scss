@@ -1156,6 +1156,11 @@ footer {
 
     a {
         color: var(--color_white);
+        text-transform: lowercase;
+
+        *::first-letter {
+            text-transform: uppercase;
+        }
 
         &:visited {
             color: var(--color_white);
@@ -2238,6 +2243,14 @@ footer {
                 object-fit: cover;
                 transition: all 1s var(--cubic_bezier);
                 transform: scale(.95);
+            }
+        }
+
+        .item-name {
+            text-transform: lowercase;
+
+            &::first-letter {
+                text-transform: uppercase;
             }
         }
     }

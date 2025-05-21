@@ -147,7 +147,7 @@ jQuery(document).ready(function ($) {
 		e.preventDefault();
 		
 		let parent     = $(this).closest('.qty-container');
-		let in_box     = parseInt(parent.data('in-box'));
+		let in_box     = parseInt($('form.cart').data('in-box'));
 		let input      = parent.find('input.qty');
 		let fake_input = parent.find('input.fake-qty');
 		let input_val  = parseInt(input.val());
@@ -196,6 +196,11 @@ jQuery(document).ready(function ($) {
 
 		input.val(new_val);
 		fake_input.val(fake_val);
+
+		console.log('in_box:', in_box);
+		console.log('input_val:', input_val);
+		console.log('new_val:', new_val);
+		console.log('fake_val:', fake_val);
 		
 		clearTimeout(ajaxTimer);
 		
@@ -228,7 +233,7 @@ jQuery(document).ready(function ($) {
 	$('.qty-container').find('input').on('change', function(e){
 		let new_val, fake_val, parent, in_box;
 			parent     = $(this).closest('.qty-container');
-			in_box     = parseInt(parent.data('in-box'));
+			in_box     = parseInt($('form.cart').data('in-box'));
 
 		if( $(this).hasClass('fake-qty') ) {
 			new_val = parseInt($(this).val()*in_box);

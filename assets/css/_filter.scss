@@ -107,6 +107,12 @@ body main .widget_wpc_filters_widget {
             .wpc-term-item-content-wrapper {
                 @include checkbox;
 
+                text-transform: lowercase;
+
+                *::first-letter {
+                    text-transform: uppercase;
+                }
+
                 input[type=checkbox] + label {
                     &::before {
                         top: -1px;
