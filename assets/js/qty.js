@@ -154,7 +154,7 @@ jQuery(document).ready(function ($) {
 		let step       = 1;
 		let new_val;
 		let fake_val;
-		let is_wholesale = false;
+		let is_wholesale = $( '.box-variation.wholesale' ).hasClass( 'active' );
 
 		if ($(this).hasClass('qty-plus')) {
 			if ((input_val + step) == in_box) {
@@ -196,16 +196,12 @@ jQuery(document).ready(function ($) {
 
 		input.val(new_val);
 		fake_input.val(fake_val);
-
-		console.log('in_box:', in_box);
-		console.log('input_val:', input_val);
-		console.log('new_val:', new_val);
-		console.log('fake_val:', fake_val);
 		
 		clearTimeout(ajaxTimer);
 		
 		ajaxTimer = setTimeout(function() {
-			ajaxAddToCart(parent.data('product-id'), new_val);
+			input_qty_change( fake_input );
+			// ajaxAddToCart( parent.data('product-id'), new_val );
 		}, 500);
 	});
 
@@ -230,20 +226,22 @@ jQuery(document).ready(function ($) {
 		});
 	}
 
-	$('.qty-container').find('input').on('change', function(e){
+	function input_qty_change( input ) {
 		let new_val, fake_val, parent, in_box;
-			parent     = $(this).closest('.qty-container');
-			in_box     = parseInt($('form.cart').data('in-box'));
+		parent     = input.closest('.qty-container');
+		in_box     = parseInt($('form.cart').data('in-box'));
 
-		if( $(this).hasClass('fake-qty') ) {
-			new_val = parseInt($(this).val()*in_box);
+		if( input.hasClass('fake-qty') ) {
+			new_val = parseInt(input.val()*in_box);
 
 			parent.find('input.qty').val(new_val);
+
+			console.log(new_val);
 		} else {
-			new_val = roundToNearestMultiple(in_box, parseInt($(this).val()));
+			new_val = roundToNearestMultiple(in_box, parseInt(input.val()));
 			fake_val = new_val/in_box;
 
-			$(this).val(new_val);
+			input.val(new_val);
 			parent.find('input.fake-qty').val(fake_val);
 		}
 
@@ -252,6 +250,10 @@ jQuery(document).ready(function ($) {
 		ajaxTimer = setTimeout(function() {
 			ajaxAddToCart( parent.data( 'product-id' ), new_val );
 		}, 500);
+	}
+
+	$(document).find('.qty-container input').on('change', function(e){
+		input_qty_change( $(this) );
 	})
 
 	setupNumberInputValidation();
