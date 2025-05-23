@@ -9,6 +9,12 @@ if ( empty( $brans_media_products_terms ) ) {
     <div class="container">
         <?php
         foreach( $brans_media_products_terms as $brand ) :
+            $term = get_term_by( 'term_id', $brand['id'], 'product_brand' );
+
+            if ( ! $term ) {
+                continue;
+            };
+            
             $brand_id = $brand['id'];
             $brand_bg_image             = get_term_meta( $brand_id, '_brand_bg_image', true );
             $brand_thumbnail_id         = get_term_meta( $brand_id, 'thumbnail_id', true );
