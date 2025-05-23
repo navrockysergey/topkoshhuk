@@ -1111,3 +1111,5 @@ function reduce_woocommerce_pagination_items( $args ) {
     
     return $args;
 }
+
+add_filter( 'wpseo_breadcrumb_links', 'add_woocommerce_category_hierarchy_to_breadcrumbs' );

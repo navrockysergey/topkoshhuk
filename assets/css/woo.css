@@ -1304,6 +1304,9 @@ label[for=payment_method_cod]::before,
   background-color: var(--color_primary);
   border-color: var(--color_primary);
 }
+.container.product-container .summary .button.button-catalog {
+  grid-column: span 2;
+}
 .container.product-container .summary .button.button-checkout {
   background-color: var(--color_secondary);
   border-color: var(--color_secondary);

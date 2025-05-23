@@ -1156,12 +1156,7 @@ footer {
 
     a {
         color: var(--color_white);
-        text-transform: lowercase;
-
-        *::first-letter {
-            text-transform: uppercase;
-        }
-
+        
         &:visited {
             color: var(--color_white);
         }

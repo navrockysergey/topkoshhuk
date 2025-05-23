@@ -2244,10 +2244,6 @@ footer ul {
 }
 #breadcrumbs a {
   color: var(--color_white);
-  text-transform: lowercase;
-}
-#breadcrumbs a *::first-letter {
-  text-transform: uppercase;
 }
 #breadcrumbs a:visited {
   color: var(--color_white);

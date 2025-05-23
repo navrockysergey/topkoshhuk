@@ -536,6 +536,8 @@ body {
         margin-top: var(--padding_l);
     }
 
+
+
     .owl-nav,
     .close-media-popup {
         display: none;
@@ -898,6 +900,10 @@ body {
         }
 
         .button {
+            &.button-catalog {
+                grid-column: span 2;
+            }
+            
             &.button-checkout {
                 background-color: var(--color_secondary);
                 border-color: var(--color_secondary);
