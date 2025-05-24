@@ -106,7 +106,7 @@ add_action( 'wp_ajax_nopriv_update_cart'                , 'handle_update_cart' )
 add_action( 'wp_ajax_get_cart_count'                    , 'get_cart_count' );
 add_action( 'wp_ajax_nopriv_get_cart_count'             , 'get_cart_count' );
 add_filter( 'woocommerce_pagination_args'               , 'reduce_woocommerce_pagination_items' );
-add_filter( 'woocommerce_placeholder_img_src'           , 'custom_woocommerce_placeholder_img_src' );
+add_filter( 'woocommerce_placeholder_img'               , 'filter_woocommerce_placeholder_img', 10, 3 );
 
 add_action('template_redirect', function() {
     ob_start(function($buffer) {
@@ -1113,9 +1113,28 @@ function reduce_woocommerce_pagination_items( $args ) {
     return $args;
 }
 
-function custom_woocommerce_placeholder_img_src( $src ) {
+// Placeholder img
+function filter_woocommerce_placeholder_img( $image_html, $size, $dimensions ) {
+    $dimensions = wc_get_image_size( $size );
+    
+    $default_attr = array(
+        'class' => 'woocommerce-placeholder',
+        'alt'   => __( 'Placeholder', 'woocommerce' ),
+    );
+    
+    $attr = wp_parse_args( array(), $default_attr );
+    
     $theme_url = get_template_directory_uri();
-    $src = $theme_url . '/assets/images/placeholder.png';
-
-    return $src;
+    $image = $theme_url . '/assets/images/placeholder.svg';
+    
+    $hwstring = image_hwstring( $dimensions['width'], $dimensions['height'] );
+    $attributes = array();
+    
+    foreach ( $attr as $name => $value ) {
+        $attributes[] = esc_attr( $name ) . '="' . esc_attr( $value ) . '"';
+    }
+    
+    $image_html = '<img src="' . esc_url( $image ) . '" ' . $hwstring . ' ' . implode( ' ', $attributes ) . '/>';
+    
+    return $image_html;
 }

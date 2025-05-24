@@ -27,8 +27,15 @@ $total_media_count = 1 + count($attachment_ids) + (!empty($video_id) ? 1 : 0);
     <div class="product-gallery-wrapper">
         <div class="product-gallery owl-carousel" id="product-gallery">
             <?php
+                
                 echo '<div class="product-gallery-item" data-image-id="0">';
-                echo wp_get_attachment_image($main_image_id, 'large');
+                
+                if ($main_image_id) {
+                    echo wp_get_attachment_image($main_image_id, 'large');
+                } else {
+                    echo '<img src="' . get_template_directory_uri() . '/assets/images/placeholder.svg">';
+                }
+
                 echo '</div>';
 
                 $index = 1;
@@ -54,7 +61,13 @@ $total_media_count = 1 + count($attachment_ids) + (!empty($video_id) ? 1 : 0);
             <div class="product-thumbnails">
                 <?php
                     echo '<div class="product-thumbnail-item active current" data-thumbnail-id="0">';
-                    echo wp_get_attachment_image($main_image_id, 'thumbnail');
+
+                    if ($main_image_id) {
+                        echo wp_get_attachment_image($main_image_id, 'thumbnail');
+                    } else {
+                        echo '<img src="' . get_template_directory_uri() . '/assets/images/placeholder.svg">';
+                    }
+
                     echo '</div>';
 
                     $index = 1;

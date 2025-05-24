@@ -29,6 +29,10 @@ if ( empty( $product_attributes ) ) {
 <table class="woocommerce-product-attributes shop_attributes" aria-label="<?php esc_attr_e( 'Product Details', 'woocommerce' ); ?>">
 	<?php foreach ( $product_attributes as $product_attribute_key => $product_attribute ) : 
 		$attribute = wc_get_attribute( $product_attribute['id'] );
+
+		if ( ! $attribute || ! isset( $attribute->name ) ) {
+			continue;
+		}
 		?>
 		<tr class="woocommerce-product-attributes-item woocommerce-product-attributes-item--<?php echo esc_attr( $product_attribute_key ); ?>">
 			<th class="woocommerce-product-attributes-item__label" scope="row"><?php echo wp_kses_post( $attribute->name ); ?></th>
