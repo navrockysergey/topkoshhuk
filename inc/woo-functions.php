@@ -106,6 +106,7 @@ add_action( 'wp_ajax_nopriv_update_cart'                , 'handle_update_cart' )
 add_action( 'wp_ajax_get_cart_count'                    , 'get_cart_count' );
 add_action( 'wp_ajax_nopriv_get_cart_count'             , 'get_cart_count' );
 add_filter( 'woocommerce_pagination_args'               , 'reduce_woocommerce_pagination_items' );
+add_filter( 'woocommerce_placeholder_img_src'           , 'custom_woocommerce_placeholder_img_src' );
 
 add_action('template_redirect', function() {
     ob_start(function($buffer) {
@@ -1112,4 +1113,9 @@ function reduce_woocommerce_pagination_items( $args ) {
     return $args;
 }
 
-add_filter( 'wpseo_breadcrumb_links', 'add_woocommerce_category_hierarchy_to_breadcrumbs' );
+function custom_woocommerce_placeholder_img_src( $src ) {
+    $theme_url = get_template_directory_uri();
+    $src = $theme_url . '/assets/images/placeholder.png';
+
+    return $src;
+}
