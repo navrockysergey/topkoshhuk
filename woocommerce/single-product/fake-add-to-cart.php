@@ -24,7 +24,7 @@ if ( $val > 0 && $in_box > 0 && $val >= $in_box ) {
     ?>
 
     <div class="qty-suffix">
-        <input type="text" class="fake-qty" min="1" value="<?php echo $val?>" data-suffix="<?php _e('ящ.'); ?>">
+        <input type="text" class="fake-qty" min="0" value="<?php echo $val?>" data-suffix="<?php _e('ящ.'); ?>">
         <span id="qty-suffix"><?php _e('ящ.'); ?></span>
     </div>
 

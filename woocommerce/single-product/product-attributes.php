@@ -19,16 +19,28 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! $product_attributes ) {
+$product_attributes = $product->get_attributes();
+
+if ( empty( $product_attributes ) ) {
 	return;
 }
 
 ?>
 <table class="woocommerce-product-attributes shop_attributes" aria-label="<?php esc_attr_e( 'Product Details', 'woocommerce' ); ?>">
-	<?php foreach ( $product_attributes as $product_attribute_key => $product_attribute ) : ?>
+	<?php foreach ( $product_attributes as $product_attribute_key => $product_attribute ) : 
+		$attribute = wc_get_attribute( $product_attribute['id'] );
+		?>
 		<tr class="woocommerce-product-attributes-item woocommerce-product-attributes-item--<?php echo esc_attr( $product_attribute_key ); ?>">
-			<th class="woocommerce-product-attributes-item__label" scope="row"><?php echo wp_kses_post( $product_attribute['label'] ); ?></th>
-			<td class="woocommerce-product-attributes-item__value"><?php echo wp_kses_post( $product_attribute['value'] ); ?></td>
+			<th class="woocommerce-product-attributes-item__label" scope="row"><?php echo wp_kses_post( $attribute->name ); ?></th>
+
+			<td class="woocommerce-product-attributes-item__value">
+				<?php
+					foreach( $product_attribute->get_options() as $term_id ) :
+						$term = get_term( $term_id );
+						echo wp_kses_post( $term->name ) . ' ';
+					endforeach;
+					?>
+			</td>
 		</tr>
 	<?php endforeach; ?>
 </table>
