@@ -16,15 +16,16 @@ if ( $val > 0 && $in_box > 0 && $val >= $in_box ) {
     <?php
         woocommerce_quantity_input(
             array(
-                'min_value'   => apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product ),
+                'min_value'   => '0',
                 'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product ),
                 'input_value' => $in_cart_q,
             )
         );
     ?>
+    
+    <input type="text" class="fake-qty" min="0" value="<?php echo $val?>" data-suffix="<?php _e('ящ.'); ?>">
 
     <div class="qty-suffix">
-        <input type="text" class="fake-qty" min="0" value="<?php echo $val?>" data-suffix="<?php _e('ящ.'); ?>">
         <span id="qty-suffix"><?php _e('ящ.'); ?></span>
     </div>
 

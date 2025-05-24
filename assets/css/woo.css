@@ -396,6 +396,7 @@ label[for=payment_method_cod]::before,
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
   gap: var(--gap_m);
   width: 100%;
   max-width: var(--container);
@@ -1266,6 +1267,10 @@ label[for=payment_method_cod]::before,
   color: var(--color_white);
   cursor: default;
 }
+.container.product-container .summary .box-variations .box-variation[disabled] {
+  opacity: 0.3;
+  cursor: default;
+}
 .container.product-container .summary .quantity {
   display: none !important;
 }
@@ -1363,6 +1368,13 @@ label[for=payment_method_cod]::before,
 }
 .qty-container .button-qty:focus, .qty-container .button-qty:hover {
   color: var(--color_primary);
+}
+.qty-container .button-qty[disabled] {
+  opacity: 0.1;
+}
+.qty-container .button-qty[disabled]:focus, .qty-container .button-qty[disabled]:hover {
+  color: var(--color_black);
+  cursor: default;
 }
 .qty-container .button-qty,
 .qty-container input {

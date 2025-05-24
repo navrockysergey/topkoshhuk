@@ -1138,3 +1138,13 @@ function filter_woocommerce_placeholder_img( $image_html, $size, $dimensions ) {
     
     return $image_html;
 }
+
+add_filter('woocommerce_quantity_input_args', 'change_quantity_type_single_product', 999, 2);
+
+function change_quantity_type_single_product($args, $product) {
+    // Только на странице отдельного товара
+    if (is_product()) {
+        $args['type'] = 'number';
+    }
+    return $args;
+}

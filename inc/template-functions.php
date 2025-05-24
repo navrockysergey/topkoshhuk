@@ -23,6 +23,13 @@ function baza_dev_scripts_and_styles() {
 
     if (is_product()) {
         wp_enqueue_script( 'baza-product-gallery-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/product-gallery.js', array('jquery'), false);
+        wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
+
+         wp_localize_script( 'baza-qty-js', 'dataObj', [
+            'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
+            'cartUpdated'  => __('Cart updated.', 'woocommerce'),
+            'errorMessage' => __('Something went wrong.', 'woocommerce'),
+        ] );
     }
 
     if (is_checkout()) {
@@ -30,11 +37,12 @@ function baza_dev_scripts_and_styles() {
         wp_enqueue_script( 'baza-nova-poshta-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/nova-poshta.js', array('jquery'), false);
     }
 
-    if ( is_cart() || is_checkout() || is_product() ) {
-        wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/qty.js', array('jquery'), false);
+    if ( is_cart() || is_checkout() ) {
+        wp_enqueue_script( 'baza-qty-js', trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/cart-qty.js', array('jquery'), false);
 
         wp_localize_script( 'baza-qty-js', 'dataObj', [
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'nonce' => wp_create_nonce( 'woocommerce-cart' ),
         ] );
     }
 

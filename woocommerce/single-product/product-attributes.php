@@ -31,7 +31,7 @@ if ( empty( $product_attributes ) ) {
 		$attribute = wc_get_attribute( $product_attribute['id'] );
 
 		if ( ! $attribute || ! isset( $attribute->name ) ) {
-			continue;
+			continue; 
 		}
 		?>
 		<tr class="woocommerce-product-attributes-item woocommerce-product-attributes-item--<?php echo esc_attr( $product_attribute_key ); ?>">
