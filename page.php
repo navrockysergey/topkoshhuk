@@ -17,7 +17,7 @@ $is_orders = wc_get_account_endpoint_url( 'orders' ); // Orders page
                     if ( function_exists('yoast_breadcrumb') ) {
                         yoast_breadcrumb( '<div id="breadcrumbs">','</div>' );
                     }
-                ?>
+                ?>a
             </div>
         </div>
     <?php endif; ?>

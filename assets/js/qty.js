@@ -26,6 +26,15 @@ jQuery(document).ready(function ($) {
 		let fakeQtyInput = $('.qty-container').find('input.fake-qty');
 		let activeButton = $('.box-variations').find('.box-variation.' + input);
 		let qtySuffix = activeButton.data('qty-suffix');
+		let in_box = parseInt($('form.cart').data('in-box'));
+
+		// If in_box is 0, force retail mode and disable wholesale
+		if (in_box === 0) {
+			input = 'retail';
+			activeButton = $('.box-variations').find('.box-variation.retail');
+			qtySuffix = activeButton.data('qty-suffix');
+			$('.box-variation.wholesale').prop('disabled', true).addClass('disabled');
+		}
 
 		if (input === 'wholesale') {
 			// Wholesale mode (boxes): show fake-qty, hide qty
@@ -47,6 +56,13 @@ jQuery(document).ready(function ($) {
 
 	// Function to check and automatically switch modes
 	function checkAndSwitchMode(qty, in_box, max_qty) {
+		// If in_box is 0, always use retail mode
+		if (in_box === 0) {
+			$('.box-variation.wholesale').prop('disabled', true).addClass('disabled');
+			setWhoMethod('retail');
+			return false;
+		}
+
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
 		
 		// If quantity is less than box size, switch to units mode
@@ -57,13 +73,13 @@ jQuery(document).ready(function ($) {
 		
 		// If max quantity is less than box size, disable wholesale mode
 		if (max_qty < in_box) {
-			$('.box-variation.wholesale').prop('disabled', true);
+			$('.box-variation.wholesale').prop('disabled', true).addClass('disabled');
 			if (is_wholesale) {
 				setWhoMethod('retail');
 			}
 			return false;
 		} else {
-			$('.box-variation.wholesale').prop('disabled', false);
+			$('.box-variation.wholesale').prop('disabled', false).removeClass('disabled');
 		}
 		
 		return is_wholesale;
@@ -75,6 +91,11 @@ jQuery(document).ready(function ($) {
 		let plus_btn = parent.find('.qty-plus');
 		let minus_btn = parent.find('.qty-minus');
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
+		
+		// If in_box is 0, wholesale mode should be disabled
+		if (in_box === 0) {
+			is_wholesale = false;
+		}
 		
 		// Minus button
 		if (is_wholesale) {
@@ -126,14 +147,20 @@ jQuery(document).ready(function ($) {
 		
 		const checkoutButton = $('.cart .button-checkout');
 		if (hasQuantity) {
-			checkoutButton.removeClass('disabled').removeAttr('disabled');
+			checkoutButton.removeClass('disabled hidden').removeAttr('disabled');
 		} else {
-			checkoutButton.addClass('disabled').attr('disabled', 'disabled');
+			checkoutButton.addClass('disabled hidden').attr('disabled', 'disabled');
 		}
 	}
 
 	$('.box-variation').on('click', function() {
 		let input = '';
+		let in_box = parseInt($('form.cart').data('in-box'));
+
+		// If in_box is 0, prevent switching to wholesale mode
+		if (in_box === 0 && $(this).hasClass('wholesale')) {
+			return false;
+		}
 
 		if ($(this).hasClass('retail')) {
 			input = 'retail';
@@ -144,7 +171,6 @@ jQuery(document).ready(function ($) {
 		// Get current values before switching
 		let parent = $('.qty-container');
 		let qty = parseInt(parent.find('input.qty').val()) || 0;
-		let in_box = parseInt($('form.cart').data('in-box'));
 		let max_qty = parseInt(parent.find('input.qty').attr('max')) || 9999;
 		let fake_input = parent.find('input.fake-qty');
 		
@@ -157,7 +183,7 @@ jQuery(document).ready(function ($) {
 		// Recalculate fake_val based on new mode, but preserve original qty
 		let new_fake_val;
 		
-		if (input === 'wholesale') {
+		if (input === 'wholesale' && in_box > 0) {
 			// Switched to boxes mode
 			// Show how many full boxes current qty represents
 			new_fake_val = Math.floor(qty / in_box);
@@ -166,7 +192,7 @@ jQuery(document).ready(function ($) {
 			// fake_val should show total units count
 			new_fake_val = qty;
 			// Update box information
-			if (qty > 0) {
+			if (qty > 0 && in_box > 0) {
 				updateBoxDisplay(qty, in_box);
 			}
 		}
@@ -332,8 +358,13 @@ jQuery(document).ready(function ($) {
 		let new_val, fake_val;
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
 
+		// If in_box is 0, force retail mode
+		if (in_box === 0) {
+			is_wholesale = false;
+		}
+
 		if ($(this).hasClass('qty-plus')) {
-			if (is_wholesale) {
+			if (is_wholesale && in_box > 0) {
 				// In wholesale mode add a whole box
 				if (input_val === 0) {
 					// If cart is empty, add first box
@@ -355,11 +386,13 @@ jQuery(document).ready(function ($) {
 				}
 				fake_val = new_val;
 				// Update box information
-				updateBoxDisplay(new_val, in_box);
+				if (in_box > 0) {
+					updateBoxDisplay(new_val, in_box);
+				}
 			}
 		} else {
 			// Minus button
-			if (is_wholesale) {
+			if (is_wholesale && in_box > 0) {
 				// In wholesale mode remove a whole box
 				new_val = Math.max(0, input_val - in_box);
 				fake_val = new_val > 0 ? Math.floor(new_val / in_box) : 0;
@@ -368,7 +401,7 @@ jQuery(document).ready(function ($) {
 				new_val = Math.max(0, input_val - 1);
 				fake_val = new_val;
 				// Update box information
-				if (new_val > 0) {
+				if (new_val > 0 && in_box > 0) {
 					updateBoxDisplay(new_val, in_box);
 				}
 			}
@@ -378,7 +411,7 @@ jQuery(document).ready(function ($) {
 		is_wholesale = checkAndSwitchMode(new_val, in_box, max_qty);
 		
 		// Recalculate fake_val after possible mode switch
-		if (is_wholesale) {
+		if (is_wholesale && in_box > 0) {
 			fake_val = new_val > 0 ? Math.floor(new_val / in_box) : 0;
 		} else {
 			fake_val = new_val;
@@ -433,10 +466,15 @@ jQuery(document).ready(function ($) {
 		max_qty = parseInt(parent.find('input.qty').attr('max')) || 9999;
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
 
+		// If in_box is 0, force retail mode
+		if (in_box === 0) {
+			is_wholesale = false;
+		}
+
 		if (input.hasClass('fake-qty')) {
 			let fake_input_val = parseInt(input.val()) || 0;
 			
-			if (is_wholesale) {
+			if (is_wholesale && in_box > 0) {
 				// In wholesale mode - fake-qty is number of boxes
 				new_val = fake_input_val * in_box;
 			} else {
@@ -451,7 +489,7 @@ jQuery(document).ready(function ($) {
 			parent.find('input.qty').val(new_val);
 			
 			// If units changed, recalculate boxes
-			if (!is_wholesale && new_val > 0) {
+			if (!is_wholesale && new_val > 0 && in_box > 0) {
 				// Update box display (how many full boxes + remainder)
 				updateBoxDisplay(new_val, in_box);
 			}
@@ -462,7 +500,7 @@ jQuery(document).ready(function ($) {
 			// Limit by maximum quantity, but allow 0
 			new_val = Math.min(Math.max(0, new_val), max_qty);
 			
-			if (is_wholesale) {
+			if (is_wholesale && in_box > 0) {
 				// In wholesale mode round to nearest multiple of box size
 				if (new_val > 0) {
 					new_val = roundToNearestMultiple(in_box, new_val);
@@ -472,7 +510,7 @@ jQuery(document).ready(function ($) {
 				// In retail mode keep as is
 				fake_val = new_val;
 				// Update box display
-				if (new_val > 0) {
+				if (new_val > 0 && in_box > 0) {
 					updateBoxDisplay(new_val, in_box);
 				}
 			}
@@ -485,11 +523,11 @@ jQuery(document).ready(function ($) {
 		is_wholesale = checkAndSwitchMode(new_val, in_box, max_qty);
 		
 		// Recalculate fake_val after possible mode switch
-		if (is_wholesale) {
+		if (is_wholesale && in_box > 0) {
 			fake_val = new_val > 0 ? Math.floor(new_val / in_box) : 0;
 		} else {
 			fake_val = new_val;
-			if (new_val > 0) {
+			if (new_val > 0 && in_box > 0) {
 				updateBoxDisplay(new_val, in_box);
 			}
 		}
@@ -517,8 +555,8 @@ jQuery(document).ready(function ($) {
 
 	// Function to update box information when working with units
 	function updateBoxDisplay(qty, in_box) {
-		if (qty <= 0) {
-			// If quantity is 0 or less, clear information
+		if (qty <= 0 || in_box === 0) {
+			// If quantity is 0 or less, or in_box is 0, clear information
 			if ($('.box-info').length) {
 				$('.box-info').text('');
 			}
@@ -560,14 +598,18 @@ jQuery(document).ready(function ($) {
 	$('.box-variations .box-variation').removeClass('active');
 	
 	let initial_mode = 'retail';
-	if (max_qty > in_box) {
+	// If in_box is 0, force retail mode
+	if (in_box === 0) {
+		initial_mode = 'retail';
+		$('.box-variation.wholesale').prop('disabled', true).addClass('disabled');
+	} else if (max_qty > in_box) {
 		initial_mode = 'wholesale';
 	}
 	
 	setWhoMethod(initial_mode);
 	
 	let fake_val;
-	if (initial_mode === 'wholesale' && qty > 0) {
+	if (initial_mode === 'wholesale' && qty > 0 && in_box > 0) {
 		fake_val = Math.floor(qty / in_box);
 	} else {
 		fake_val = qty;

@@ -2866,6 +2866,23 @@ ul.products {
     margin-bottom: var(--padding_m);
 }
 
+.woocommerce-message,
+.woocommerce-error,
+.woocommerce-info {
+    animation: slideInFromTop 0.3s ease-out;
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 .woocommerce-checkout-payment,
 wc-order-attribution-inputs,
 .woocommerce-additional-fields,
