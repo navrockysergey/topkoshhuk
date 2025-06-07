@@ -42,7 +42,7 @@ $is_orders = wc_get_account_endpoint_url( 'orders' ); // Orders page
             </div>
 
             <div class="category-main">
-                <?php the_content(); ?>
+                <?php echo do_shortcode('[products limit="18" columns="3" orderby="date" order="DESC" paginate=true]'); ?>
             </div>
         </div>
 

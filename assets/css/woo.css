@@ -2252,7 +2252,11 @@ ul.products li.product .product-sku-wrapper {
   display: block;
 }
 .select2-container .select2-search {
-  display: none !important;
+  padding: var(--padding_s) var(--padding_s) 0 var(--padding_s);
+  display: block;
+}
+.select2-container .select2-search input.select2-search__field {
+  border: 1px solid var(--color_secondary) !important;
 }
 .select2-container .select2-selection {
   font-size: var(--font_size_p1);
@@ -2328,9 +2332,6 @@ ul.products li.product .product-sku-wrapper {
   align-self: flex-start;
   line-height: 1;
   transition: all 0.3s ease;
-}
-.select2-container .select2-dropdown .select2-results__option:first-child {
-  display: none !important;
 }
 .select2-container .select2-dropdown .select2-results__option--highlighted {
   background-color: var(--color_primary) !important;
