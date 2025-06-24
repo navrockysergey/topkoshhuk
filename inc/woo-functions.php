@@ -803,7 +803,7 @@ function custom_account_menu_items( $items ) {
         unset( $items['customer-logout'] );
     }
 
-    $items['account-data'] = __('Платіжні дані');
+    $items['account-data'] = __('Дані покупця');
 
     $items['account-security'] = __('Безпека');
 
@@ -1095,7 +1095,7 @@ function header_login_dropdown() {
                 <p class="welcome-text"><?php echo esc_html($display_name); ?></p>
                 <ul class="user-menu">
                     <li class="first"><a href="<?php echo wc_get_account_endpoint_url('orders'); ?>"><?php esc_html_e('Замовлення'); ?></a></li>
-                    <li><a href="<?php echo wc_get_account_endpoint_url('account-data'); ?>"><?php esc_html_e('Платіжні дані'); ?></a></li>
+                    <li><a href="<?php echo wc_get_account_endpoint_url('account-data'); ?>"><?php esc_html_e('Дані покупця'); ?></a></li>
                     <li class="last"><a href="<?php echo wc_get_account_endpoint_url('account-security'); ?>"><?php esc_html_e('Безпека'); ?></a></li>
                 </ul>
                 <a class="button button-logout" href="<?php echo wp_logout_url(home_url()); ?>"><?php esc_html_e('Вийти', 'woocommerce'); ?></a>

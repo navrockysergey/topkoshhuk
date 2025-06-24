@@ -910,6 +910,7 @@ body {
                 grid-column: span 2;
             }
             
+            &.button-catalog,
             &.button-checkout {
                 background-color: var(--color_secondary);
                 border-color: var(--color_secondary);

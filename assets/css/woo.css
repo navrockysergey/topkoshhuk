@@ -1312,12 +1312,12 @@ label[for=payment_method_cod]::before,
 .container.product-container .summary .button.button-catalog {
   grid-column: span 2;
 }
-.container.product-container .summary .button.button-checkout {
+.container.product-container .summary .button.button-catalog, .container.product-container .summary .button.button-checkout {
   background-color: var(--color_secondary);
   border-color: var(--color_secondary);
   grid-column: span 2;
 }
-.container.product-container .summary .button.button-checkout:hover {
+.container.product-container .summary .button.button-catalog:hover, .container.product-container .summary .button.button-checkout:hover {
   background-color: var(--color_primary);
   border-color: var(--color_primary);
 }
