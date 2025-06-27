@@ -11,7 +11,7 @@
 <?php if ( get_theme_mod( 'phone_2' ) ) : ?>
     <a href="tel:<?php echo preg_replace('/\D/', '', get_theme_mod( 'phone_2' ) ); ?>">
         <?php 
-            $phone = esc_html( get_theme_mod( 'phone' ) );
+            $phone = esc_html( get_theme_mod( 'phone_2' ) );
             $phone = preg_replace('/\(/', '<span>(', $phone, 1);
             $phone = preg_replace('/\)/', ')</span>', $phone, 1);
             echo $phone;
