@@ -239,7 +239,7 @@ jQuery(document).ready(function ($) {
 		}
 	}
 
-	function replaceActualyProductPrice(prodId, prodQty) {		
+	function replaceActualyProductPrice(prodId, prodQty) {
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
@@ -252,22 +252,31 @@ jQuery(document).ready(function ($) {
 			success: function(response) {
 				let innerPrice = response['price'];
 				let regular = response['regular'];
+				
+				let productContainer = $('.product-container');
 
 				if (0 !== response['who_price']) {
 					innerPrice = response['who_price'];
 
-					if (!$('.price .old-price').length) {
+					if (!productContainer.find('.price .old-price').length) {
 						let oldHtml = '<span class="old-price"><del aria-hidden="true">' + regular + '</del></span>';
-						$('.price').prepend(oldHtml);
+						productContainer.find('.price').prepend(oldHtml);
 					}
-				} else if ($('.price .old-price').length && !response['has_sale']) {
-					$('.price').find('.old-price').remove();
+				} else if (productContainer.find('.price .old-price').length && !response['has_sale']) {
+					productContainer.find('.price .old-price').remove();
 				}
 				
-				$('form .actual-price').find('.woocommerce-Price-amount').replaceWith(innerPrice);
+				productContainer.find('.actual-price .woocommerce-Price-amount').replaceWith(innerPrice);
 			}
 		});
 	}
+
+	let prodId = $('.product-container form.cart').data('product-id');
+    let prodQty = $('.product-container input[name="quantity"]').val();
+    
+    if (prodId) {
+        replaceActualyProductPrice(prodId, prodQty);
+    }
 
 	function ajaxAddToCart(prodId, qty) {
 		$(cartForm).block({

@@ -93,7 +93,7 @@ jQuery(document).ready(function ($) {
 		margin: 24,
 		autoplayHoverPause: true,
 		dots: false,
-		loop: true,
+		loop: false,
 		navText: [nextPrevButton, nextPrevButton],
 		mouseDrag: true,
 		touchDrag: true,
