@@ -10,13 +10,13 @@ function custom_posts_meta_data() {
         $hourses_opt[$i] = str_pad ($i, 2, '0', STR_PAD_LEFT ) . ':00';
     }
 
-    Container::make( 'post_meta', __( 'Badges' ) )
-        ->where( 'post_type', '=', 'product' )
-        ->set_context( 'side' )
-        ->add_fields( array(
-            Field::make( 'checkbox', 'product_badge_new', __( 'New' ) )
-                    ->set_default_value( false ),
-        ) );
+    // Container::make( 'post_meta', __( 'Badges' ) )
+    //     ->where( 'post_type', '=', 'product' )
+    //     ->set_context( 'side' )
+    //     ->add_fields( array(
+    //         Field::make( 'checkbox', 'product_badge_new', __( 'New' ) )
+    //                 ->set_default_value( false ),
+    //     ) );
 
     Container::make( 'post_meta', __( 'Product banner' ) )
         ->where( 'post_type', '=', 'product' )
@@ -68,10 +68,10 @@ function custom_posts_meta_data() {
     Container::make( 'post_meta', __( 'Details' ) )
         ->where( 'post_type', '=', 'branch' )
         ->add_fields( array(
-            Field::make( 'text', 'branch_addres_city', __( 'City' ) )
-                ->set_width( 50 ),
-            Field::make( 'text', 'branch_addres_region', __( 'Region' ) )
-                ->set_width( 50 ),
+            // Field::make( 'text', 'branch_addres_city', __( 'City' ) )
+            //     ->set_width( 50 ),
+            // Field::make( 'text', 'branch_addres_region', __( 'Region' ) )
+            //     ->set_width( 50 ),
             Field::make( 'textarea', 'branch_addres_string', __( 'Addres' ) ),
             Field::make( 'text', 'branch_geo_latitude', __( 'latitude' ) )
                 ->set_width( 50 ),

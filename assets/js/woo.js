@@ -243,5 +243,9 @@ jQuery(document).ready(function ($) {
 		categoryOrderby();
 		removeNbsp();
 	});
+
+    $(document.body).on('added_to_cart', function() {
+        
+    });
 });
 

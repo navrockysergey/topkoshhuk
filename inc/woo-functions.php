@@ -1147,3 +1147,19 @@ function change_quantity_type_single_product($args, $product) {
     }
     return $args;
 }
+
+add_action( 'wp_footer','woo_checkout_prevent_scroll_to_notices' );
+
+add_action('woocommerce_product_query', 'hide_out_of_stock_products_from_catalog');
+
+function hide_out_of_stock_products_from_catalog($q) {
+    if (!is_admin() && $q->is_main_query()) {
+        $q->set('meta_query', array(
+            array(
+                'key' => '_stock_status',
+                'value' => 'outofstock',
+                'compare' => '!='
+            )
+        ));
+    }
+}
