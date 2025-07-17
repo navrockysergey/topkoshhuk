@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
 		
 		// If quantity is less than box size, switch to units mode
-		if (qty < in_box && is_wholesale) {
+		if (0 < qty && qty < in_box && is_wholesale) {
 			setWhoMethod('retail');
 			return false; // units mode
 		}
@@ -345,9 +345,9 @@ jQuery(document).ready(function ($) {
 		noticesWrapper.html(noticeHtml);
 		
 		// Scroll to notice
-		$('html, body').animate({
-			scrollTop: noticesWrapper.offset().top - 100
-		}, 500);
+		// $('html, body').animate({
+		// 	scrollTop: noticesWrapper.offset().top - 100
+		// }, 500);
 		
 		// Auto hide after 3 seconds
 		setTimeout(function() {
@@ -358,12 +358,13 @@ jQuery(document).ready(function ($) {
 	$(document).on('click', '.button-qty', function(e) {
 		e.preventDefault();
 		
-		let parent = $(this).closest('.qty-container');
-		let in_box = parseInt($('form.cart').data('in-box'));
-		let input = parent.find('input.qty');
-		let fake_input = parent.find('input.fake-qty');
-		let input_val = parseInt(input.val()) || 0;
-		let max_qty = parseInt(input.attr('max')) || 9999;
+		let parent 		= $(this).closest('.qty-container');
+		let in_box 		= parseInt($('form.cart').data('in-box'));
+		let input 		= parent.find('input.qty');
+		let fake_input 	= parent.find('input.fake-qty');
+		let input_val 	= parseInt(input.val()) || 0;
+		let max_qty 	= parseInt(input.attr('max')) || 9999;
+		let step 		= input_val >= in_box ? in_box : 1;
 		let new_val, fake_val;
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
 
@@ -379,7 +380,7 @@ jQuery(document).ready(function ($) {
 					// If cart is empty, add first box
 					new_val = in_box;
 				} else {
-					new_val = input_val + in_box;
+					new_val = input_val + step;
 				}
 				if (new_val > max_qty) {
 					new_val = max_qty;
@@ -389,9 +390,9 @@ jQuery(document).ready(function ($) {
 				// In retail mode add one unit
 				if (input_val === 0) {
 					// If cart is empty, add first unit
-					new_val = 1;
+					new_val = step;
 				} else {
-					new_val = Math.min(input_val + 1, max_qty);
+					new_val = Math.min(input_val + step, max_qty);
 				}
 				fake_val = new_val;
 				// Update box information
@@ -401,13 +402,17 @@ jQuery(document).ready(function ($) {
 			}
 		} else {
 			// Minus button
+			step    = input_val > in_box ? in_box : 1;
+			new_val = Math.max(0, input_val - step);
 			if (is_wholesale && in_box > 0) {
 				// In wholesale mode remove a whole box
-				new_val = Math.max(0, input_val - in_box);
 				fake_val = new_val > 0 ? Math.floor(new_val / in_box) : 0;
 			} else {
 				// In retail mode remove one unit
-				new_val = Math.max(0, input_val - 1);
+				if( new_val >= in_box) {
+					new_val = Math.round(new_val / in_box) * in_box;
+				};
+				
 				fake_val = new_val;
 				// Update box information
 				if (new_val > 0 && in_box > 0) {
@@ -469,11 +474,12 @@ jQuery(document).ready(function ($) {
 	}
 
 	function input_qty_change(input) {
-		let new_val, fake_val, parent, in_box, max_qty;
-		parent = input.closest('.qty-container');
-		in_box = parseInt($('form.cart').data('in-box'));
-		max_qty = parseInt(parent.find('input.qty').attr('max')) || 9999;
-		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
+		let is_wholesale, new_val, fake_val, parent, in_box, max_qty;
+		parent 		 = input.closest('.qty-container');
+		in_box 		 = parseInt($('form.cart').data('in-box'));
+		max_qty 	 = parseInt(parent.find('input.qty').attr('max')) || 9999;
+		is_wholesale = $('.box-variation.wholesale').hasClass('active');
+		new_val      = parseInt(input.val());
 
 		// If in_box is 0, force retail mode
 		if (in_box === 0) {
@@ -481,7 +487,7 @@ jQuery(document).ready(function ($) {
 		}
 
 		if (input.hasClass('fake-qty')) {
-			let fake_input_val = parseInt(input.val()) || 0;
+			let fake_input_val = new_val;
 			
 			if (is_wholesale && in_box > 0) {
 				// In wholesale mode - fake-qty is number of boxes
@@ -503,11 +509,11 @@ jQuery(document).ready(function ($) {
 				updateBoxDisplay(new_val, in_box);
 			}
 		} else {
-			// Changing main input (qty)
-			new_val = parseInt(input.val()) || 0;
-			
 			// Limit by maximum quantity, but allow 0
-			new_val = Math.min(Math.max(0, new_val), max_qty);
+			// new_val = Math.min(Math.max(0, new_val), max_qty);
+			if( new_val > in_box ) {
+				new_val = Math.round(new_val / in_box) * in_box;
+			}
 			
 			if (is_wholesale && in_box > 0) {
 				// In wholesale mode round to nearest multiple of box size

@@ -95,25 +95,30 @@ jQuery(document).ready(function ($) {
 		
 		clearTimeout(updateTimer);
 
-		const $input = $(this).siblings('.qty');
+		const $input 	 = $(this).siblings('.qty');
 		const currentVal = parseFloat($input.val()) || 0;
-		const maxQty = parseFloat($input.attr('max'));
-		const minQty = parseFloat($input.attr('min')) || 0;
-		let newVal = currentVal;
+		const maxQty 	 = parseFloat($input.attr('max'));
+		const minQty 	 = parseFloat($input.attr('min')) || 0;
+		const parent 	 = $(this).closest('.qty-container');
+		const inBox  	 = parseInt(parent.data('in-box'));
+		let step   	 	 = currentVal >= inBox ? inBox : 1;
+		let newVal   	 = currentVal;
 
 		if ($(this).hasClass('qty-plus')) {
 			if (!maxQty || currentVal < maxQty) {
-				newVal = currentVal + 1;
+				newVal = currentVal + step;
+				Math.round(newVal / inBox) * inBox;
 				$input.val(newVal);
 			}
 		} else {
 			if (currentVal > minQty) {
-				newVal = currentVal - 1;
+				step   = currentVal > inBox ? inBox : 1;
+				newVal = currentVal - step;
+				Math.round(newVal / inBox) * inBox;
 				$input.val(newVal);
 			}
 		}
 
-		const parent = $(this).closest('.qty-container');
 		updateButtonStates(newVal, maxQty, minQty, parent);
 
 		isAdjusting = true;
@@ -132,12 +137,19 @@ jQuery(document).ready(function ($) {
 
 	$(document).on('change input', '.qty', function() {
 		clearTimeout(updateTimer);
-		const $input = $(this);
-		const qty = parseFloat($input.val()) || 0;
-		const maxQty = parseFloat($input.attr('max'));
-		const minQty = parseFloat($input.attr('min')) || 0;
-		
-		const parent = $input.closest('.qty-container');
+		const $input 	= $(this);
+		let qty 		= parseFloat($input.val()) || 0;
+		const maxQty 	= parseFloat($input.attr('max'));
+		const minQty 	= parseFloat($input.attr('min')) || 0;
+		const parent 	= $input.closest('.qty-container');
+		const inBox  	= parseInt(parent.data('in-box'));
+
+		if ( qty > inBox ) {
+			qty = Math.round(qty / inBox) * inBox;
+		}
+
+		$input.val(qty);
+
 		updateButtonStates(qty, maxQty, minQty, parent);
 
 		updateTimer = setTimeout(function() {
