@@ -924,6 +924,10 @@ body main .widget_wpc_filters_widget .wpc-filters-main-wrap .wpc-instead-of-post
     border: 1px solid var(--color_primary);
   }
 }
+.wpc-term-disabled {
+  display: none !important;
+}
+
 :root {
   --cubic_bezier: cubic-bezier(0.1, 0.6, 0, 1);
   --bg: #F2F2F2;

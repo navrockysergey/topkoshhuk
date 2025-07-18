@@ -1150,16 +1150,36 @@ function change_quantity_type_single_product($args, $product) {
 
 add_action( 'wp_footer','woo_checkout_prevent_scroll_to_notices' );
 
-add_action('woocommerce_product_query', 'hide_out_of_stock_products_from_catalog');
+// Products sort
+add_filter( 'woocommerce_get_catalog_ordering_args', 'first_sort_by_stock_amount', 9999 );
 
-function hide_out_of_stock_products_from_catalog($q) {
-    if (!is_admin() && $q->is_main_query()) {
-        $q->set('meta_query', array(
-            array(
-                'key' => '_stock_status',
-                'value' => 'outofstock',
-                'compare' => '!='
-            )
-        ));
+function first_sort_by_stock_amount($args) {
+
+    $args['orderby'] = array(
+        'meta_value' => 'ASC',
+        'date' => 'DESC'
+    );
+    $args['meta_key'] = '_stock_status';
+    return $args;
+}
+
+// Show only child category 
+add_filter('wpc_terms_before_display', 'show_only_child_categories', 10, 2);
+
+function show_only_child_categories($terms, $filter) {
+    if ($filter['e_name'] === 'product_cat') {
+        if (is_product_category()) {
+            $current_term = get_queried_object();
+            if ($current_term && $current_term->term_id) {
+                $filtered_terms = [];
+                foreach ($terms as $k => $term) {
+                    if ($term->parent == $current_term->term_id) {
+                        $filtered_terms[$k] = $term;
+                    }
+                }
+                return $filtered_terms;
+            }
+        }
     }
+    return $terms;
 }

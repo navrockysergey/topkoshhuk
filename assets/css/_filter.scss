@@ -184,3 +184,7 @@ body main .widget_wpc_filters_widget {
         border: 1px solid var(--color_primary);
     }
 }
+
+.wpc-term-disabled {
+    display: none !important;
+}
