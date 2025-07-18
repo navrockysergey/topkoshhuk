@@ -1148,7 +1148,7 @@ function change_quantity_type_single_product($args, $product) {
     return $args;
 }
 
-add_action( 'wp_footer','woo_checkout_prevent_scroll_to_notices' );
+//add_action( 'wp_footer','woo_checkout_prevent_scroll_to_notices' );
 
 // Products sort
 add_filter( 'woocommerce_get_catalog_ordering_args', 'first_sort_by_stock_amount', 9999 );
@@ -1163,7 +1163,7 @@ function first_sort_by_stock_amount($args) {
     return $args;
 }
 
-// Show only child category 
+// Filter before display
 add_filter('wpc_terms_before_display', 'show_only_child_categories', 10, 2);
 
 function show_only_child_categories($terms, $filter) {
@@ -1172,13 +1172,43 @@ function show_only_child_categories($terms, $filter) {
             $current_term = get_queried_object();
             if ($current_term && $current_term->term_id) {
                 $filtered_terms = [];
+                
+                // Получаем прямых детей текущей категории
                 foreach ($terms as $k => $term) {
                     if ($term->parent == $current_term->term_id) {
                         $filtered_terms[$k] = $term;
                     }
                 }
+                
+                // Получаем внуков (детей детей)
+                $child_ids = array_column($filtered_terms, 'term_id');
+                foreach ($terms as $k => $term) {
+                    if (in_array($term->parent, $child_ids)) {
+                        $filtered_terms[$k] = $term;
+                    }
+                }
+                
                 return $filtered_terms;
             }
+        } elseif (is_shop()) {
+            $filtered_terms = [];
+            
+            // Показываем родительские категории
+            foreach ($terms as $k => $term) {
+                if ($term->parent == 0) {
+                    $filtered_terms[$k] = $term;
+                }
+            }
+            
+            // Показываем их детей
+            $parent_ids = array_column($filtered_terms, 'term_id');
+            foreach ($terms as $k => $term) {
+                if (in_array($term->parent, $parent_ids)) {
+                    $filtered_terms[$k] = $term;
+                }
+            }
+            
+            return $filtered_terms;
         }
     }
     return $terms;
