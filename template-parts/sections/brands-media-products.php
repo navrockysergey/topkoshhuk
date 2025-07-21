@@ -30,9 +30,21 @@ if ( empty( $brans_media_products_terms ) ) {
                 'post_status'    => 'publish',
                 'orderby'        => 'rand',
                 'posts_per_page' => intval( $brans_video_products_per_page ),
+                'tax_query'      => [
+                    [
+                        'taxonomy' => 'product_brand',
+                        'field'    => 'term_id',
+                        'terms'    => $brand_id,
+                    ],
+                ],
             ];
 
             $products = new WP_Query( $prod_args );
+
+            if ( ! $products->have_posts() ) {
+                wp_reset_postdata();
+                continue;
+            }
         ?>
             <div class="brand-products">
                 <div class="products brands-products">

@@ -3,9 +3,10 @@ get_header();
 $is_home = is_front_page();
 $is_category = is_product_category();
 $is_shop = is_shop();
+$is_tax = is_tax();
 $is_page_shop = wc_get_page_permalink( 'shop' );
 $is_account = wc_get_page_permalink( 'myaccount' );
-$is_orders = wc_get_account_endpoint_url( 'orders' ); // Orders page
+$is_orders = wc_get_account_endpoint_url( 'orders' );
 ?>
 
 <main id="primary" class="site-main<?php if(!$is_home): ?> site-page<?php endif; ?>">
@@ -17,12 +18,12 @@ $is_orders = wc_get_account_endpoint_url( 'orders' ); // Orders page
                     if ( function_exists('yoast_breadcrumb') ) {
                         yoast_breadcrumb( '<div id="breadcrumbs">','</div>' );
                     }
-                ?>a
+                ?>
             </div>
         </div>
     <?php endif; ?>
 
-    <?php if ($is_category || $is_shop) : ?>
+    <?php if ($is_category || $is_shop || $is_tax) : ?>
         <section class="section section-category-hero">
             <div class="container">
                 <?php get_template_part('template-parts/blocks/block', 'search'); ?>

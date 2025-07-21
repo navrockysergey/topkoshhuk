@@ -24,11 +24,13 @@ if ( ! apply_filters( 'woocommerce_order_item_visible', true, $item ) ) {
 }
 
 $thumbnail_url = get_the_post_thumbnail_url( $item->get_product_id(), 'thumbnail' );
+$placeholder_url = get_template_directory_uri() . '/assets/images/placeholder.svg';
+$image_url = $thumbnail_url ? $thumbnail_url : $placeholder_url;
 ?>
 
 <div class="order-item">
 	<div class="product-thumbnail">
-		<img src="<?php echo esc_url( $thumbnail_url )?>" alt="<?php echo esc_html( $item->get_name() )?>">
+		<img src="<?php echo esc_url( $image_url )?>" alt="<?php echo esc_html( $item->get_name() )?>">
 	</div>
 
 	<div class="product-name">

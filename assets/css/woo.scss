@@ -233,6 +233,15 @@ body {
     gap: var(--gap_xs);
     color: var(--color_black);
 
+    i {
+        font-style: normal;
+        font-weight: 400;
+    }
+
+    .products & {
+        font-size: var(--font_size_h5);
+    }
+
     .single-product & {
         @include mobile {
             margin-bottom: var(--padding_s);
@@ -873,7 +882,8 @@ body {
             gap: var(--gap_s);
 
             @include mobile {
-                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
             }
 
             .price {
@@ -1031,7 +1041,7 @@ ul.products {
         }
     
         @include mobile {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(1, 1fr);
             gap: var(--gap_s);
 
             .product-sku-wrapper {
@@ -2292,6 +2302,10 @@ ul.products {
                 grid-template-columns: 60% auto;
                 grid-column: span 2;
                 gap: var(--gap_s);
+            }
+
+            @include tablet {
+                grid-template-columns: auto 1fr auto;
             }
 
             .product-price {

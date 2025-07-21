@@ -31,7 +31,7 @@ if ( $in_cart_q > $in_box ) {
         );
     ?>
     
-    <input type="text" class="fake-qty" min="0" value="<?php echo $val?>" data-suffix="<?php _e('ящ.'); ?>">
+    <input type="number" class="fake-qty" min="0" value="<?php echo $val?>" data-suffix="<?php _e('ящ.'); ?>">
 
     <div class="qty-suffix">
         <span id="qty-suffix"><?php _e('ящ.'); ?></span>

@@ -107,6 +107,30 @@ add_action( 'wp_ajax_get_cart_count'                    , 'get_cart_count' );
 add_action( 'wp_ajax_nopriv_get_cart_count'             , 'get_cart_count' );
 add_filter( 'woocommerce_pagination_args'               , 'reduce_woocommerce_pagination_items' );
 add_filter( 'woocommerce_placeholder_img'               , 'filter_woocommerce_placeholder_img', 10, 3 );
+add_filter( 'woocommerce_get_price_html'                , 'replace_price_with_wholesale_in_loop', 10, 2 );
+
+// Price in loop 
+function replace_price_with_wholesale_in_loop($price, $product) {
+    $product_id = $product->get_id();
+    $wholesales_str = get_post_meta($product_id, '_wholesale_prices', true);
+    
+    if (!empty($wholesales_str)) {
+        $wholesales = json_decode($wholesales_str);
+        $currency = get_woocommerce_currency_symbol();
+        
+        if (!empty($wholesales) && isset($wholesales[0])) {
+            $first_wholesale = $wholesales[0];
+            $lvl_count = intval($first_wholesale->min_product_count);
+            $wholesale_price = floatval($first_wholesale->wh_price);
+            
+            $new_price = number_format(round($wholesale_price, 2), 2, ',', '') . " " . $currency . " <i>від " . $lvl_count . "шт.</i>";
+            
+            return '<span class="price wholesale-price">' . $new_price . '</span>';
+        }
+    }
+    
+    return $price;
+}
 
 add_action('template_redirect', function() {
     ob_start(function($buffer) {
@@ -1173,14 +1197,12 @@ function show_only_child_categories($terms, $filter) {
             if ($current_term && $current_term->term_id) {
                 $filtered_terms = [];
                 
-                // Получаем прямых детей текущей категории
                 foreach ($terms as $k => $term) {
                     if ($term->parent == $current_term->term_id) {
                         $filtered_terms[$k] = $term;
                     }
                 }
                 
-                // Получаем внуков (детей детей)
                 $child_ids = array_column($filtered_terms, 'term_id');
                 foreach ($terms as $k => $term) {
                     if (in_array($term->parent, $child_ids)) {
@@ -1193,14 +1215,12 @@ function show_only_child_categories($terms, $filter) {
         } elseif (is_shop()) {
             $filtered_terms = [];
             
-            // Показываем родительские категории
             foreach ($terms as $k => $term) {
                 if ($term->parent == 0) {
                     $filtered_terms[$k] = $term;
                 }
             }
             
-            // Показываем их детей
             $parent_ids = array_column($filtered_terms, 'term_id');
             foreach ($terms as $k => $term) {
                 if (in_array($term->parent, $parent_ids)) {

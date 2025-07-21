@@ -56,6 +56,7 @@ jQuery(document).ready(function ($) {
 
 	// Function to check and automatically switch modes
 	function checkAndSwitchMode(qty, in_box, max_qty) {
+		// If in_box is 0, always use retail mode
 		if (in_box === 0) {
 			$('.box-variation.wholesale').prop('disabled', true).addClass('disabled');
 			setWhoMethod('retail');
@@ -64,16 +65,13 @@ jQuery(document).ready(function ($) {
 
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
 		
-		if (!is_wholesale && qty >= in_box && max_qty >= in_box) {
-			setWhoMethod('wholesale');
-			return true;
-		}
-		
+		// If quantity is less than box size, switch to units mode
 		if (0 < qty && qty < in_box && is_wholesale) {
 			setWhoMethod('retail');
-			return false;
+			return false; // units mode
 		}
 		
+		// If max quantity is less than box size, disable wholesale mode
 		if (max_qty < in_box) {
 			$('.box-variation.wholesale').prop('disabled', true).addClass('disabled');
 			if (is_wholesale) {
@@ -482,6 +480,11 @@ jQuery(document).ready(function ($) {
 		max_qty 	 = parseInt(parent.find('input.qty').attr('max')) || 9999;
 		is_wholesale = $('.box-variation.wholesale').hasClass('active');
 		new_val      = parseInt(input.val());
+
+		if (input.val().trim() === '') {
+			input.val(0);
+			return;
+		}
 
 		// If in_box is 0, force retail mode
 		if (in_box === 0) {

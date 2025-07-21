@@ -17,13 +17,13 @@ jQuery(document).ready(function ($) {
 		clearTimeout(updateTimer);
 		
 		updateTimer = setTimeout(function() {
-			$('.woocommerce-cart-form, .cart').block({
-				message: null,
-				overlayCSS: {
-					background: '#fff',
-					opacity: 0.6
-				}
-			});
+			// $('.woocommerce-cart-form, .cart').block({
+			// 	message: null,
+			// 	overlayCSS: {
+			// 		background: '#fff',
+			// 		opacity: 0.6
+			// 	}
+			// });
 			
 			const updateButton = $('button[name="update_cart"], .update-cart');
 			if (updateButton.length) {
@@ -161,7 +161,7 @@ jQuery(document).ready(function ($) {
 		}, UPDATE_DELAY);
 	});
 
-	$(document).ready(function() {
+	function initializeButtonStates() {
 		$('.qty-container').each(function() {
 			const parent = $(this);
 			const input = parent.find('.qty');
@@ -171,5 +171,19 @@ jQuery(document).ready(function ($) {
 			
 			updateButtonStates(qty, maxQty, minQty, parent);
 		});
+	}
+
+	initializeButtonStates();
+
+	$(document.body).on('updated_wc_div', function() {
+		setTimeout(function() {
+			initializeButtonStates();
+		}, 100);
+	});
+
+	$(document.body).on('wc_fragments_refreshed wc_fragments_loaded', function() {
+		setTimeout(function() {
+			initializeButtonStates();
+		}, 100);
 	});
 });

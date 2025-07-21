@@ -2755,6 +2755,12 @@ footer {
             color: var(--color_white);
             text-decoration: none;
         }
+
+        &.dots {
+            background-color: transparent !important;
+            color: var(--color_black) !important;
+            cursor: default !important;
+        }
     }
 
     .prev,
