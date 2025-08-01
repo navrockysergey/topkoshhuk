@@ -4,7 +4,7 @@ $categories_args = array(
     'orderby'      => 'name',
     'order'        => 'ASC',
     'hide_empty'   => false,
-    'exclude'      => array( 15 ),
+    'exclude'      => array( 15, 600 ),
     'parent'       => 0,
 );
 

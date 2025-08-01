@@ -130,7 +130,7 @@ jQuery(document).ready(function ($) {
 	
 		$carousel.owlCarousel({
 			stagePadding: 23,
-			items: 3,
+			items: 4,
 			navSpeed: sliderSpeed,
 			dragEndSpeed: sliderSpeed,
 			dotsSpeed: sliderSpeed,
@@ -164,7 +164,7 @@ jQuery(document).ready(function ($) {
 					loop: true,
 				},
 				1024: {
-					items: 2,
+					items: 3,
 					nav: false,
 					dots: false,
 					margin: 12,
@@ -172,7 +172,7 @@ jQuery(document).ready(function ($) {
 					loop: true,
 				},
 				1200: {
-					items: 3,
+					items: 4,
 					nav: true,
 					dots: false,
 					margin: 24,

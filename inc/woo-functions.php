@@ -108,6 +108,7 @@ add_action( 'wp_ajax_nopriv_get_cart_count'             , 'get_cart_count' );
 add_filter( 'woocommerce_pagination_args'               , 'reduce_woocommerce_pagination_items' );
 add_filter( 'woocommerce_placeholder_img'               , 'filter_woocommerce_placeholder_img', 10, 3 );
 add_filter( 'woocommerce_get_price_html'                , 'replace_price_with_wholesale_in_loop', 10, 2 );
+add_filter( 'woocommerce_add_to_cart_fragments'         , 'cart_count_fragments' );
 
 // Price in loop 
 function replace_price_with_wholesale_in_loop($price, $product) {
@@ -149,7 +150,6 @@ function cart_count_fragments($fragments) {
     
     return $fragments;
 }
-add_filter('woocommerce_add_to_cart_fragments', 'cart_count_fragments');
 
 function get_cart_count() {
     if (!check_ajax_referer('woocommerce-cart', 'security', false)) {
@@ -1232,4 +1232,108 @@ function show_only_child_categories($terms, $filter) {
         }
     }
     return $terms;
+}
+
+add_filter('wp_calculate_image_srcset', '__return_false');
+add_filter('wp_calculate_image_sizes', '__return_false');
+
+// Add phone field to account edit form
+add_action( 'woocommerce_edit_account_form', 'add_phone_field_to_account_form' );
+function add_phone_field_to_account_form() {
+    $user = wp_get_current_user();
+    ?>
+    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+        <label for="account_phone">Телефон</label>
+        <input type="tel" class="woocommerce-Input woocommerce-Input--tel input-text" 
+               name="account_phone" id="account_phone" 
+               value="<?php echo esc_attr( get_user_meta( $user->ID, 'billing_phone', true ) ); ?>" 
+               placeholder="Телефон" />
+    </p>
+    <?php
+}
+
+// Save phone field data
+add_action( 'woocommerce_save_account_details', 'save_phone_field_account_details' );
+function save_phone_field_account_details( $user_id ) {
+    if ( isset( $_POST['account_phone'] ) ) {
+        update_user_meta( $user_id, 'billing_phone', sanitize_text_field( $_POST['account_phone'] ) );
+    }
+}
+
+// Add validation for phone field
+add_action( 'woocommerce_save_account_details_errors', 'validate_phone_field' );
+function validate_phone_field( $errors ) {
+    if ( isset( $_POST['account_phone'] ) && empty( $_POST['account_phone'] ) ) {
+        $errors->add( 'error', 'Phone field is required.' );
+    }
+}
+
+// Remove display name field requirement
+add_filter( 'woocommerce_save_account_details_required_fields', 'remove_display_name_requirement' );
+function remove_display_name_requirement( $required_fields ) {
+    unset( $required_fields['account_display_name'] );
+    return $required_fields;
+}
+
+// Brands filter fix
+function custom_brand_category_rewrite_rules() {
+    add_rewrite_rule(
+        '^brand/([^/]+)/category-([^/]+)/?$',
+        'index.php?product_brand=$matches[1]&category_filter=$matches[2]',
+        'top'
+    );
+    
+    add_rewrite_rule(
+        '^brand/([^/]+)/category-([^/]+)/page/([0-9]+)/?$',
+        'index.php?product_brand=$matches[1]&category_filter=$matches[2]&paged=$matches[3]',
+        'top'
+    );
+}
+add_action('init', 'custom_brand_category_rewrite_rules');
+
+function custom_query_vars($vars) {
+    $vars[] = 'category_filter';
+    return $vars;
+}
+add_filter('query_vars', 'custom_query_vars');
+
+function custom_parse_request($wp) {
+    if (isset($wp->query_vars['category_filter'])) {
+        $GLOBALS['custom_category_filter'] = $wp->query_vars['category_filter'];
+    }
+}
+add_action('parse_request', 'custom_parse_request');
+
+function get_current_category_from_url() {
+    global $custom_category_filter;
+    
+    if (isset($custom_category_filter)) {
+        return get_term_by('slug', $custom_category_filter, 'product_cat');
+    }
+    
+    $request_uri = $_SERVER['REQUEST_URI'];
+    $url_parts = explode('/', trim($request_uri, '/'));
+    
+    foreach ($url_parts as $part) {
+        if (strpos($part, 'category-') === 0) {
+            $category_slug = str_replace('category-', '', $part);
+            return get_term_by('slug', $category_slug, 'product_cat');
+        }
+    }
+    
+    return null;
+}
+
+function get_brand_category_url($brand_slug, $category_slug = '', $sort = '') {
+    $url = home_url('/product-brand/' . $brand_slug . '/');
+    
+    if ($category_slug) {
+        $url .= 'category-' . $category_slug . '/';
+    }
+    
+    if ($sort) {
+        $url = add_query_arg('ordr', $sort, $url);
+    }
+    
+    return $url;
 }

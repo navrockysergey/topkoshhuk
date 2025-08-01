@@ -15,6 +15,60 @@ $attachment_ids = $product->get_gallery_image_ids();
 $main_image_id = get_post_thumbnail_id($product->get_id());
 
 $total_media_count = 1 + count($attachment_ids) + (!empty($video_id) ? 1 : 0);
+
+
+/**
+ * Get the largest available image size (excluding original)
+ */
+function get_largest_existing_image_size($attachment_id, $exclude_original = true) {
+    // Get all available image sizes
+    $available_sizes = get_intermediate_image_sizes();
+    
+    // Add standard WordPress sizes
+    $available_sizes[] = 'thumbnail';
+    $available_sizes[] = 'medium';
+    $available_sizes[] = 'medium_large';
+    $available_sizes[] = 'large';
+    
+    // Add original size if not excluded
+    if (!$exclude_original) {
+        $available_sizes[] = 'full';
+    }
+    
+    $largest_size = null;
+    $largest_area = 0;
+    
+    foreach ($available_sizes as $size) {
+        $image_info = wp_get_attachment_image_src($attachment_id, $size);
+        
+        if ($image_info) {
+            $image_url = $image_info[0];
+            $width = $image_info[1];
+            $height = $image_info[2];
+            
+            // Check if the image file actually exists on server
+            $image_path = str_replace(wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $image_url);
+            
+            if (file_exists($image_path)) {
+                $area = $width * $height;
+                
+                // Check if this is the largest existing image
+                if ($area > $largest_area) {
+                    $largest_area = $area;
+                    $largest_size = array(
+                        'url' => $image_url,
+                        'width' => $width,
+                        'height' => $height,
+                        'size' => $size,
+                        'path' => $image_path
+                    );
+                }
+            }
+        }
+    }
+    
+    return $largest_size;
+}
 ?>
 
 <div class="product-media<?php if ($total_media_count == 1) : ?> product-media-one<?php endif; ?>">
@@ -27,25 +81,98 @@ $total_media_count = 1 + count($attachment_ids) + (!empty($video_id) ? 1 : 0);
     <div class="product-gallery-wrapper">
         <div class="product-gallery owl-carousel" id="product-gallery">
             <?php
-                
                 echo '<div class="product-gallery-item" data-image-id="0">';
-                
+
                 if ($main_image_id) {
-                    echo wp_get_attachment_image($main_image_id, 'large');
+                    // Get the largest existing size for main image
+                    $largest_image = get_largest_existing_image_size($main_image_id, true);
+                    
+                    if ($largest_image) {
+                        $image_url = esc_url($largest_image['url']);
+                        $image_width = esc_attr($largest_image['width']);
+                        $image_height = esc_attr($largest_image['height']);
+                        $alt = esc_attr(get_post_meta($main_image_id, '_wp_attachment_image_alt', true));
+                        
+                        echo '<img src="' . $image_url . '" width="' . $image_width . '" height="' . $image_height . '" alt="' . $alt . '" data-size="' . $largest_image['size'] . '">';
+                    } else {
+                        // Fallback to any existing size if largest not found
+                        $fallback_sizes = array('large', 'medium_large', 'medium', 'thumbnail', 'full');
+                        $fallback_found = false;
+                        
+                        foreach ($fallback_sizes as $fallback_size) {
+                            $image_info = wp_get_attachment_image_src($main_image_id, $fallback_size);
+                            if ($image_info) {
+                                $image_path = str_replace(wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $image_info[0]);
+                                if (file_exists($image_path)) {
+                                    $image_url = esc_url($image_info[0]);
+                                    $image_width = esc_attr($image_info[1]);
+                                    $image_height = esc_attr($image_info[2]);
+                                    $alt = esc_attr(get_post_meta($main_image_id, '_wp_attachment_image_alt', true));
+                                    echo '<img src="' . $image_url . '" width="' . $image_width . '" height="' . $image_height . '" alt="' . $alt . '">';
+                                    $fallback_found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // If no existing image found, show placeholder
+                        if (!$fallback_found) {
+                            echo '<img src="' . get_template_directory_uri() . '/assets/images/placeholder.svg" alt="">';
+                        }
+                    }
                 } else {
-                    echo '<img src="' . get_template_directory_uri() . '/assets/images/placeholder.svg">';
+                    echo '<img src="' . get_template_directory_uri() . '/assets/images/placeholder.svg" alt="">';
                 }
 
                 echo '</div>';
 
+                // Process additional gallery images
                 $index = 1;
                 foreach ($attachment_ids as $attachment_id) :
                     echo '<div class="product-gallery-item" data-image-id="' . $index . '">';
-                    echo wp_get_attachment_image($attachment_id, 'large');
+                    
+                    // Get the largest existing size for each gallery image
+                    $largest_image = get_largest_existing_image_size($attachment_id, true);
+                    
+                    if ($largest_image) {
+                        $image_url = esc_url($largest_image['url']);
+                        $image_width = esc_attr($largest_image['width']);
+                        $image_height = esc_attr($largest_image['height']);
+                        $alt = esc_attr(get_post_meta($attachment_id, '_wp_attachment_image_alt', true));
+                        
+                        echo '<img src="' . $image_url . '" width="' . $image_width . '" height="' . $image_height . '" alt="' . $alt . '" data-size="' . $largest_image['size'] . '">';
+                    } else {
+                        // Fallback to any existing size if largest not found
+                        $fallback_sizes = array('large', 'medium_large', 'medium', 'thumbnail', 'full');
+                        $fallback_found = false;
+                        
+                        foreach ($fallback_sizes as $fallback_size) {
+                            $image_info = wp_get_attachment_image_src($attachment_id, $fallback_size);
+                            if ($image_info) {
+                                $image_path = str_replace(wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $image_info[0]);
+                                if (file_exists($image_path)) {
+                                    $image_url = esc_url($image_info[0]);
+                                    $image_width = esc_attr($image_info[1]);
+                                    $image_height = esc_attr($image_info[2]);
+                                    $alt = esc_attr(get_post_meta($attachment_id, '_wp_attachment_image_alt', true));
+                                    echo '<img src="' . $image_url . '" width="' . $image_width . '" height="' . $image_height . '" alt="' . $alt . '">';
+                                    $fallback_found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // If no existing image found, show placeholder
+                        if (!$fallback_found) {
+                            echo '<img src="' . get_template_directory_uri() . '/assets/images/placeholder.svg" alt="">';
+                        }
+                    }
+
                     echo '</div>';
                     $index++;
                 endforeach;
 
+                // Video processing (unchanged)
                 if (!empty($video_id)) : 
                     $video_iframe = '<div class="product-gallery-item product-gallery-video" data-image-id="9999">';
                     $video_iframe .= '<iframe id="youtube-iframe" width="560" height="315" src="https://www.youtube.com/embed/' . esc_attr($video_id) . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';

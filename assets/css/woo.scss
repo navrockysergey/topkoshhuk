@@ -53,6 +53,11 @@ body {
         padding: 0;
     }
 
+    .woocommerce-account & {
+        max-width: unset !important;
+        align-items: flex-start !important;
+    }
+
     &:empty {
         display: none !important;
     }
@@ -1033,11 +1038,15 @@ ul.products {
     
     &:not(.owl-carousel) {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: var(--gap_s);
 
+        .category-container & {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
         @include tablet-p {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
         }
     
         @include mobile {
@@ -1327,6 +1336,10 @@ ul.products {
             max-width: 800px;
             margin: 0 auto;
             padding: 0;
+
+            .woocommerce-account & {
+                max-width: unset;
+            }
         }
 
         #customer_login {

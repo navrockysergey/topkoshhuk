@@ -1585,11 +1585,6 @@ header.site-header ul.menu > li a:hover {
     flex: 1;
   }
 }
-@media (min-width: 1024px) {
-  .woocommerce-checkout header.site-header .menu-wrapper {
-    visibility: hidden;
-  }
-}
 @media (max-width: 1023px) {
   header.site-header .menu-wrapper {
     display: flex;
@@ -1717,13 +1712,6 @@ header.site-header .menu-toggle {
   background-color: transparent;
   padding-top: 13.5px;
   padding-bottom: 13.5px;
-}
-@media (min-width: 1024px) {
-  .woocommerce-checkout header.site-header .header-login,
-  .woocommerce-checkout header.site-header .header-cart,
-  .woocommerce-checkout header.site-header .menu-toggle {
-    display: none !important;
-  }
 }
 header.site-header .header-login i,
 header.site-header .header-cart i,
@@ -1970,6 +1958,9 @@ header.site-header .login-container .dropdown-content .fields .lost_password {
   margin-top: var(--padding_s);
   padding: var(--padding_xs) 0;
   text-align: center;
+}
+header.site-header .login-container .dropdown-content .fields .lost_password a {
+  color: inherit;
 }
 header.site-header .login-container .dropdown-content .fields .form-row-submit {
   margin-top: var(--padding_s);
@@ -3872,6 +3863,7 @@ footer ul {
   color: var(--color_primary);
 }
 
+.hidden-fields-container,
 .article-month,
 .hidden {
   display: none !important;

@@ -585,12 +585,6 @@ header.site-header {
 
     .menu-wrapper {
 
-        @include min1024 {
-            .woocommerce-checkout & {
-                visibility: hidden;
-            }
-        }
-
         @include max1024 {
             display: flex;
             flex-direction: column;
@@ -703,12 +697,6 @@ header.site-header {
     .header-login,
     .header-cart,
     .menu-toggle {
-
-        @include min1024 {
-            .woocommerce-checkout & {
-                display: none !important;
-            }
-        }
 
         @include button;
 
@@ -942,6 +930,10 @@ header.site-header {
                     margin-top: var(--padding_s);
                     padding: var(--padding_xs) 0;
                     text-align: center;
+                    
+                    a {
+                        color: inherit;
+                    }
                 }
 
                 .form-row-submit {
@@ -2805,6 +2797,7 @@ footer {
     }
 }
 
+.hidden-fields-container,
 .article-month,
 .hidden {
     display: none !important;

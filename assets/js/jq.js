@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
 
 	body.addClass('ready');
 
-	$('input[name="phone"], [name="billing_phone"], [name="reg_phone"]').inputmask('+38(999)999-99-99');
+	$('input[name="phone"], [name="billing_phone"], [name="reg_phone"], [name="account_phone"]').inputmask('+38(999)999-99-99');
 
 	$(document).on('click', '.menu-toggle', function() {
 		if ($(this).hasClass('active')) {

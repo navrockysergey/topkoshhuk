@@ -29,7 +29,7 @@ if ( empty( $brans_media_products_terms ) ) {
                 'post_type'      => 'product',
                 'post_status'    => 'publish',
                 'orderby'        => 'rand',
-                'posts_per_page' => intval( $brans_video_products_per_page ),
+                'posts_per_page' => intval( $brans_media_products_per_page ),
                 'tax_query'      => [
                     [
                         'taxonomy' => 'product_brand',

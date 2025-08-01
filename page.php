@@ -7,6 +7,7 @@ $is_tax = is_tax();
 $is_page_shop = wc_get_page_permalink( 'shop' );
 $is_account = wc_get_page_permalink( 'myaccount' );
 $is_orders = wc_get_account_endpoint_url( 'orders' );
+$current_term = get_queried_object();
 ?>
 
 <main id="primary" class="site-main<?php if(!$is_home): ?> site-page<?php endif; ?>">
@@ -43,7 +44,7 @@ $is_orders = wc_get_account_endpoint_url( 'orders' );
             </div>
 
             <div class="category-main">
-                <?php echo do_shortcode('[products limit="18" columns="3" orderby="date" order="DESC" paginate=true]'); ?>
+                <?php echo do_shortcode('[products limit="18" columns="3" orderby="date" order="DESC" paginate="true" category="' . esc_attr($current_term->slug) . '"]'); ?>
             </div>
         </div>
 

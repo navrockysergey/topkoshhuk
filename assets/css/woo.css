@@ -407,6 +407,10 @@ label[for=payment_method_cod]::before,
 .woocommerce-MyAccount-content .woocommerce-notices-wrapper {
   padding: 0;
 }
+.woocommerce-account .woocommerce-notices-wrapper {
+  max-width: unset !important;
+  align-items: flex-start !important;
+}
 .woocommerce-notices-wrapper:empty {
   display: none !important;
 }
@@ -1415,13 +1419,17 @@ ul.products {
 .products:not(.owl-carousel),
 ul.products:not(.owl-carousel) {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--gap_s);
+}
+.category-container .products:not(.owl-carousel),
+.category-container ul.products:not(.owl-carousel) {
+  grid-template-columns: repeat(3, 1fr);
 }
 @media (min-width: 768px) and (max-width: 1024px) {
   .products:not(.owl-carousel),
   ul.products:not(.owl-carousel) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 @media (max-width: 767px) {
@@ -1772,6 +1780,9 @@ ul.products li.product .product-sku-wrapper {
   max-width: 800px;
   margin: 0 auto;
   padding: 0;
+}
+.woocommerce-account .woocommerce-account .woocommerce .woocommerce-notices-wrapper {
+  max-width: unset;
 }
 .woocommerce-account .woocommerce #customer_login {
   grid-column: span 2;
@@ -2364,7 +2375,6 @@ ul.products li.product .product-sku-wrapper {
 .select2-hidden-accessible {
   border: 0 !important;
   clip: rect(0 0 0 0) !important;
-  -webkit-clip-path: inset(50%) !important;
   clip-path: inset(50%) !important;
   height: 1px !important;
   overflow: hidden !important;
