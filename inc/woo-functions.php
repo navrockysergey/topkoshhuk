@@ -1325,7 +1325,7 @@ function get_current_category_from_url() {
 }
 
 function get_brand_category_url($brand_slug, $category_slug = '', $sort = '') {
-    $url = home_url('/product-brand/' . $brand_slug . '/');
+    $url = home_url('/brand/' . $brand_slug . '/');
     
     if ($category_slug) {
         $url .= 'category-' . $category_slug . '/';
