@@ -227,7 +227,7 @@ jQuery(document).ready(function ($) {
 			let data_count = parseInt($(el).data('pr-count'));
 			
 			// If product quantity is greater than or equal to minimum for this price
-			if (quantity >= data_count && data_count > maxMatchingCount) {
+			if (quantity >= data_count && data_count >= maxMatchingCount) {
 				maxMatchingCount = data_count;
 				activeWholesale = $(el);
 			}
@@ -638,11 +638,11 @@ jQuery(document).ready(function ($) {
 	
 	checkAndSwitchMode(qty, in_box, max_qty);
 	updateButtonStates(qty, max_qty, in_box);
-	
+
 	if (qty > 0) {
 		replaceActualyWholesale(qty);
 	} else {
-		$('.product-wholesales').find('.wholesale-item.active').removeClass('active');
+		// $('.product-wholesales').find('.wholesale-item.active').removeClass('active');
 	}
 	
 	updateCheckoutButton();
