@@ -364,7 +364,7 @@ jQuery(document).ready(function ($) {
 		let fake_input 	= parent.find('input.fake-qty');
 		let input_val 	= parseInt(input.val()) || 0;
 		let max_qty 	= parseInt(input.attr('max')) || 9999;
-		let step 		= input_val >= in_box ? in_box : 1;
+		let step 		= 0 < in_box && input_val >= in_box ? in_box : 1;
 		let new_val, fake_val;
 		let is_wholesale = $('.box-variation.wholesale').hasClass('active');
 
@@ -385,6 +385,7 @@ jQuery(document).ready(function ($) {
 				if (new_val > max_qty) {
 					new_val = max_qty;
 				}
+
 				fake_val = Math.floor(new_val / in_box);
 			} else {
 				// In retail mode add one unit
@@ -394,6 +395,7 @@ jQuery(document).ready(function ($) {
 				} else {
 					new_val = Math.min(input_val + step, max_qty);
 				}
+
 				fake_val = new_val;
 				// Update box information
 				if (in_box > 0) {
@@ -402,14 +404,14 @@ jQuery(document).ready(function ($) {
 			}
 		} else {
 			// Minus button
-			step    = input_val > in_box ? in_box : 1;
+			step    = 0 < in_box && input_val > in_box ? in_box : 1;
 			new_val = Math.max(0, input_val - step);
 			if (is_wholesale && in_box > 0) {
 				// In wholesale mode remove a whole box
 				fake_val = new_val > 0 ? Math.floor(new_val / in_box) : 0;
 			} else {
 				// In retail mode remove one unit
-				if( new_val >= in_box) {
+				if( 0 < in_box && new_val >= in_box ) {
 					new_val = Math.round(new_val / in_box) * in_box;
 				};
 				
