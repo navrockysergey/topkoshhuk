@@ -1435,7 +1435,7 @@ ul.products:not(.owl-carousel) {
 @media (max-width: 767px) {
   .category-container .products:not(.owl-carousel),
   .category-container ul.products:not(.owl-carousel) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -1447,7 +1447,7 @@ ul.products:not(.owl-carousel) {
 @media (max-width: 767px) {
   .products:not(.owl-carousel),
   ul.products:not(.owl-carousel) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--gap_s);
   }
 }
