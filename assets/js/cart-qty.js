@@ -186,4 +186,41 @@ jQuery(document).ready(function ($) {
 			initializeButtonStates();
 		}, 100);
 	});
+
+	function calculateAndDisplayBoxes() {
+        $('.qty-container').each(function() {
+            var $container = $(this);
+            var $qtyInput = $container.find('.qty');
+            var quantity = parseInt($qtyInput.val()) || 0;
+            var inBox = parseInt($container.attr('data-in-box')) || 0;
+            
+            $container.find('.box-display').remove();
+            
+            if (quantity > inBox && inBox > 0) {
+                var boxes = Math.floor(quantity / inBox);
+                var remainder = quantity % inBox;
+                
+                var boxText = '';
+                if (boxes > 0) {
+                    boxText = boxes + ' ящ.';
+                    if (remainder > 0) {
+                        boxText += ' + ' + remainder + ' шт.';
+                    }
+                }
+                
+                var $boxDisplay = $('<span class="box-display">(' + boxText + ')</span>');
+                $container.find('.qty-suffix').after($boxDisplay);
+            }
+        });
+    }
+
+    calculateAndDisplayBoxes();
+
+    $(document).on('click', '.qty-plus, .qty-minus', function() {
+        setTimeout(calculateAndDisplayBoxes, 10);
+    });
+
+    $(document.body).on('updated_wc_div updated_cart_totals', function() {
+        setTimeout(calculateAndDisplayBoxes, 200);
+    });
 });

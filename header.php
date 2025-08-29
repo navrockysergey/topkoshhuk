@@ -25,6 +25,13 @@
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTTRMJ9F"
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<!-- End Google Tag Manager (noscript) -->
+	 <script type="text/javascript">
+		(function(d, w, s) {
+			var widgetHash = '7f53d7uk45gj1p97v0ch', gcw = d.createElement(s); gcw.type = 'text/javascript'; gcw.async = true;
+			gcw.src = '//widgets.binotel.com/getcall/widgets/'+ widgetHash +'.js';
+			var sn = d.getElementsByTagName(s)[0]; sn.parentNode.insertBefore(gcw, sn);
+		})(document, window, 'script');
+	</script>
  </head>
  
  <body <?php body_class($body_class); ?>>

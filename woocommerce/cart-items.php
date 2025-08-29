@@ -1,3 +1,24 @@
+<?php 
+
+function calculate_box_display($quantity, $in_box) {
+    if ($quantity > $in_box && $in_box > 0) {
+        $boxes = floor($quantity / $in_box);
+        $remainder = $quantity % $in_box;
+        
+        $box_text = '';
+        if ($boxes > 0) {
+            $box_text = $boxes . ' ящ.';
+            if ($remainder > 0) {
+                $box_text .= ' + ' . $remainder . ' шт.';
+            }
+        }
+        
+        return '<span class="box-display">(' . $box_text . ')</span>';
+    }
+    
+    return '';
+}
+?>
 <div class="cart woocommerce-cart-form__contents">
     <div class="cart-items">
         <?php do_action('woocommerce_before_cart_contents'); ?>
@@ -7,6 +28,10 @@
             $_product   = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
             $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
             $in_box     = intval( get_post_meta( $product_id, '_box_quantity', true ) );
+
+            if ($in_box == 0) {
+                $in_box = $_product->get_max_purchase_quantity();
+            }
 
             if ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_cart_item_visible', true, $cart_item, $cart_item_key)) {
                 $product_permalink = apply_filters('woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink($cart_item) : '', $cart_item, $cart_item_key);
@@ -99,6 +124,12 @@
                                 }
 
                                 echo apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item);
+                            ?>
+                            <span class="qty-suffix">
+                                <?php _e('шт.'); ?>
+                            </span>
+                            <?php 
+                                echo calculate_box_display($cart_item['quantity'], $in_box); 
                             ?>
                             <button class="button button-qty qty-plus">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
