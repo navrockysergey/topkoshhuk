@@ -15,60 +15,6 @@ $attachment_ids = $product->get_gallery_image_ids();
 $main_image_id = get_post_thumbnail_id($product->get_id());
 
 $total_media_count = 1 + count($attachment_ids) + (!empty($video_id) ? 1 : 0);
-
-
-/**
- * Get the largest available image size (excluding original)
- */
-function get_largest_existing_image_size($attachment_id, $exclude_original = true) {
-    // Get all available image sizes
-    $available_sizes = get_intermediate_image_sizes();
-    
-    // Add standard WordPress sizes
-    $available_sizes[] = 'thumbnail';
-    $available_sizes[] = 'medium';
-    $available_sizes[] = 'medium_large';
-    $available_sizes[] = 'large';
-    
-    // Add original size if not excluded
-    if (!$exclude_original) {
-        $available_sizes[] = 'full';
-    }
-    
-    $largest_size = null;
-    $largest_area = 0;
-    
-    foreach ($available_sizes as $size) {
-        $image_info = wp_get_attachment_image_src($attachment_id, $size);
-        
-        if ($image_info) {
-            $image_url = $image_info[0];
-            $width = $image_info[1];
-            $height = $image_info[2];
-            
-            // Check if the image file actually exists on server
-            $image_path = str_replace(wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $image_url);
-            
-            if (file_exists($image_path)) {
-                $area = $width * $height;
-                
-                // Check if this is the largest existing image
-                if ($area > $largest_area) {
-                    $largest_area = $area;
-                    $largest_size = array(
-                        'url' => $image_url,
-                        'width' => $width,
-                        'height' => $height,
-                        'size' => $size,
-                        'path' => $image_path
-                    );
-                }
-            }
-        }
-    }
-    
-    return $largest_size;
-}
 ?>
 
 <div class="product-media<?php if ($total_media_count == 1) : ?> product-media-one<?php endif; ?>">
@@ -85,7 +31,7 @@ function get_largest_existing_image_size($attachment_id, $exclude_original = tru
 
                 if ($main_image_id) {
                     // Get the largest existing size for main image
-                    $largest_image = get_largest_existing_image_size($main_image_id, true);
+                    $largest_image = apply_filters( 'get_largest_existing_image_size', $main_image_id, true );
                     
                     if ($largest_image) {
                         $image_url = esc_url($largest_image['url']);
@@ -132,7 +78,7 @@ function get_largest_existing_image_size($attachment_id, $exclude_original = tru
                     echo '<div class="product-gallery-item" data-image-id="' . $index . '">';
                     
                     // Get the largest existing size for each gallery image
-                    $largest_image = get_largest_existing_image_size($attachment_id, true);
+                    $largest_image = apply_filters( 'get_largest_existing_image_size', $attachment_id, true );
                     
                     if ($largest_image) {
                         $image_url = esc_url($largest_image['url']);
