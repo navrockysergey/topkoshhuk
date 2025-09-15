@@ -771,6 +771,7 @@ header.site-header {
         .woocommerce-ajax-register,
         .woocommerce-ajax-login {
             position: relative;
+            display: block !important;
 
             &.loading {
                 opacity: .5;

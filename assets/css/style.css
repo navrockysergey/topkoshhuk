@@ -1825,6 +1825,7 @@ header.site-header .login-container {
 header.site-header .login-container .woocommerce-ajax-register,
 header.site-header .login-container .woocommerce-ajax-login {
   position: relative;
+  display: block !important;
 }
 header.site-header .login-container .woocommerce-ajax-register.loading,
 header.site-header .login-container .woocommerce-ajax-login.loading {

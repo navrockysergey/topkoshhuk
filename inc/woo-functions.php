@@ -1448,6 +1448,14 @@ function wpseo_opengraph_image_height( $height, $key ) {
 
 add_filter( 'woocommerce_add_error', 'custom_woocommerce_error_messages' );
 function custom_woocommerce_error_messages( $error_message ) {
-    $error_message = str_ireplace( 'Оплата ', '', $error_message );
+    $replacements = array(
+        'Оплата ' => '',
+        'Виберіть адресу Нової Пошти' => 'Виберіть адресу доставки',
+    );
+    
+    foreach( $replacements as $search => $replace ) {
+        $error_message = str_ireplace( $search, $replace, $error_message );
+    }
+    
     return $error_message;
 }
