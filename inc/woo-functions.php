@@ -1459,3 +1459,46 @@ function custom_woocommerce_error_messages( $error_message ) {
     
     return $error_message;
 }
+
+add_filter( 'woocommerce_save_account_details_required_fields', 'disable_some_required_fields' );
+function disable_some_required_fields( $required_fields ) {
+	unset( $required_fields['account_first_name'] );
+	unset( $required_fields['account_last_name'] );
+	unset( $required_fields['account_email'] );
+	return $required_fields;
+}
+
+add_filter('woocommerce_checkout_show_terms', '__return_false');
+
+add_action('woocommerce_review_order_after_submit', 'custom_terms_text', 9);
+function custom_terms_text() {
+    echo '<div class="terms-text">
+        Підтверджуючи замовлення, я приймаю умови:<br>
+        * <a href="' . get_permalink(18650) . '" target="_blank">положення про обробку і захист персональних даних</a><br>
+        * <a href="' . get_permalink(18652) . '" target="_blank">угоди користувача</a>
+    </div>';
+}
+
+function prevent_checkout_scroll() {
+    if (is_checkout()) {
+        ?>
+        <script type="text/javascript">
+        jQuery(window).on('load', function() {
+            jQuery(window).scrollTop(0);
+            
+            var scrollBlocked = true;
+            jQuery(window).on('scroll', function(e) {
+                if (scrollBlocked) {
+                    jQuery(window).scrollTop(0);
+                }
+            });
+            
+            setTimeout(function() {
+                scrollBlocked = false;
+            }, 1000);
+        });
+        </script>
+        <?php
+    }
+}
+add_action('wp_head', 'prevent_checkout_scroll', 999);

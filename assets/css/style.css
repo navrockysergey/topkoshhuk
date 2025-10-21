@@ -2662,13 +2662,13 @@ footer ul {
   align-items: center;
   gap: var(--gap_xs);
 }
-.section.section-single-vacancie .wpcf7, .section.section-vacancies .wpcf7, .section.section-contacts .wpcf7 {
+.page-id-215 .section .wpcf7, .section.section-single-vacancie .wpcf7, .section.section-vacancies .wpcf7, .section.section-contacts .wpcf7 {
   border: 1px solid var(--color_white);
   border-radius: var(--radius);
   gap: 0;
   padding: var(--padding_s);
 }
-.section.section-single-vacancie .wpcf7 h2, .section.section-vacancies .wpcf7 h2, .section.section-contacts .wpcf7 h2 {
+.page-id-215 .section .wpcf7 h2, .section.section-single-vacancie .wpcf7 h2, .section.section-vacancies .wpcf7 h2, .section.section-contacts .wpcf7 h2 {
   border-radius: var(--radius) var(--radius) 0 0;
   margin: calc(var(--padding_s) * -1) calc(var(--padding_s) * -1) calc(var(--padding_s) / 2) calc(var(--padding_s) * -1);
   padding: var(--padding_s);
@@ -2929,6 +2929,13 @@ footer ul {
 .section.section-page i, .section.section-page em {
   color: var(--color_primary);
   font-style: normal;
+}
+.section.section-page a {
+  color: var(--text_color);
+  text-decoration: underline;
+}
+.section.section-page a:hover {
+  color: var(--color_primary);
 }
 .section.section-single-vacancie .container {
   max-width: 800px;
@@ -3559,6 +3566,33 @@ footer ul {
 .wpcf7 [data-name=your-email].woocommerce-invalid-required-field::before {
   color: var(--color_error) !important;
 }
+.wpcf7 [data-name=your-text] {
+  position: relative !important;
+}
+.wpcf7 [data-name=your-text]::before {
+  content: "\e92e";
+  font-family: "icons" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  font-size: 24px;
+  color: var(--text_color);
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: var(--padding_xs);
+}
+.wpcf7 [data-name=your-text] select,
+.wpcf7 [data-name=your-text] input {
+  padding-left: calc(var(--padding_s) + 24px) !important;
+}
+.wpcf7 [data-name=your-text].woocommerce-invalid-required-field::before {
+  color: var(--color_error) !important;
+}
 .wpcf7 .wpcf7-form {
   display: grid;
   align-items: center;
@@ -3578,22 +3612,25 @@ footer ul {
     grid-template-columns: 1fr;
   }
 }
-.section-single-vacancie .wpcf7 .wpcf7-form h2, .section-single-vacancie .wpcf7 .wpcf7-form h3, .section-single-vacancie .wpcf7 .wpcf7-form h4, .section-vacancies .wpcf7 .wpcf7-form h2, .section-vacancies .wpcf7 .wpcf7-form h3, .section-vacancies .wpcf7 .wpcf7-form h4, .section-contacts .wpcf7 .wpcf7-form h2, .section-contacts .wpcf7 .wpcf7-form h3, .section-contacts .wpcf7 .wpcf7-form h4 {
+.section-single-vacancie .wpcf7 .wpcf7-form p, .section-vacancies .wpcf7 .wpcf7-form p, .section-contacts .wpcf7 .wpcf7-form p, .page-id-215 .wpcf7 .wpcf7-form p {
+  margin: 0;
+}
+.section-single-vacancie .wpcf7 .wpcf7-form h2, .section-single-vacancie .wpcf7 .wpcf7-form h3, .section-single-vacancie .wpcf7 .wpcf7-form h4, .section-vacancies .wpcf7 .wpcf7-form h2, .section-vacancies .wpcf7 .wpcf7-form h3, .section-vacancies .wpcf7 .wpcf7-form h4, .section-contacts .wpcf7 .wpcf7-form h2, .section-contacts .wpcf7 .wpcf7-form h3, .section-contacts .wpcf7 .wpcf7-form h4, .page-id-215 .wpcf7 .wpcf7-form h2, .page-id-215 .wpcf7 .wpcf7-form h3, .page-id-215 .wpcf7 .wpcf7-form h4 {
   width: auto !important;
 }
 @media (min-width: 768px) {
-  .section-single-vacancie .wpcf7 .wpcf7-form, .section-vacancies .wpcf7 .wpcf7-form, .section-contacts .wpcf7 .wpcf7-form {
+  .section-single-vacancie .wpcf7 .wpcf7-form, .section-vacancies .wpcf7 .wpcf7-form, .section-contacts .wpcf7 .wpcf7-form, .page-id-215 .wpcf7 .wpcf7-form {
     grid-template-columns: repeat(2, 1fr);
   }
-  .section-single-vacancie .wpcf7 .wpcf7-form > *:not(.field-phone):not(.field-email), .section-vacancies .wpcf7 .wpcf7-form > *:not(.field-phone):not(.field-email), .section-contacts .wpcf7 .wpcf7-form > *:not(.field-phone):not(.field-email) {
+  .section-single-vacancie .wpcf7 .wpcf7-form > *:not(.field-phone):not(.field-email), .section-vacancies .wpcf7 .wpcf7-form > *:not(.field-phone):not(.field-email), .section-contacts .wpcf7 .wpcf7-form > *:not(.field-phone):not(.field-email), .page-id-215 .wpcf7 .wpcf7-form > *:not(.field-phone):not(.field-email) {
     grid-column: span 2;
   }
 }
 @media (max-width: 767px) {
-  .section-single-vacancie .wpcf7 .wpcf7-form, .section-vacancies .wpcf7 .wpcf7-form, .section-contacts .wpcf7 .wpcf7-form {
+  .section-single-vacancie .wpcf7 .wpcf7-form, .section-vacancies .wpcf7 .wpcf7-form, .section-contacts .wpcf7 .wpcf7-form, .page-id-215 .wpcf7 .wpcf7-form {
     grid-template-columns: repeat(1, 1fr);
   }
-  .section-single-vacancie .wpcf7 .wpcf7-form > *, .section-vacancies .wpcf7 .wpcf7-form > *, .section-contacts .wpcf7 .wpcf7-form > * {
+  .section-single-vacancie .wpcf7 .wpcf7-form > *, .section-vacancies .wpcf7 .wpcf7-form > *, .section-contacts .wpcf7 .wpcf7-form > *, .page-id-215 .wpcf7 .wpcf7-form > * {
     width: 100%;
   }
 }
@@ -3622,6 +3659,16 @@ footer ul {
 .wpcf7 .wpcf7-form.submitting .wpcf7-submit {
   border-color: var(--color_secondary) !important;
   background-color: var(--color_secondary) !important;
+}
+.wpcf7 .wpcf7-form.sent .wpcf7-response-output {
+  color: var(--text_color);
+}
+.wpcf7 .field-text .wpcf7-form-control-wrap::before {
+  transform: translate(0, 0);
+  top: 13px;
+}
+.wpcf7 .field-text .wpcf7-form-control-wrap textarea {
+  padding-left: calc(var(--padding_s) + 24px) !important;
 }
 .wpcf7 .wpcf7-response-output {
   text-align: center;
@@ -3656,7 +3703,16 @@ footer ul {
 .wpcf7 .wpcf7-submit {
   height: var(--item_size);
 }
-.wpcf7 .wpcf7-form-control:not(.wpcf7-submit) {
+.wpcf7 .wpcf7-form span.wpcf7-radio {
+  display: flex;
+  align-items: center;
+  gap: var(--gap_s);
+  margin: 0;
+}
+.wpcf7 .wpcf7-form span.wpcf7-radio .wpcf7-list-item-label {
+  padding-left: calc(5px + var(--padding_m));
+}
+.wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio) {
   font-size: var(--font_size_p1);
   font-weight: 400;
   color: var(--color_black);
@@ -3671,41 +3727,41 @@ footer ul {
   padding: var(--padding_s);
   transition: all 0.5s ease;
 }
-.wpcf7 .wpcf7-form-control:not(.wpcf7-submit)::-moz-placeholder {
+.wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio)::-moz-placeholder {
   color: var(--color_black);
   font-family: var(--font);
   font-weight: 400;
 }
-.wpcf7 .wpcf7-form-control:not(.wpcf7-submit)::placeholder {
+.wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio)::placeholder {
   color: var(--color_black);
   font-family: var(--font);
   font-weight: 400;
 }
-.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(:focus) {
+.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio):not(:focus) {
   background-color: transparent;
   border-color: var(--color_grey);
   color: var(--color_white);
 }
-.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit)::-moz-placeholder {
+.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio)::-moz-placeholder {
   color: var(--color_white);
 }
-.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit)::placeholder {
+.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio)::placeholder {
   color: var(--color_white);
 }
-.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):focus::-moz-placeholder {
+.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio):focus::-moz-placeholder {
   color: var(--color_black);
 }
-.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):focus::placeholder {
+.section-subscribe .wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio):focus::placeholder {
   color: var(--color_black);
 }
-.wpcf7 .wpcf7-form-control:not(.wpcf7-submit).wpcf7-not-valid {
+.wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio).wpcf7-not-valid {
   color: var(--color_error);
   border-color: var(--color_error);
 }
-.wpcf7 .wpcf7-form-control:not(.wpcf7-submit).wpcf7-not-valid::-moz-placeholder {
+.wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio).wpcf7-not-valid::-moz-placeholder {
   color: var(--color_error);
 }
-.wpcf7 .wpcf7-form-control:not(.wpcf7-submit).wpcf7-not-valid::placeholder {
+.wpcf7 .wpcf7-form-control:not(.wpcf7-submit):not(.wpcf7-radio).wpcf7-not-valid::placeholder {
   color: var(--color_error);
 }
 .wpcf7.sent .wpcf7-response-output {
@@ -3862,6 +3918,10 @@ footer ul {
 }
 .show-more-button a:hover {
   color: var(--color_primary);
+}
+
+.wp-block-embed.aligncenter {
+  text-align: center;
 }
 
 .hidden-fields-container,

@@ -2145,6 +2145,18 @@ ul.products {
             display: flex;
             flex-direction: column;
             gap: var(--padding_m);
+
+            > * {
+                order: 100;
+
+                &#order_review {
+                    order: 1;
+                }
+
+                &.woocommerce-billing-fields {
+                    order: 2;
+                }
+            }
         }
     }
 
@@ -2512,15 +2524,16 @@ ul.products {
 
         &:not([style="display: none;"]) {
             display: grid !important;
+
+            @include mobile {
+                display: flex !important;
+                flex-direction: column;
+            }
         }
         
         grid-template-columns: repeat(2, 1fr);
         gap: var(--gap_s);
         margin-top: var(--gap_s);
-
-        @include mobile {
-            grid-template-columns: repeat(1, 1fr);
-        }
 
         .wc-urk-shipping-form-group {
             padding: var(--gap_xs) 0 !important;
@@ -2797,6 +2810,12 @@ ul.products {
                     grid-template-columns: repeat(1, 1fr);
                 }
 
+                .form-row {
+                    @include mobile {
+                        grid-column: span 2;
+                    }
+                }
+
                 .form-row-submit,
                 .ajax-login-message,
                 .lost_password {
@@ -2926,6 +2945,24 @@ ul.products {
     }
 }
 
+.terms-text {
+    font-size: var(--font_size_p3);
+    color: var(--color_grey);
+    margin-top: var(--gap_m);
+    margin-bottom: 0;
+    line-height: 1.6;
+    
+    a {
+        color: var(--color_grey);
+        
+        &:hover {
+            color: var(--color_primary);
+            text-decoration: underline;
+        }
+    }
+}
+
+.wpc-edit-filter-set,
 .woocommerce-checkout-payment,
 wc-order-attribution-inputs,
 .woocommerce-additional-fields,
