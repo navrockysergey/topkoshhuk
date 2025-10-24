@@ -1338,167 +1338,38 @@ function get_brand_category_url($brand_slug, $category_slug = '', $sort = '') {
     return $url;
 }
 
-/**
- * Retrieves the largest existing image size for a given attachment ID.
- *
- * @param int          $attachment_id Attachment ID.
- * @param bool         $exclude_original Optional. Exclude the original image size from the results. Defaults to true.
- *
- * @return array|null Returns an associative array with the largest existing image size, or null if no image is found.
- */
-function get_largest_existing_image_size($attachment_id, $exclude_original = true) {
-    // Get all available image sizes
-    $available_sizes = get_intermediate_image_sizes();
+function custom_copy_shipping_meta_after_order_created( $order_id, $data ) {
+    $order = wc_get_order( $order_id );
     
-    // Add standard WordPress sizes
-    $available_sizes[] = 'thumbnail';
-    $available_sizes[] = 'medium';
-    $available_sizes[] = 'medium_large';
-    $available_sizes[] = 'large';
-    
-    // Add original size if not excluded
-    if (!$exclude_original) {
-        $available_sizes[] = 'full';
-    }
-    
-    $largest_size = null;
-    $largest_area = 0;
-    
-    foreach ($available_sizes as $size) {
-        $image_info = wp_get_attachment_image_src($attachment_id, $size);
-        
-        if ($image_info) {
-            $image_url = $image_info[0];
-            $width = $image_info[1];
-            $height = $image_info[2];
-            
-            // Check if the image file actually exists on server
-            $image_path = str_replace(wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $image_url);
-            
-            if (file_exists($image_path)) {
-                $area = $width * $height;
-                
-                // Check if this is the largest existing image
-                if ($area > $largest_area) {
-                    $largest_area = $area;
-                    $largest_size = array(
-                        'url' => $image_url,
-                        'width' => $width,
-                        'height' => $height,
-                        'size' => $size,
-                        'path' => $image_path
-                    );
-                }
-            }
-        }
-    }
-    
-    return $largest_size;
-} 
-add_filter( 'get_largest_existing_image_size', 'get_largest_existing_image_size', 10 , 2 );
-
-add_filter( 'wpseo_opengraph_image', 'replace_yoast_og_image_size_for_products' );
-function replace_yoast_og_image_size_for_products( $image ) {
-    if ( is_product() ) {
-        global $product;
-        $attachment_id = $product->get_image_id();
-
-        if ( $attachment_id ) {
-            $image_data = apply_filters( 'get_largest_existing_image_size', $attachment_id, true );
-            if ( !is_null( $image_data ) ) {
-                return $image_data['url'];
-            }
-        }
+    if ( ! $order ) {
+        error_log( 'Order not found: ' . $order_id );
     }
 
-    return $image;
-}
+    $address_data = [
+        'first_name' => isset( $data['shipping_first_name'] ) ? wc_clean( $data['shipping_first_name'] ) : '',
+        'last_name'  => isset( $data['shipping_last_name'] ) ? wc_clean( $data['shipping_last_name'] ) : '',
+        'company'    => isset( $data['shipping_company'] ) ? wc_clean( $data['shipping_company'] ) : '',
+        'address_1'  => isset( $data['shipping_address_1'] ) ? wc_clean( $data['shipping_address_1'] ) : '',
+        'address_2'  => isset( $data['shipping_address_2'] ) ? wc_clean( $data['shipping_address_2'] ) : '',
+        'city'       => isset( $data['shipping_city'] ) ? wc_clean( $data['shipping_city'] ) : '',
+        'state'      => isset( $data['shipping_state'] ) ? wc_clean( $data['shipping_state'] ) : '',
+        'postcode'   => isset( $data['shipping_postcode'] ) ? wc_clean( $data['shipping_postcode'] ) : '',
+        'country'    => isset( $data['shipping_country'] ) ? wc_clean( $data['shipping_country'] ) : '',
+    ];
 
-add_filter( 'wpseo_opengraph_image_width', 'wpseo_opengraph_image_width', 20 , 2 );
-function wpseo_opengraph_image_width( $width, $key ) {
-    if ( is_product() ) {
-        global $product;
-        $attachment_id = $product->get_image_id();
-
-        if ( $attachment_id ) {
-            $image_data = apply_filters( 'get_largest_existing_image_size', $attachment_id, true );
-            if ( !is_null( $image_data ) ) {
-                return $image_data['width'];
-            }
-        }
-    }
-    return $width;
-}
-
-add_filter( 'wpseo_opengraph_image_height', 'wpseo_opengraph_image_height', 20 , 2 );
-function wpseo_opengraph_image_height( $height, $key ) {
-    if ( is_product() ) {
-        global $product;
-        $attachment_id = $product->get_image_id();
-
-        if ( $attachment_id ) {
-            $image_data = apply_filters( 'get_largest_existing_image_size', $attachment_id, true );
-            if ( !is_null( $image_data ) ) {
-                return $image_data['height'];
-            }
-        }
-    }
-    return $height;
-}
-
-add_filter( 'woocommerce_add_error', 'custom_woocommerce_error_messages' );
-function custom_woocommerce_error_messages( $error_message ) {
-    $replacements = array(
-        'Оплата ' => '',
-        'Виберіть адресу Нової Пошти' => 'Виберіть адресу доставки',
-    );
+    $order->set_shipping_first_name( $address_data['first_name'] );
+    $order->set_shipping_last_name( $address_data['last_name'] );
+    $order->set_shipping_company( $address_data['company'] );
+    $order->set_shipping_address_1( $address_data['address_1'] );
+    $order->set_shipping_address_2( $address_data['address_2'] );
+    $order->set_shipping_city( $address_data['city'] );
+    $order->set_shipping_state( $address_data['state'] );
+    $order->set_shipping_postcode( $address_data['postcode'] );
+    $order->set_shipping_country( $address_data['country'] );
     
-    foreach( $replacements as $search => $replace ) {
-        $error_message = str_ireplace( $search, $replace, $error_message );
-    }
+    $order->save();
     
-    return $error_message;
+    error_log( 'Final check: Shipping address copied to order ID: ' . $order_id );
 }
 
-add_filter( 'woocommerce_save_account_details_required_fields', 'disable_some_required_fields' );
-function disable_some_required_fields( $required_fields ) {
-	unset( $required_fields['account_first_name'] );
-	unset( $required_fields['account_last_name'] );
-	unset( $required_fields['account_email'] );
-	return $required_fields;
-}
-
-add_filter('woocommerce_checkout_show_terms', '__return_false');
-
-add_action('woocommerce_review_order_after_submit', 'custom_terms_text', 9);
-function custom_terms_text() {
-    echo '<div class="terms-text">
-        Підтверджуючи замовлення, я приймаю умови:<br>
-        * <a href="' . get_permalink(18650) . '" target="_blank">положення про обробку і захист персональних даних</a><br>
-        * <a href="' . get_permalink(18652) . '" target="_blank">угоди користувача</a>
-    </div>';
-}
-
-function prevent_checkout_scroll() {
-    if (is_checkout()) {
-        ?>
-        <script type="text/javascript">
-        jQuery(window).on('load', function() {
-            jQuery(window).scrollTop(0);
-            
-            var scrollBlocked = true;
-            jQuery(window).on('scroll', function(e) {
-                if (scrollBlocked) {
-                    jQuery(window).scrollTop(0);
-                }
-            });
-            
-            setTimeout(function() {
-                scrollBlocked = false;
-            }, 1000);
-        });
-        </script>
-        <?php
-    }
-}
-add_action('wp_head', 'prevent_checkout_scroll', 999);
+add_action( 'woocommerce_checkout_update_order_meta', 'custom_copy_shipping_meta_after_order_created', 10, 2 );
